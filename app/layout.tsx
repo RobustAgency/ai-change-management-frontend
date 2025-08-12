@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           toastStyle={{
             backgroundColor: 'white',
             color: 'black',
-            border: '2px solid black',
+            border: 'none',
             borderRadius: '8px'
           }}
         />

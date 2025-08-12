@@ -1,4 +1,10 @@
+"use client";
+
 import Link from "next/link";
+import { useActionState, useEffect, useRef } from "react";
+import { useFormStatus } from "react-dom";
+import { toast } from "react-toastify";
+import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,9 +18,44 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signup } from "@/lib/auth-actions";
 
-export function SignUpForm() {
+function SubmitButton() {
+    const { pending } = useFormStatus();
     return (
-        <Card className="mx-auto max-w-sm">
+        <Button type="submit" className="w-full" disabled={pending}>
+            {pending ? (
+                <>
+                    <Loader2 className="animate-spin" />
+                    Creating account...
+                </>
+            ) : (
+                "Create an account"
+            )}
+        </Button>
+    );
+}
+
+export function SignUpForm() {
+    const formRef = useRef<HTMLFormElement | null>(null);
+    const [state, formAction, isPending] = useActionState(
+        async (_prevState: any, formData: FormData) => {
+            const result = await signup(formData);
+            return result;
+        },
+        null as null | { success: boolean; message?: string }
+    );
+
+    useEffect(() => {
+        if (!state) return;
+        if (state.success) {
+            toast.success("A verification email has been sent.");
+            formRef.current?.reset();
+        } else if (state.message) {
+            toast.error(state.message);
+        }
+    }, [state]);
+
+    return (
+        <Card className="min-w-sm mx-auto max-w-sm">
             <CardHeader>
                 <CardTitle className="text-xl">Sign Up</CardTitle>
                 <CardDescription>
@@ -22,27 +63,25 @@ export function SignUpForm() {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <form action="">
+                <form ref={formRef} action={formAction}>
                     <div className="grid gap-4">
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="grid gap-2">
-                                <Label htmlFor="first-name">First name</Label>
-                                <Input
-                                    name="first-name"
-                                    id="first-name"
-                                    placeholder="Max"
-                                    required
-                                />
-                            </div>
-                            <div className="grid gap-2">
-                                <Label htmlFor="last-name">Last name</Label>
-                                <Input
-                                    name="last-name"
-                                    id="last-name"
-                                    placeholder="Robinson"
-                                    required
-                                />
-                            </div>
+                        <div className="grid gap-2">
+                            <Label htmlFor="first-name">First name</Label>
+                            <Input
+                                name="first-name"
+                                id="first-name"
+                                placeholder="Max"
+                                required
+                            />
+                        </div>
+                        <div className="grid gap-2">
+                            <Label htmlFor="last-name">Last name</Label>
+                            <Input
+                                name="last-name"
+                                id="last-name"
+                                placeholder="Robinson"
+                                required
+                            />
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="email">Email</Label>
@@ -58,9 +97,7 @@ export function SignUpForm() {
                             <Label htmlFor="password">Password</Label>
                             <Input name="password" id="password" type="password" />
                         </div>
-                        <Button formAction={signup} type="submit" className="w-full">
-                            Create an account
-                        </Button>
+                        <SubmitButton />
                     </div>
                 </form>
                 <div className="mt-4 text-center text-sm">

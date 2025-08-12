@@ -39,6 +39,7 @@ export async function signup(formData: FormData) {
             data: {
                 full_name: `${firstName + " " + lastName}`,
                 email: formData.get("email") as string,
+                role: "user",
             },
         },
     };
@@ -46,11 +47,13 @@ export async function signup(formData: FormData) {
     const { error } = await supabase.auth.signUp(data);
 
     if (error) {
-        redirect("/error");
+        return { success: false, message: error.message } as const;
     }
 
-    revalidatePath("/", "layout");
-    redirect("/");
+    // Do not redirect; allow client to handle toast and UX
+    // Optionally revalidate public routes if needed
+    // await revalidatePath("/", "layout");
+    return { success: true } as const;
 }
 
 export async function signout() {
