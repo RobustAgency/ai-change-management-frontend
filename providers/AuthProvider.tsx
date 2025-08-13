@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { Session, User } from "@supabase/supabase-js";
@@ -42,7 +42,7 @@ export function AuthProvider({ children, initialUser = null, initialProfile = nu
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [profile, setProfile] = useState<Profile | null>(initialProfile);
 
-    const fetchProfile = async () => {
+    const fetchProfile = useCallback(async () => {
         if (!user?.id) {
             setProfile(null);
             return;
@@ -55,11 +55,17 @@ export function AuthProvider({ children, initialUser = null, initialProfile = nu
         if (!error) {
             setProfile((data as Profile) ?? null);
         }
-    };
+    }, [supabase, user?.id]);
+
 
     useEffect(() => {
-        void fetchProfile();
-    }, []);
+        if (user) {
+            void fetchProfile();
+        } else {
+            setProfile(null);
+        }
+    }, [user, fetchProfile]);
+
 
     useEffect(() => {
         let isMounted = true;
@@ -79,13 +85,13 @@ export function AuthProvider({ children, initialUser = null, initialProfile = nu
         const { data: sub } = supabase.auth.onAuthStateChange((event, newSession) => {
             setSession(newSession);
             setUser(newSession?.user ?? null);
-            if (!newSession?.user) {
-                setProfile(null);
-            }
-            if (event !== "TOKEN_REFRESHED") {
+            if (!newSession?.user) setProfile(null);
+
+            if (event === "SIGNED_IN" || event === "SIGNED_OUT") {
                 router.refresh();
             }
         });
+
 
         void init();
 

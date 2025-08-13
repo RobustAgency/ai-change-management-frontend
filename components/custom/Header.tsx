@@ -23,7 +23,7 @@ const Header = ({ desktopCollapsed, setDesktopCollapsed }: HeaderProps) => {
             desktopCollapsed ? "md:grid-cols-[64px_minmax(0,1fr)]" : "md:grid-cols-[200px_minmax(0,1fr)]"
         )}>
             <div className="h-full w-full md:border-r flex items-center justify-between px-4">
-                <div className="flex items-center justify-center gap-2">
+                <div className="w-full flex items-center justify-start md:justify-between gap-2">
                     {!desktopCollapsed && (
                         <div aria-details="logo">
                             <h1 className="text-base font-semibold hidden md:block">MVP Skeleton</h1>

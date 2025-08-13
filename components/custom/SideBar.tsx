@@ -18,10 +18,9 @@ export function Sidebar({
         <div className="flex h-full flex-col overflow-hidden">
             <div
                 aria-details="logo"
-                className="flex items-center justify-between p-4">
-                <h1 className="text-base font-semibold  md:hidden">MVP Skeleton</h1>
+                className="flex items-center justify-between md:hidden p-4 border-b">
+                <h1 className="text-base font-semibold ">MVP Skeleton</h1>
             </div>
-
 
             <nav className="flex flex-col gap-1 p-2 md:p-3">
                 {navigationRoutes.map((item) => (

@@ -57,7 +57,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
                     setDesktopCollapsed={setDesktopCollapsed}
                 />
                 <DrawerContent className="w-[80%] max-w-[200px] p-0 md:hidden">
-                    <DrawerHeader className="sr-only">
+                    <DrawerHeader className="hidden">
                         <DrawerTitle>Navigation</DrawerTitle>
                     </DrawerHeader>
                     <aside className="h-full border-r bg-background">
