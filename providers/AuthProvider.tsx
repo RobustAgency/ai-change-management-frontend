@@ -9,26 +9,57 @@ type AuthContextValue = {
     user: User | null;
     session: Session | null;
     isLoading: boolean;
+    profile: Profile | null;
+    fetchProfile: () => Promise<void>;
+};
+
+type Profile = {
+    id: string;
+    full_name?: string | null;
+    avatar_url?: string | null;
 };
 
 const AuthContext = createContext<AuthContextValue>({
     user: null,
     session: null,
     isLoading: true,
+    profile: null,
+    fetchProfile: async () => { },
 });
 
 type AuthProviderProps = {
     children: React.ReactNode;
     initialUser?: User | null;
+    initialProfile?: Profile | null;
 };
 
-export function AuthProvider({ children, initialUser = null }: AuthProviderProps) {
+export function AuthProvider({ children, initialUser = null, initialProfile = null }: AuthProviderProps) {
     const router = useRouter();
     const supabase = useMemo(() => createClient(), []);
 
     const [user, setUser] = useState<User | null>(initialUser);
     const [session, setSession] = useState<Session | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [profile, setProfile] = useState<Profile | null>(initialProfile);
+
+    const fetchProfile = async () => {
+        if (!user?.id) {
+            setProfile(null);
+            return;
+        }
+        const { data, error } = await supabase
+            .from("profiles")
+            .select("id, full_name, avatar_url")
+            .eq("id", user.id)
+            .single();
+        if (!error) {
+            setProfile((data as Profile) ?? null);
+        }
+    };
+
+    useEffect(() => {
+        void fetchProfile();
+    }, []);
 
     useEffect(() => {
         let isMounted = true;
@@ -39,15 +70,21 @@ export function AuthProvider({ children, initialUser = null }: AuthProviderProps
                 if (!isMounted) return;
                 setSession(data.session);
                 setUser(data.session?.user ?? initialUser);
+
             } finally {
                 if (isMounted) setIsLoading(false);
             }
         };
 
-        const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
+        const { data: sub } = supabase.auth.onAuthStateChange((event, newSession) => {
             setSession(newSession);
             setUser(newSession?.user ?? null);
-            router.refresh();
+            if (!newSession?.user) {
+                setProfile(null);
+            }
+            if (event !== "TOKEN_REFRESHED") {
+                router.refresh();
+            }
         });
 
         void init();
@@ -56,11 +93,34 @@ export function AuthProvider({ children, initialUser = null }: AuthProviderProps
             isMounted = false;
             sub.subscription.unsubscribe();
         };
-    }, [supabase, router, initialUser]);
+    }, []);
+
+    useEffect(() => {
+        if (!user?.id) return;
+        const channel = supabase
+            .channel(`profiles:updates:${user.id}`)
+            .on(
+                "postgres_changes",
+                { event: "*", schema: "public", table: "profiles", filter: `id=eq.${user.id}` },
+                (payload) => {
+                    const newRow = (payload as any).new as Profile | null;
+                    if (payload.eventType === "DELETE") {
+                        setProfile(null);
+                    } else if (newRow) {
+                        setProfile(newRow);
+                    }
+                }
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, [supabase, user?.id]);
 
     const value = useMemo<AuthContextValue>(
-        () => ({ user, session, isLoading }),
-        [user, session, isLoading]
+        () => ({ user, session, isLoading, profile, fetchProfile }),
+        [user, session, isLoading, profile, fetchProfile]
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

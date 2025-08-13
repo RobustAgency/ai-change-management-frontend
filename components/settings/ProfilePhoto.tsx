@@ -12,15 +12,16 @@ const PLACEHOLDER = 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrai
 const BUCKET = 'avatars'
 
 const ProfilePhoto = () => {
-    const { user } = useAuth()
+    const { user, fetchProfile } = useAuth()
     const supabase = useMemo(() => createClient(), [])
-
     const fileInputRef = useRef<HTMLInputElement | null>(null)
     const [image, setImage] = useState<string>(PLACEHOLDER)
     const [file, setFile] = useState<File | null>(null)
     const [error, setError] = useState<string | null>(null)
     const [loading, setLoading] = useState<boolean>(false)
     const [currentAvatarUrl, setCurrentAvatarUrl] = useState<string | null>(null)
+    const hasLocalPreviewRef = useRef<boolean>(false)
+    const previewUrlRef = useRef<string | null>(null)
 
     useEffect(() => {
         const loadProfile = async () => {
@@ -33,7 +34,9 @@ const ProfilePhoto = () => {
             if (error) return
             const url = (data?.avatar_url as string | null) ?? null
             setCurrentAvatarUrl(url)
-            setImage(url ?? PLACEHOLDER)
+            if (!hasLocalPreviewRef.current) {
+                setImage(url ?? PLACEHOLDER)
+            }
         }
         void loadProfile()
     }, [supabase, user])
@@ -60,7 +63,13 @@ const ProfilePhoto = () => {
         }
         setError(null)
         setFile(f)
-        setImage(URL.createObjectURL(f))
+        if (previewUrlRef.current && previewUrlRef.current.startsWith('blob:')) {
+            URL.revokeObjectURL(previewUrlRef.current)
+        }
+        const blobUrl = URL.createObjectURL(f)
+        previewUrlRef.current = blobUrl
+        hasLocalPreviewRef.current = true
+        setImage(blobUrl)
     }
 
     const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -80,7 +89,13 @@ const ProfilePhoto = () => {
         }
         setError(null)
         setFile(f)
-        setImage(URL.createObjectURL(f))
+        if (previewUrlRef.current && previewUrlRef.current.startsWith('blob:')) {
+            URL.revokeObjectURL(previewUrlRef.current)
+        }
+        const blobUrl = URL.createObjectURL(f)
+        previewUrlRef.current = blobUrl
+        hasLocalPreviewRef.current = true
+        setImage(blobUrl)
     }
 
     const deleteIfStoredInBucket = async (url: string | null) => {
@@ -104,8 +119,14 @@ const ProfilePhoto = () => {
             if (error) throw error
             setCurrentAvatarUrl(null)
             setFile(null)
+            if (previewUrlRef.current && previewUrlRef.current.startsWith('blob:')) {
+                URL.revokeObjectURL(previewUrlRef.current)
+            }
+            previewUrlRef.current = null
+            hasLocalPreviewRef.current = false
             setImage(PLACEHOLDER)
             toast.success('Photo removed')
+            void fetchProfile()
         } catch (err: any) {
             toast.error(err?.message ?? 'Failed to remove photo')
         } finally {
@@ -137,15 +158,20 @@ const ProfilePhoto = () => {
                 .eq('id', user.id)
             if (updateError) throw updateError
 
-            // Optionally delete old stored file to avoid orphans
             if (currentAvatarUrl && currentAvatarUrl !== publicUrl) {
                 await deleteIfStoredInBucket(currentAvatarUrl)
             }
 
             setCurrentAvatarUrl(publicUrl)
             setFile(null)
+            if (previewUrlRef.current && previewUrlRef.current.startsWith('blob:')) {
+                URL.revokeObjectURL(previewUrlRef.current)
+            }
+            previewUrlRef.current = null
+            hasLocalPreviewRef.current = false
             setImage(publicUrl)
             toast.success('Photo updated')
+            void fetchProfile()
         } catch (err: any) {
             toast.error(err?.message ?? 'Failed to update photo')
         } finally {

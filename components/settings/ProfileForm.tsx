@@ -21,7 +21,7 @@ function SubmitButton() {
 }
 
 export default function ProfileForm() {
-  const { user } = useAuth()
+  const { user, fetchProfile } = useAuth()
   const formRef = useRef<HTMLFormElement | null>(null)
 
   const email = user?.email ?? ""
@@ -43,6 +43,7 @@ export default function ProfileForm() {
     if (!state) return
     if (state.success) {
       toast.success("Profile updated")
+      void fetchProfile()
     } else if (state.message) {
       toast.error(state.message)
     }
@@ -58,7 +59,7 @@ export default function ProfileForm() {
         <form ref={formRef} action={formAction} className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" name="email" type="email" defaultValue={email} readOnly aria-readonly />
+            <Input id="email" disabled name="email" type="email" defaultValue={email} readOnly aria-readonly />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="full_name">Full name</Label>

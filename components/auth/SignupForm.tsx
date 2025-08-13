@@ -68,20 +68,11 @@ export function SignUpForm() {
                 <form ref={formRef} action={formAction}>
                     <div className="grid gap-4">
                         <div className="grid gap-2">
-                            <Label htmlFor="first-name">First name</Label>
+                            <Label htmlFor="full-name">Full name</Label>
                             <Input
-                                name="first-name"
-                                id="first-name"
-                                placeholder="Max"
-                                required
-                            />
-                        </div>
-                        <div className="grid gap-2">
-                            <Label htmlFor="last-name">Last name</Label>
-                            <Input
-                                name="last-name"
-                                id="last-name"
-                                placeholder="Robinson"
+                                name="full-name"
+                                id="full-name"
+                                placeholder="Max Robinson"
                                 required
                             />
                         </div>

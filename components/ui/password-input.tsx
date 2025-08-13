@@ -19,6 +19,7 @@ export function PasswordInput({ className, toggleAriaLabel = "Toggle password vi
                 {...props}
                 type={isVisible ? "text" : "password"}
                 className={cn("pr-10", className)}
+                placeholder="********"
             />
             <button
                 type="button"
