@@ -10,12 +10,16 @@ type HeaderProps = {
 }
 
 const Header = ({ desktopCollapsed, setDesktopCollapsed }: HeaderProps) => {
+    const headerGridClass = cn(
+        "grid w-full min-h-14 sticky top-0 z-30 border-b bg-background/80 backdrop-blur transition-all duration-200",
+        // Mobile: content + profile columns
+        "grid-cols-[minmax(0,1fr)_auto]",
+        // Desktop: first column reserved for sidebar width
+        desktopCollapsed ? "md:grid-cols-[64px_minmax(0,1fr)]" : "md:grid-cols-[200px_minmax(0,1fr)]"
+    )
+
     return (
-        <header className={cn(
-            "grid w-full min-h-14 sticky top-0 z-30 border-b bg-background/80 backdrop-blur transition-all duration-200",
-            "grid-cols-[minmax(0,1fr)_auto]",
-            desktopCollapsed ? "md:grid-cols-[64px_minmax(0,1fr)]" : "md:grid-cols-[200px_minmax(0,1fr)]"
-        )}>
+        <header className={headerGridClass}>
             <div className="h-full w-full md:border-r flex items-center justify-between px-4">
                 <div className="w-full flex items-center justify-start md:justify-between gap-2">
                     {!desktopCollapsed && (
@@ -26,7 +30,7 @@ const Header = ({ desktopCollapsed, setDesktopCollapsed }: HeaderProps) => {
                     <DrawerTrigger className="md:hidden" asChild>
                         <Button
                             variant="outline"
-                            className=" size-8"
+                            className="size-8"
                             size="icon"
                             aria-label="Open sidebar"
                         >
