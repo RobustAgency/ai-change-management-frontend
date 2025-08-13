@@ -3,8 +3,16 @@ import { useEffect } from "react";
 import { signout } from "@/lib/auth-actions";
 
 const LogoutPage = () => {
+    const logout = async () => {
+        const result = await signout();
+        if (!result.success) {
+            window.location.href = "/error";
+            return;
+        }
+        window.location.href = "/login";
+    };
     useEffect(() => {
-        signout()
+        logout();
     }, []);
 
     return (
