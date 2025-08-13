@@ -1,4 +1,9 @@
+"use client"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useActionState, useEffect, useRef } from "react"
+import { useFormStatus } from "react-dom"
+import { toast } from "react-toastify"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -14,7 +19,41 @@ import { Label } from "@/components/ui/label"
 import { login } from "@/lib/auth-actions"
 import SignInWithGoogleButton from "@/components/auth/SignInWithGoogleButton"
 
+function SubmitButton() {
+    const { pending } = useFormStatus()
+    return (
+        <Button type="submit" className="w-full" disabled={pending}>
+            {pending ? "Logging in..." : "Login"}
+        </Button>
+    )
+}
+
 export function LoginForm() {
+    const formRef = useRef<HTMLFormElement | null>(null)
+    const router = useRouter()
+    const [state, formAction] = useActionState(
+        async (_prev: any, formData: FormData) => {
+            const result = await login(formData)
+            return result
+        },
+        null as null | { success: boolean; message?: string; data?: any }
+    )
+
+    useEffect(() => {
+        if (!state) return
+        if (state.success) {
+            toast.success("Logged in successfully")
+            formRef.current?.reset()
+            if (state.data.user_metadata.role === "admin") {
+                router.replace("/admin/dashboard")
+            } else {
+                router.replace("/dashboard")
+            }
+        } else if (state.message) {
+            toast.error(state.message)
+        }
+    }, [state])
+
     return (
         <Card className="min-w-sm mx-auto max-w-sm">
             <CardHeader>
@@ -24,7 +63,7 @@ export function LoginForm() {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <form action="">
+                <form ref={formRef} action={formAction}>
                     <div className="grid gap-4">
                         <div className="grid gap-2">
                             <Label htmlFor="email">Email</Label>
@@ -45,9 +84,7 @@ export function LoginForm() {
                             </div>
                             <PasswordInput id="password" name="password" required />
                         </div>
-                        <Button type="submit" formAction={login} className="w-full">
-                            Login
-                        </Button>
+                        <SubmitButton />
                         <SignInWithGoogleButton />
                     </div>
                 </form>

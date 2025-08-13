@@ -1,6 +1,6 @@
 "use client";
 import { AppUser } from "@/interfaces/User";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import React, { useEffect, useState } from "react";
 
 const UserGreetText = () => {

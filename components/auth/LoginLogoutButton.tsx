@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
+import { signout } from "@/lib/auth-actions";
 
 const LoginButton = () => {
     const [user, setUser] = useState<any>(null);
@@ -19,14 +20,25 @@ const LoginButton = () => {
     }, []);
     if (user) {
         return (
-            <Button
-                className="cursor-pointer"
-                onClick={() => {
-                    router.push("/dashboard");
-                }}
-            >
-                Dashboard
-            </Button>
+            <div className="flex items-center gap-2">
+                <Button
+                    className="cursor-pointer"
+                    onClick={() => {
+                        router.push("/dashboard");
+                    }}
+                >
+                    Dashboard
+                </Button>
+                <Button
+                    variant="outline"
+                    className="cursor-pointer"
+                    onClick={() => {
+                        signout();
+                    }}
+                >
+                    Logout
+                </Button>
+            </div>
         );
     }
     return (
