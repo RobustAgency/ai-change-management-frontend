@@ -1,7 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Session, User } from "@supabase/supabase-js";
 
@@ -34,13 +33,13 @@ type AuthProviderProps = {
 };
 
 export function AuthProvider({ children, initialUser = null, initialProfile = null }: AuthProviderProps) {
-    const router = useRouter();
     const supabase = useMemo(() => createClient(), []);
 
     const [user, setUser] = useState<User | null>(initialUser);
     const [session, setSession] = useState<Session | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [profile, setProfile] = useState<Profile | null>(initialProfile);
+    const previousUserIdRef = useRef<string | null>(initialUser?.id ?? null);
 
     const fetchProfile = useCallback(async () => {
         if (!user?.id) {
@@ -87,8 +86,17 @@ export function AuthProvider({ children, initialUser = null, initialProfile = nu
             setUser(newSession?.user ?? null);
             if (!newSession?.user) setProfile(null);
 
-            if (event === "SIGNED_IN" || event === "SIGNED_OUT") {
-                router.refresh();
+            const newUserId = newSession?.user?.id ?? null;
+            const previousUserId = previousUserIdRef.current;
+
+            if (event === "SIGNED_OUT") {
+                previousUserIdRef.current = null;
+                window.location.href = "/login";
+            } else if (event === "SIGNED_IN") {
+                if (newUserId !== previousUserId) {
+                    previousUserIdRef.current = newUserId;
+                    window.location.href = "/";
+                }
             }
         });
 
