@@ -15,8 +15,10 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { Label } from "@/components/ui/label";
 import { signup } from "@/lib/auth-actions";
+import SignInWithGoogleButton from "./SignInWithGoogleButton";
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -95,11 +97,14 @@ export function SignUpForm() {
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="password">Password</Label>
-                            <Input name="password" id="password" type="password" />
+                            <PasswordInput name="password" id="password" />
                         </div>
                         <SubmitButton />
                     </div>
                 </form>
+                <div className="mt-4">
+                    <SignInWithGoogleButton />
+                </div>
                 <div className="mt-4 text-center text-sm">
                     Already have an account?{" "}
                     <Link href="/login" className="underline">

@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 const UserGreetText = () => {
     const [user, setUser] = useState<AppUser | null>(null);
     const supabase = createClient();
+
     useEffect(() => {
         const fetchUser = async () => {
             const {
@@ -15,19 +16,38 @@ const UserGreetText = () => {
         };
         fetchUser();
     }, []);
-    if (user !== null) {
-        return (
-            <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-                hello&nbsp;
-                <code className="font-mono font-bold">{user.user_metadata.full_name ?? "user"}!</code>
-            </p>
-        );
-    }
+
+    const displayName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Guest";
+    const email = user?.email || "";
+    const avatarUrl = (user?.user_metadata as any)?.avatar_url as string | undefined;
+
+    const initials = displayName
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part: string) => part[0]?.toUpperCase())
+        .join("");
+
     return (
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-            Get started editing&nbsp;
-            <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
+        <div className="flex items-center gap-3 p-2">
+            {avatarUrl ? (
+                <img
+                    src={avatarUrl}
+                    alt={displayName}
+                    className="h-10 w-10 rounded-full object-cover border border-gray-200 dark:border-neutral-800"
+                />
+            ) : (
+                <div className="h-10 w-10 rounded-full bg-gray-200 text-gray-700 dark:bg-neutral-800 dark:text-gray-200 grid place-items-center border border-gray-200 dark:border-neutral-700">
+                    <span className="text-sm font-semibold">{initials || "U"}</span>
+                </div>
+            )}
+            <div className="leading-tight">
+                <div className="font-medium text-sm">{displayName}</div>
+                {email && (
+                    <div className="text-xs text-muted-foreground">{email}</div>
+                )}
+            </div>
+        </div>
     );
 };
 

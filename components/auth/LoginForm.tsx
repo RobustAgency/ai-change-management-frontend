@@ -9,6 +9,7 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { PasswordInput } from "@/components/ui/password-input"
 import { Label } from "@/components/ui/label"
 import { login } from "@/lib/auth-actions"
 import SignInWithGoogleButton from "@/components/auth/SignInWithGoogleButton"
@@ -42,7 +43,7 @@ export function LoginForm() {
                                     Forgot your password?
                                 </Link>
                             </div>
-                            <Input id="password" name="password" type="password" required />
+                            <PasswordInput id="password" name="password" required />
                         </div>
                         <Button type="submit" formAction={login} className="w-full">
                             Login

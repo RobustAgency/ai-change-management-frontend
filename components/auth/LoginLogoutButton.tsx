@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
-import { signout } from "@/lib/auth-actions";
 
 const LoginButton = () => {
     const [user, setUser] = useState<any>(null);
@@ -21,24 +20,35 @@ const LoginButton = () => {
     if (user) {
         return (
             <Button
+                className="cursor-pointer"
                 onClick={() => {
-                    signout();
-                    setUser(null);
+                    router.push("/dashboard");
                 }}
             >
-                Log out
+                Dashboard
             </Button>
         );
     }
     return (
-        <Button
-            variant="outline"
-            onClick={() => {
-                router.push("/login");
-            }}
-        >
-            Login
-        </Button>
+        <div className="flex items-center gap-2">
+            <Button
+                className="cursor-pointer"
+                onClick={() => {
+                    router.push("/signup");
+                }}
+            >
+                Sign up
+            </Button>
+            <Button
+                variant="outline"
+                className="cursor-pointer"
+                onClick={() => {
+                    router.push("/login");
+                }}
+            >
+                Login
+            </Button>
+        </div>
     );
 };
 
