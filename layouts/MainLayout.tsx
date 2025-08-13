@@ -2,52 +2,21 @@
 import { useState } from "react";
 import { useAuth } from "@/providers/AuthProvider";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
-import { LayoutDashboard, Settings as SettingsIcon, LogOut } from "lucide-react";
 import Sidebar from "@/components/custom/SideBar";
 import { cn } from "@/lib/utils";
 import Header from "@/components/custom/Header";
 import Spinner from "@/components/ui/spinner";
-
-
-const adminRoutes = [
-    { href: "/admin/dashboard", label: "Admin Dashboard", icon: LayoutDashboard },
-];
-const userRoutes = [
-    { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-];
-
-const baseRoutes = [
-    { href: "/settings", label: "Settings", icon: SettingsIcon },
-    { href: "/logout", label: "Logout", icon: LogOut },
-];
 
 type MainLayoutProps = {
     children: React.ReactNode;
 };
 
 export default function MainLayout({ children }: MainLayoutProps) {
-    const { user, isLoading } = useAuth();
+    const { isLoading } = useAuth();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [desktopCollapsed, setDesktopCollapsed] = useState(false);
 
-    const role = user?.user_metadata?.role ?? "user"
-
-    const navigationRoutes = role === "admin" ? adminRoutes : userRoutes;
-
-    if (isLoading) {
-        return (
-            <Spinner />
-        );
-    }
-
-    const sidebarBaseProps = {
-        navigationRoutes,
-        baseRoutes,
-    } as const;
-
-    const renderSidebar = (onNavigate: () => void, collapsed: boolean) => (
-        <Sidebar {...sidebarBaseProps} collapsed={collapsed} onNavigate={onNavigate} />
-    );
+    if (isLoading) return <Spinner />
 
     return (
         <div className="min-h-screen bg-background text-foreground">
@@ -61,7 +30,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
                         <DrawerTitle>Navigation</DrawerTitle>
                     </DrawerHeader>
                     <aside className="h-full border-r bg-background">
-                        {renderSidebar(() => setSidebarOpen(false), false)}
+                        <Sidebar collapsed={false} onNavigate={() => setSidebarOpen(false)} />
                     </aside>
                 </DrawerContent>
             </Drawer>
@@ -72,7 +41,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
             )}>
                 <aside className="hidden border-r md:block">
                     <div className="h-[calc(100vh-3.5rem)] overflow-y-auto">
-                        {renderSidebar(() => { }, desktopCollapsed)}
+                        <Sidebar collapsed={desktopCollapsed} onNavigate={() => { }} />
                     </div>
                 </aside>
                 <main className="min-h-[calc(100vh-3.5rem)] p-4">

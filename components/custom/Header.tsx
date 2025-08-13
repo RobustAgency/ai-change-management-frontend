@@ -2,8 +2,7 @@ import { cn } from '@/lib/utils'
 import { Button } from '../ui/button'
 import { ChevronLeft } from 'lucide-react'
 import { DrawerTrigger } from '../ui/drawer'
-import Image from 'next/image'
-import { useAuth } from '@/providers/AuthProvider'
+import ProfileInfo from './ProfileInfo'
 
 type HeaderProps = {
     desktopCollapsed: boolean
@@ -11,11 +10,6 @@ type HeaderProps = {
 }
 
 const Header = ({ desktopCollapsed, setDesktopCollapsed }: HeaderProps) => {
-    const { profile, user } = useAuth()
-    const avatarUrl = profile?.avatar_url
-    const displayName = profile?.full_name ?? "User"
-    const role = user?.user_metadata?.role ?? "user"
-
     return (
         <header className={cn(
             "grid w-full min-h-14 sticky top-0 z-30 border-b bg-background/80 backdrop-blur transition-all duration-200",
@@ -55,21 +49,9 @@ const Header = ({ desktopCollapsed, setDesktopCollapsed }: HeaderProps) => {
                     </Button>
                 </div>
             </div>
-            <div className="flex items-center gap-3 justify-end px-4">
-                <div className="relative h-10 w-10 overflow-hidden rounded-full bg-muted">
-                    {avatarUrl ? (
-                        <Image src={avatarUrl} alt={displayName} fill sizes="40px" className="object-cover" unoptimized />
-                    ) : (
-                        <div className="flex h-full w-full items-center justify-center text-sm font-medium">
-                            {displayName.slice(0, 2).toUpperCase()}
-                        </div>
-                    )}
-                </div>
-                <div className="min-w-0">
-                    <div className="truncate text-sm font-medium">{displayName}</div>
-                    <div className="text-xs capitalize text-muted-foreground">{role}</div>
-                </div>
-            </div>
+
+            <ProfileInfo />
+
         </header>
     )
 }

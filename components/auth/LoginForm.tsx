@@ -45,9 +45,9 @@ export function LoginForm() {
             toast.success("Logged in successfully")
             formRef.current?.reset()
             if (state.data.user_metadata.role === "admin") {
-                router.replace("/admin/dashboard")
+                window.location.href = "/admin/dashboard"
             } else {
-                router.replace("/dashboard")
+                window.location.href = "/dashboard"
             }
         } else if (state.message) {
             toast.error(state.message)

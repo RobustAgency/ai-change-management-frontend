@@ -6,7 +6,7 @@ const LogoutPage = () => {
     useEffect(() => {
         signout()
     }, []);
-    
+
     return (
         <div className="flex min-h-screen items-center justify-center">
             <div className="text-center" aria-live="polite">

@@ -1,18 +1,30 @@
 import { cn } from "@/lib/utils";
-import { ElementType } from "react";
 import Link from "next/link";
+import { LayoutDashboard, Settings as SettingsIcon, LogOut } from "lucide-react";
+import { useAuth } from "@/providers/AuthProvider";
+
+const adminRoutes = [
+    { href: "/admin/dashboard", label: "Admin Dashboard", icon: LayoutDashboard },
+];
+const userRoutes = [
+    { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+];
+
+const baseRoutes = [
+    { href: "/settings", label: "Settings", icon: SettingsIcon },
+    { href: "/logout", label: "Logout", icon: LogOut },
+];
 
 export function Sidebar({
-    navigationRoutes,
-    baseRoutes,
     collapsed = false,
     onNavigate,
 }: {
-    navigationRoutes: { href: string; label: string; icon?: ElementType }[];
-    baseRoutes: { href: string; label: string; icon?: ElementType }[];
     collapsed?: boolean;
     onNavigate: () => void;
 }) {
+    const { user } = useAuth();
+    const role = user?.user_metadata?.role ?? "user"
+    const navigationRoutes = role === "admin" ? adminRoutes : userRoutes;
 
     return (
         <div className="flex h-full flex-col overflow-hidden">
