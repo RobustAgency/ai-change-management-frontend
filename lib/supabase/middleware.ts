@@ -76,11 +76,19 @@ export async function updateSession(request: NextRequest) {
     }
 
     if (user && isAuthRoute && !isLogoutRoute) {
-        return redirectWithCookies('/dashboard')
+        if (user.user_metadata.role === 'admin') {
+            return redirectWithCookies('/admin/dashboard')
+        } else {
+            return redirectWithCookies('/dashboard')
+        }
     }
 
     if (user && pathname === '/') {
-        return redirectWithCookies('/dashboard')
+        if (user.user_metadata.role === 'admin') {
+            return redirectWithCookies('/admin/dashboard')
+        } else {
+            return redirectWithCookies('/dashboard')
+        }
     }
 
     return response
