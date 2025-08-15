@@ -3,6 +3,7 @@ import { Button } from '../ui/button'
 import { ChevronLeft } from 'lucide-react'
 import { DrawerTrigger } from '../ui/drawer'
 import ProfileInfo from './ProfileInfo'
+import Image from 'next/image'
 
 type HeaderProps = {
     desktopCollapsed: boolean
@@ -11,7 +12,7 @@ type HeaderProps = {
 
 const Header = ({ desktopCollapsed, setDesktopCollapsed }: HeaderProps) => {
     const headerGridClass = cn(
-        "grid w-full min-h-14 sticky top-0 z-30 border-b bg-background/80 backdrop-blur transition-all duration-200",
+        "grid w-full min-h-14 sticky top-0 z-30 border-b bg-background/80 backdrop-blur transition-all duration-200 py-1",
         // Mobile: content + profile columns
         "grid-cols-[minmax(0,1fr)_auto]",
         // Desktop: first column reserved for sidebar width
@@ -24,7 +25,7 @@ const Header = ({ desktopCollapsed, setDesktopCollapsed }: HeaderProps) => {
                 <div className="w-full flex items-center justify-start md:justify-between gap-2">
                     {!desktopCollapsed && (
                         <div aria-details="logo">
-                            <h1 className="text-base font-semibold hidden md:block">MVP Skeleton</h1>
+                            <Image src="/logo.png" alt="logo" width={100} height={100} className='object-cover object-start w-30 h-14' />
                         </div>
                     )}
                     <DrawerTrigger className="md:hidden" asChild>
