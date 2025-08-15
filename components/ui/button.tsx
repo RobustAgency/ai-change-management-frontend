@@ -34,28 +34,49 @@ const buttonVariants = cva(
   }
 )
 
-function Button({
-  className,
-  variant,
-  size,
-  loading,
-  asChild = false,
-  ...props
-}: React.ComponentProps<"button"> &
+const Button = React.forwardRef<
+  HTMLButtonElement,
+  React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean
     loading?: boolean
-  }) {
+  }
+>(({ className, variant, size, loading, asChild = false, children, ...props }, ref) => {
+  const [buttonWidth, setButtonWidth] = React.useState<number | undefined>(undefined)
+  const buttonRef = React.useRef<HTMLButtonElement>(null)
+
+  React.useEffect(() => {
+    if (buttonRef.current && !loading) {
+      setButtonWidth(buttonRef.current.offsetWidth)
+    }
+  }, [loading])
+
+  const combinedRef = (node: HTMLButtonElement) => {
+    buttonRef.current = node
+    if (typeof ref === 'function') {
+      ref(node)
+    } else if (ref) {
+      ref.current = node
+    }
+  }
 
   return (
     <button
+      ref={combinedRef}
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
+      style={loading && buttonWidth ? { width: `${buttonWidth}px` } : undefined}
       {...props}
     >
-      {loading ? <Loader2 strokeWidth={2} className="animate-spin font-bold" /> : props.children}
+      {loading ? (
+        <Loader2 strokeWidth={2} className="animate-spin font-bold" />
+      ) : (
+        children
+      )}
     </button>
   )
-}
+})
+
+Button.displayName = "Button"
 
 export { Button, buttonVariants }
