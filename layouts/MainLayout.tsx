@@ -44,7 +44,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
                         <Sidebar collapsed={desktopCollapsed} onNavigate={() => { }} />
                     </div>
                 </aside>
-                <main className="min-h-[calc(100vh-3.5rem)] p-4">
+                <main className="min-h-[calc(100vh-3.5rem)] p-6">
                     {children}
                 </main>
             </div>
