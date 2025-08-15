@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/providers/AuthProvider'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Upload } from 'lucide-react'
 
 const PLACEHOLDER = 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
 const BUCKET = 'avatars'
@@ -224,19 +225,14 @@ const ProfilePhoto = () => {
                 <div
                     onDrop={handleDrop}
                     onDragOver={handleDragOver}
-                    className="border-2 border-dashed border-[#29527D] rounded-xl p-8 text-center text-[#7A7A7A] mb-6 bg-[#EFF4FB] cursor-pointer select-none"
+                    className="border-2 border-dashed border-primary rounded-xl p-8 text-center text-[#7A7A7A] mb-6 bg-muted cursor-pointer select-none"
                     onClick={openFileDialog}
                 >
                     <div className='bg-white w-max rounded-full p-2 mx-auto mb-2'>
-                        {/* Simple upload icon substitute */}
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 16V4" stroke="#29527D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M6 10L12 4L18 10" stroke="#29527D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M20 20H4" stroke="#29527D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
+                        <Upload className='size-5 text-primary' />
                     </div>
                     <div>
-                        <span className="text-[#29527D] cursor-pointer">Click to upload</span> or drag and drop
+                        <span className="text-primary cursor-pointer">Click to upload</span> or drag and drop
                     </div>
                     <div className="text-sm mt-1">SVG, PNG, JPG or GIF<br />(max 2 MB, 800 X 800px)</div>
                 </div>
