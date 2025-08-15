@@ -16,6 +16,7 @@ interface ActionCellProps {
 const ActionCell = ({ user }: ActionCellProps) => {
     const [showDialog, setShowDialog] = useState(false)
     const [currentAction, setCurrentAction] = useState<"approve" | "reject" | null>(null)
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleActionClick = (action: "approve" | "reject") => {
         setCurrentAction(action)
@@ -23,33 +24,43 @@ const ActionCell = ({ user }: ActionCellProps) => {
     }
 
     const handleClose = () => {
-        setShowDialog(false)
-        setCurrentAction(null)
+        if (!isLoading) {
+            setShowDialog(false)
+            setCurrentAction(null)
+        }
     }
 
     const handleApprove = async () => {
+        setIsLoading(true)
         try {
             const response = await usersService.approveUser(user.id)
             if (response.error) {
                 toast.error(response.message || "Failed to approve user")
             } else {
                 toast.success(response.message || "User approved successfully")
+                handleClose()
             }
         } catch {
             toast.error("Error approving user")
+        } finally {
+            setIsLoading(false)
         }
     }
 
     const handleReject = async () => {
+        setIsLoading(true)
         try {
             const response = await usersService.rejectUser(user.id)
             if (response.error) {
                 toast.error(response.message || "Failed to reject user")
             } else {
                 toast.success(response.message || "User rejected successfully")
+                handleClose()
             }
         } catch {
             toast.error("Error rejecting user")
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -59,7 +70,6 @@ const ActionCell = ({ user }: ActionCellProps) => {
         } else if (currentAction === "reject") {
             handleReject()
         }
-        handleClose()
     }
 
     const isApproved = user.status === "approved"
@@ -99,6 +109,7 @@ const ActionCell = ({ user }: ActionCellProps) => {
                     action={currentAction}
                     user={user}
                     onConfirm={handleConfirm}
+                    isLoading={isLoading}
                 />
             )}
         </>

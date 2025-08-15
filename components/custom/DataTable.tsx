@@ -38,7 +38,7 @@ export function DataTable<TData, TValue>({
     return (
         <div>
             {searchKey && (
-                <div className="flex items-center py-4">
+                <div className="flex items-center mt-4">
                     <Input
                         placeholder={searchPlaceholder}
                         value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
@@ -49,7 +49,7 @@ export function DataTable<TData, TValue>({
                     />
                 </div>
             )}
-            <div className="rounded-md border">
+            <div className="rounded-md border mt-4">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (

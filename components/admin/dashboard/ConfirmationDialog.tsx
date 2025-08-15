@@ -1,6 +1,7 @@
 "use client"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
+import LoadingButton from "@/components/ui/loading-button"
 import { User } from "./columns"
 
 interface ConfirmationDialogProps {
@@ -9,9 +10,10 @@ interface ConfirmationDialogProps {
     action: "approve" | "reject"
     user: User
     onConfirm: () => void
+    isLoading: boolean
 }
 
-const ConfirmationDialog = ({ isOpen, onClose, action, user, onConfirm }: ConfirmationDialogProps) => {
+const ConfirmationDialog = ({ isOpen, onClose, action, user, onConfirm, isLoading }: ConfirmationDialogProps) => {
     const isApprove = action === "approve"
 
     const title = isApprove ? "Approve User" : "Reject User"
@@ -33,13 +35,14 @@ const ConfirmationDialog = ({ isOpen, onClose, action, user, onConfirm }: Confir
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
-                    <Button variant="outline" onClick={onClose}>
+                    <Button variant="outline" onClick={onClose} disabled={isLoading}>
                         Cancel
                     </Button>
                     <Button
                         onClick={onConfirm}
                         variant={confirmButtonVariant as any}
                         className={confirmButtonClassName}
+                        loading={isLoading}
                     >
                         {confirmButtonText}
                     </Button>
