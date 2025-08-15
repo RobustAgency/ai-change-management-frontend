@@ -6,6 +6,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { MoreVertical } from "lucide-react"
 import { User } from "./columns"
 import ConfirmationDialog from "./ConfirmationDialog"
+import { usersService } from "@/service/admin/users"
+import { toast } from "react-toastify"
 
 interface ActionCellProps {
     user: User
@@ -25,12 +27,30 @@ const ActionCell = ({ user }: ActionCellProps) => {
         setCurrentAction(null)
     }
 
-    const handleApprove = () => {
-        console.log("Approve user:", user.id)
+    const handleApprove = async () => {
+        try {
+            const response = await usersService.approveUser(user.id)
+            if (response.error) {
+                toast.error(response.message || "Failed to approve user")
+            } else {
+                toast.success(response.message || "User approved successfully")
+            }
+        } catch {
+            toast.error("Error approving user")
+        }
     }
 
-    const handleReject = () => {
-        console.log("Reject user:", user.id)
+    const handleReject = async () => {
+        try {
+            const response = await usersService.rejectUser(user.id)
+            if (response.error) {
+                toast.error(response.message || "Failed to reject user")
+            } else {
+                toast.success(response.message || "User rejected successfully")
+            }
+        } catch {
+            toast.error("Error rejecting user")
+        }
     }
 
     const handleConfirm = () => {
