@@ -38,7 +38,7 @@ function SubmitButton() {
 
 export function SignUpForm() {
     const formRef = useRef<HTMLFormElement | null>(null);
-    const [state, formAction, isPending] = useActionState(
+    const [state, formAction] = useActionState(
         async (_prevState: any, formData: FormData) => {
             const result = await signup(formData);
             return result;

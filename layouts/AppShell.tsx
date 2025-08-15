@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 import MainLayout from "@/layouts/MainLayout";
+import AuthLayout from "./AuthLayout";
 
 type AppShellProps = {
     children: React.ReactNode;
@@ -26,7 +27,7 @@ export default function AppShell({ children }: AppShellProps) {
         );
     }, [pathname]);
 
-    if (isAuthRoute) return children;
+    if (isAuthRoute) return <AuthLayout>{children}</AuthLayout>;
 
     return <MainLayout>{children}</MainLayout>;
 }

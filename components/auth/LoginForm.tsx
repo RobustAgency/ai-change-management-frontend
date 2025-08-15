@@ -1,6 +1,5 @@
 "use client"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { useActionState, useEffect, useRef } from "react"
 import { useFormStatus } from "react-dom"
 import { toast } from "react-toastify"
@@ -30,7 +29,6 @@ function SubmitButton() {
 
 export function LoginForm() {
     const formRef = useRef<HTMLFormElement | null>(null);
-    const router = useRouter();
     const [state, formAction] = useActionState(
         async (_prev: any, formData: FormData) => {
             const result = await login(formData);

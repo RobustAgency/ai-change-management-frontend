@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { LayoutDashboard, Settings as SettingsIcon, LogOut } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
@@ -32,7 +31,9 @@ export function Sidebar({
             <div
                 aria-details="logo"
                 className="flex items-center justify-between md:hidden p-4 border-b">
-                <Image src="/logo.png" alt="logo" width={100} height={100} />
+                <Link href="/">
+                    <Image src="/logo.png" alt="logo" width={100} height={100} />
+                </Link>
             </div>
 
             <nav className="flex flex-col gap-1 p-2 md:p-3">

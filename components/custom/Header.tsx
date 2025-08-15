@@ -4,6 +4,7 @@ import { ChevronLeft } from 'lucide-react'
 import { DrawerTrigger } from '../ui/drawer'
 import ProfileInfo from './ProfileInfo'
 import Image from 'next/image'
+import Link from 'next/link'
 
 type HeaderProps = {
     desktopCollapsed: boolean
@@ -25,7 +26,9 @@ const Header = ({ desktopCollapsed, setDesktopCollapsed }: HeaderProps) => {
                 <div className="w-full flex items-center justify-start md:justify-between gap-2">
                     {!desktopCollapsed && (
                         <div aria-details="logo">
-                            <Image src="/logo.png" alt="logo" width={100} height={100} className='object-cover object-start w-30 h-14' />
+                            <Link href="/">
+                                <Image src="/logo.png" alt="logo" width={100} height={100} className='object-cover object-start w-30 h-14' />
+                            </Link>
                         </div>
                     )}
                     <DrawerTrigger className="md:hidden" asChild>
@@ -46,10 +49,7 @@ const Header = ({ desktopCollapsed, setDesktopCollapsed }: HeaderProps) => {
                         onClick={() => setDesktopCollapsed(!desktopCollapsed)}
                     >
                         <ChevronLeft
-                            className={cn(
-                                "size-4 transition-transform",
-                                desktopCollapsed ? "rotate-180" : ""
-                            )}
+                            className={`size-4 transition-transform ${desktopCollapsed ? "rotate-180" : ""}`}
                         />
                     </Button>
                 </div>

@@ -21,7 +21,7 @@ const ConfirmationDialog = ({ isOpen, onClose, action, user, onConfirm }: Confir
 
     const confirmButtonText = isApprove ? "Approve" : "Reject"
     const confirmButtonVariant = isApprove ? "default" : "destructive"
-    const confirmButtonClassName = isApprove ? "bg-green-600 hover:bg-green-700" : ""
+    const confirmButtonClassName = isApprove ? "bg-primary hover:bg-primary/90" : "bg-destructive hover:bg-destructive/90"
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
