@@ -6,7 +6,7 @@ import { BugIcon } from "lucide-react";
 
 export default function ErrorPage() {
     return (
-        <div className="flex min-h-screen items-center justify-center px-4">
+        <div className="flex min-h-[80vh] items-center justify-center px-4">
             <Card className="w-full max-w-md">
                 <CardHeader className="text-center">
                     <div className="mx-auto mb-2 flex size-12 items-center justify-center rounded-full bg-destructive/10 text-destructive">

@@ -47,6 +47,7 @@ export function AuthProvider({ children, initialUser = null, initialProfile = nu
         }
         if (user?.user_metadata?.role === "user") {
             const profileData = await fetchProfileFromAPI();
+            console.log(profileData);
             if (profileData) {
                 setProfile({ ...supabaseData, has_payment_method: profileData.has_payment_method ?? null });
             }
