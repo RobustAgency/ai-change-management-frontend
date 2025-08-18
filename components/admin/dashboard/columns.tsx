@@ -32,7 +32,7 @@ const getStatusBadge = (status: User["status"]) => {
     )
 }
 
-export const columns: ColumnDef<User>[] = [
+export const createColumns = (onRefresh?: () => void): ColumnDef<User>[] => [
     {
         accessorKey: "full_name",
         header: "Username",
@@ -54,7 +54,9 @@ export const columns: ColumnDef<User>[] = [
         header: "Actions",
         cell: ({ row }) => {
             const user = row.original
-            return <ActionCell user={user} />
+            return <ActionCell user={user} onRefresh={onRefresh} />
         },
     },
 ]
+
+export const columns = createColumns()

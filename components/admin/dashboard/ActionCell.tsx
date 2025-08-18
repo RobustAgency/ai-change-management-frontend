@@ -11,9 +11,10 @@ import { toast } from "react-toastify"
 
 interface ActionCellProps {
     user: User
+    onRefresh?: () => void
 }
 
-const ActionCell = ({ user }: ActionCellProps) => {
+const ActionCell = ({ user, onRefresh }: ActionCellProps) => {
     const [showDialog, setShowDialog] = useState(false)
     const [currentAction, setCurrentAction] = useState<"approve" | "reject" | null>(null)
     const [isLoading, setIsLoading] = useState(false)
@@ -39,6 +40,7 @@ const ActionCell = ({ user }: ActionCellProps) => {
             } else {
                 toast.success(response.message || "User approved successfully")
                 handleClose()
+                onRefresh?.()
             }
         } catch {
             toast.error("Error approving user")
@@ -56,6 +58,8 @@ const ActionCell = ({ user }: ActionCellProps) => {
             } else {
                 toast.success(response.message || "User rejected successfully")
                 handleClose()
+                // Refresh the table data
+                onRefresh?.()
             }
         } catch {
             toast.error("Error rejecting user")
