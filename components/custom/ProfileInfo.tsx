@@ -4,9 +4,9 @@ import Link from 'next/link'
 import React from 'react'
 
 const ProfileInfo = () => {
-    const { supabaseProfile, user } = useAuth()
-    const avatarUrl = supabaseProfile?.avatar_url
-    const displayName = supabaseProfile?.full_name ?? "User"
+    const { profile, user } = useAuth()
+    const avatarUrl = profile?.avatar_url
+    const displayName = profile?.full_name ?? "User"
     const role = user?.user_metadata?.role ?? "user"
     return (
         <div className="flex items-center gap-3 justify-end px-4">

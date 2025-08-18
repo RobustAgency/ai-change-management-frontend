@@ -4,8 +4,9 @@ import { toast } from 'react-toastify';
 export interface Profile {
     id: string;
     full_name?: string | null;
+    email: string;
     avatar_url?: string | null;
-    has_payment_method?: boolean;
+    has_payment_method?: boolean | null;
 }
 
 export interface ProfileResponse {
@@ -13,7 +14,7 @@ export interface ProfileResponse {
     message: string;
     data: {
         user: Profile;
-        has_payment_method: boolean;
+        has_payment_method: boolean | null;
     };
 }
 
@@ -44,7 +45,8 @@ export async function fetchProfile(): Promise<Profile | null> {
         const result: ProfileResponse = await response.json();
 
         if (result.error) {
-            throw new Error(result.message);
+            toast.error(result.message)
+            return null
         }
 
         return {

@@ -1,5 +1,4 @@
 "use client";
-
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Session, User } from "@supabase/supabase-js";
@@ -11,8 +10,7 @@ type AuthContextValue = {
     session: Session | null;
     isLoading: boolean;
     profile: Profile | null;
-    supabaseProfile: Profile | null;
-    fetchSupabaseProfile: () => Promise<void>;
+    fetchProfile: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextValue>({
@@ -20,8 +18,7 @@ const AuthContext = createContext<AuthContextValue>({
     session: null,
     isLoading: true,
     profile: null,
-    supabaseProfile: null,
-    fetchSupabaseProfile: async () => { },
+    fetchProfile: async () => { },
 });
 
 type AuthProviderProps = {
@@ -32,12 +29,10 @@ type AuthProviderProps = {
 
 export function AuthProvider({ children, initialUser = null, initialProfile = null }: AuthProviderProps) {
     const supabase = useMemo(() => createClient(), []);
-
     const [user, setUser] = useState<User | null>(initialUser);
     const [session, setSession] = useState<Session | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [profile, setProfile] = useState<Profile | null>(initialProfile);
-    const [supabaseProfile, setSupabaseProfile] = useState<Profile | null>(null);
     const previousUserIdRef = useRef<string | null>(initialUser?.id ?? null);
 
     const fetchProfile = useCallback(async () => {
@@ -45,36 +40,28 @@ export function AuthProvider({ children, initialUser = null, initialProfile = nu
             setProfile(null);
             return;
         }
-        const profileData = await fetchProfileFromAPI();
-        if (profileData) {
-            setProfile(profileData);
-        }
-    }, [user?.id]);
-
-    const fetchSupabaseProfile = useCallback(async () => {
-        if (!user?.id) return;
-        const { data, error } = await supabase.from('profiles').select('*').eq('id', user.id).single();
-        if (error) {
-            toast.error(error.message);
+        const { data: supabaseData, error: supabaseError } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+        if (supabaseError) {
+            toast.error(supabaseError.message);
             return;
         }
-        else {
-            setSupabaseProfile(data);
+        if (user?.user_metadata?.role === "user") {
+            const profileData = await fetchProfileFromAPI();
+            if (profileData) {
+                setProfile({ ...supabaseData, has_payment_method: profileData.has_payment_method ?? null });
+            }
+        } else {
+            setProfile(supabaseData);
         }
-    }, [supabase, user?.id]);
-
+    }, [user?.id, user?.user_metadata?.role, supabase]);
 
     useEffect(() => {
-        if (user) {
-            void fetchSupabaseProfile();
-            if (user?.user_metadata?.role === "user" && user?.id) {
-                void fetchProfile();
-            } else {
-                setProfile(null);
-            }
+        if (user?.id) {
+            void fetchProfile();
+        } else {
+            setProfile(null);
         }
-    }, [user?.id, user?.user_metadata?.role]);
-
+    }, [user?.id, user?.user_metadata?.role, fetchProfile]);
 
     useEffect(() => {
         let isMounted = true;
@@ -119,8 +106,8 @@ export function AuthProvider({ children, initialUser = null, initialProfile = nu
     }, []);
 
     const value = useMemo<AuthContextValue>(
-        () => ({ user, session, isLoading, profile, supabaseProfile, fetchSupabaseProfile }),
-        [user, session, isLoading, profile, supabaseProfile, fetchSupabaseProfile]
+        () => ({ user, session, isLoading, profile, fetchProfile }),
+        [user, session, isLoading, profile, fetchProfile]
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

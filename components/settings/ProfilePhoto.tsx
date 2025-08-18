@@ -13,7 +13,7 @@ const PLACEHOLDER = 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrai
 const BUCKET = 'avatars'
 
 const ProfilePhoto = () => {
-    const { user, fetchSupabaseProfile } = useAuth()
+    const { user, fetchProfile } = useAuth()
     const supabase = useMemo(() => createClient(), [])
     const fileInputRef = useRef<HTMLInputElement | null>(null)
     const [image, setImage] = useState<string>(PLACEHOLDER)
@@ -126,7 +126,7 @@ const ProfilePhoto = () => {
             previewUrlRef.current = null
             hasLocalPreviewRef.current = false
             setImage(PLACEHOLDER)
-            fetchSupabaseProfile()
+            fetchProfile()
             toast.success('Photo removed')
         } catch (err: any) {
             toast.error(err?.message ?? 'Failed to remove photo')
@@ -171,7 +171,7 @@ const ProfilePhoto = () => {
             previewUrlRef.current = null
             hasLocalPreviewRef.current = false
             setImage(publicUrl)
-            fetchSupabaseProfile()
+            fetchProfile()
             toast.success('Photo updated')
         } catch (err: any) {
             toast.error(err?.message ?? 'Failed to update photo')
