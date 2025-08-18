@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { useAuth } from "@/providers/AuthProvider";
 import Spinner from "@/components/ui/spinner";
-import DesktopLayout from "@/components/custom/DesktopLayout";
-import MobileLayout from "@/components/custom/MobileLayout";
+import DesktopLayout from "@/layouts/DesktopLayout";
+import MobileLayout from "@/layouts/MobileLayout";
 
 type MainLayoutProps = {
     children: React.ReactNode;

@@ -1,6 +1,6 @@
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
-import { Sidebar } from "./SideBar"
-import Header from "./Header"
+import { Sidebar } from "@/components/custom/SideBar"
+import Header from "@/components/custom/Header"
 
 const MobileLayout = ({ children, sidebarOpen, setSidebarOpen, desktopCollapsed, setDesktopCollapsed }: { children: React.ReactNode, sidebarOpen: boolean, setSidebarOpen: (open: boolean) => void, desktopCollapsed: boolean, setDesktopCollapsed: (collapsed: boolean) => void }) => {
     return (

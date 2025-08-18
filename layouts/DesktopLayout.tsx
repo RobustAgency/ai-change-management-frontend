@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-import { Sidebar } from "./SideBar"
+import { Sidebar } from "@/components/custom/SideBar"
 
 const DesktopLayout = ({ children, desktopCollapsed }: { children: React.ReactNode, desktopCollapsed: boolean }) => {
     return (
