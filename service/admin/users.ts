@@ -1,7 +1,6 @@
-import { api, apiUtils, type ApiResponse, type PaginatedResponse } from '@/lib/api';
+import { api, apiUtils, type ApiResponse } from '@/lib/api';
 import { User, UserFilters } from '@/interfaces/User';
 
-// Interface for the actual API response structure
 interface UsersApiResponse {
     error: boolean
     message: string
@@ -53,14 +52,6 @@ export class UsersService {
         const url = queryString ? `${this.baseUrl}?${queryString}` : this.baseUrl;
         const response = await api.get<UsersApiResponse>(url);
         return response.data;
-    }
-
-    async searchUsers(query: string): Promise<ApiResponse<User[]>> {
-        return await api.get<User[]>(`${this.baseUrl}/search?query=${query}`);
-    }
-
-    async getUser(id: string): Promise<ApiResponse<User>> {
-        return await api.get<User>(`${this.baseUrl}/${id}`);
     }
 
     async approveUser(userId: string): Promise<ApiResponse<User>> {

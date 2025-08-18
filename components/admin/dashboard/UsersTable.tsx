@@ -65,7 +65,7 @@ const UsersTable = () => {
 
     useEffect(() => {
         fetchUsers(filters)
-    }, [fetchUsers, filters])
+    }, [filters])
 
     const handleSearch = useCallback((searchTerm: string) => {
         setFilters(prev => ({

@@ -30,9 +30,9 @@ export function Sidebar({
         <div className="flex h-full flex-col overflow-hidden">
             <div
                 aria-details="logo"
-                className="flex items-center justify-between md:hidden p-4 border-b">
+                className="flex items-center justify-between md:hidden border-b">
                 <Link href="/">
-                    <Image src="/logo.png" alt="logo" width={100} height={100} />
+                    <Image src="/logo.png" alt="logo" width={100} height={100} className='object-cover object-start w-30 h-14' />
                 </Link>
             </div>
 

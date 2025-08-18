@@ -23,10 +23,10 @@ const Header = ({ desktopCollapsed, setDesktopCollapsed }: HeaderProps) => {
     return (
         <header className={headerGridClass}>
             <div className="h-full w-full md:border-r flex items-center justify-between px-4">
-                <div className="w-full flex items-center justify-start md:justify-between gap-2">
+                <div className="w-full flex items-center justify-start md:justify-between gap-0 md:gap-2">
                     {!desktopCollapsed && (
                         <div aria-details="logo">
-                            <Link href="/">
+                            <Link href="/" className='hidden md:block'>
                                 <Image src="/logo.png" alt="logo" width={100} height={100} className='object-cover object-start w-30 h-14' />
                             </Link>
                         </div>
