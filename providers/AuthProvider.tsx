@@ -51,6 +51,9 @@ export function AuthProvider({ children, initialUser = null, initialProfile = nu
             if (profileData) {
                 setProfile({ ...supabaseData, has_payment_method: profileData.has_payment_method ?? null });
             }
+            // Need to handle the case where the profile is not found because the user is not a not approved by the admin
+            // When user is not approved by the admin, the profile is not because of the unapproval
+            // The user is redirected to the onboarding page with the mode "unapproved-account"
         } else {
             setProfile(supabaseData);
         }
