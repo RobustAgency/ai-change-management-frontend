@@ -4,13 +4,13 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { MoreVertical } from "lucide-react"
-import { User } from "./columns"
+import { TableUser } from "./columns"
 import ConfirmationDialog from "./ConfirmationDialog"
 import { usersService } from "@/service/admin/users"
 import { toast } from "react-toastify"
 
 interface ActionCellProps {
-    user: User
+    user: TableUser
     onRefresh?: () => void
 }
 
@@ -58,7 +58,6 @@ const ActionCell = ({ user, onRefresh }: ActionCellProps) => {
             } else {
                 toast.success(response.message || "User rejected successfully")
                 handleClose()
-                // Refresh the table data
                 onRefresh?.()
             }
         } catch {

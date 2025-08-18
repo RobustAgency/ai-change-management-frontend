@@ -5,14 +5,14 @@ import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import ActionCell from "./ActionCell"
 
-export type User = {
+export type TableUser = {
     id: string
     full_name: string
     email: string
     status: "approved" | "rejected" | "pending"
 }
 
-const getStatusBadge = (status: User["status"]) => {
+const getStatusBadge = (status: TableUser["status"]) => {
     const variants = {
         approved: "default",
         rejected: "destructive",
@@ -32,7 +32,7 @@ const getStatusBadge = (status: User["status"]) => {
     )
 }
 
-export const createColumns = (onRefresh?: () => void): ColumnDef<User>[] => [
+export const createColumns = (onRefresh?: () => void): ColumnDef<TableUser>[] => [
     {
         accessorKey: "full_name",
         header: "Username",
@@ -45,7 +45,7 @@ export const createColumns = (onRefresh?: () => void): ColumnDef<User>[] => [
         accessorKey: "status",
         header: "Status",
         cell: ({ row }) => {
-            const status = row.getValue("status") as User["status"]
+            const status = row.getValue("status") as TableUser["status"]
             return getStatusBadge(status)
         },
     },

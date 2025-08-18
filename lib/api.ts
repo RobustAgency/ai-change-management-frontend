@@ -2,18 +2,10 @@ import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosResponse,
 import { createClient } from '@/lib/supabase/client';
 
 export interface ApiResponse<T = any> {
-    data: T;
-    error?: boolean;
-    message?: string;
-}
-
-export interface PaginatedResponse<T = any> extends ApiResponse<T[]> {
-    pagination: {
-        page: number;
-        limit: number;
-        total: number;
-        totalPages: number;
-    };
+    data: T
+    status: number
+    message: string
+    error: boolean
 }
 
 export class ApiError extends Error {

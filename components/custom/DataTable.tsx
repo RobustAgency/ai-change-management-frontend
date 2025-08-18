@@ -2,9 +2,8 @@
 import * as React from "react"
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable, getPaginationRowModel, getSortedRowModel, SortingState, getFilteredRowModel, ColumnFiltersState } from "@tanstack/react-table"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react"
+import Pagniation from "./Pagniation"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -56,7 +55,6 @@ export function DataTable<TData, TValue>({
         pageCount: serverSide ? pagination?.totalPages || 0 : undefined,
     })
 
-    // Handle search with debouncing for server-side search
     React.useEffect(() => {
         if (serverSide && onSearch) {
             const timeoutId = setTimeout(() => {
@@ -162,57 +160,9 @@ export function DataTable<TData, TValue>({
                     </TableBody>
                 </Table>
             </div>
-
-            {/* Pagination */}
-            <div className="flex items-center justify-between space-x-2 py-4">
-                <div className="flex-1 text-sm text-muted-foreground">
-                    {serverSide && pagination ? (
-                        <>
-                            Showing {((pagination.page - 1) * pagination.limit) + 1} to{" "}
-                            {Math.min(pagination.page * pagination.limit, pagination.total)} of{" "}
-                            {pagination.total} results
-                        </>
-                    ) : (
-                        <>
-                            Page {currentPage} of {totalPages}
-                        </>
-                    )}
-                </div>
-                <div className="flex items-center space-x-2">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handlePageChange(1)}
-                        disabled={currentPage <= 1 || loading}
-                    >
-                        <ChevronsLeft className="h-4 w-4" />
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={currentPage <= 1 || loading}
-                    >
-                        <ChevronLeft className="h-4 w-4" />
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={currentPage >= totalPages || loading}
-                    >
-                        <ChevronRight className="h-4 w-4" />
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handlePageChange(totalPages)}
-                        disabled={currentPage >= totalPages || loading}
-                    >
-                        <ChevronsRight className="h-4 w-4" />
-                    </Button>
-                </div>
-            </div>
+            {pagination && (
+                <Pagniation pagination={pagination} currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} loading={loading} />
+            )}
         </div>
     )
 }

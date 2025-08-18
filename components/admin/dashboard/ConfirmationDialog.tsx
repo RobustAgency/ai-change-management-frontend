@@ -1,14 +1,13 @@
 "use client"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import LoadingButton from "@/components/ui/loading-button"
-import { User } from "./columns"
+import { TableUser } from "./columns"
 
 interface ConfirmationDialogProps {
     isOpen: boolean
     onClose: () => void
     action: "approve" | "reject"
-    user: User
+    user: TableUser
     onConfirm: () => void
     isLoading: boolean
 }

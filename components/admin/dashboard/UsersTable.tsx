@@ -2,16 +2,16 @@
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { DataTable } from '@/components/custom/DataTable'
-import { createColumns, User } from './columns'
+import { createColumns, TableUser } from './columns'
 import TableCard from '@/components/custom/TableCard'
 import { usersService } from '@/service/admin/users'
-import { UserFilters } from '@/interfaces/User'
+import { UserFilters, User } from '@/interfaces/User'
 import { Button } from '@/components/ui/button'
 import { RefreshCw, AlertCircle } from 'lucide-react'
 import { toast } from 'react-toastify'
 
 const UsersTable = () => {
-    const [users, setUsers] = useState<User[]>([])
+    const [users, setUsers] = useState<TableUser[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
     const [filters, setFilters] = useState<UserFilters>({
@@ -26,22 +26,18 @@ const UsersTable = () => {
         totalPages: 0
     })
 
-    const fetchUsers = useCallback(async (userFilters: UserFilters = {}) => {
+    const fetchUsers = async () => {
         try {
             setLoading(true)
             setError(null)
 
-            const response = await usersService.getUsers(userFilters)
+            const response = await usersService.getUsers(filters)
             if (response.error) {
                 toast.error(response.message)
                 return
             }
 
-            if (!response.users || !Array.isArray(response.users.data)) {
-                toast.error('Invalid response format')
-                return
-            }
-            const transformedUsers: User[] = response.users.data.map((user) => ({
+            const transformedUsers: TableUser[] = response.data.data.map((user: User) => ({
                 id: user.id.toString(),
                 full_name: user.name || 'N/A',
                 email: user.email,
@@ -51,20 +47,21 @@ const UsersTable = () => {
             setUsers(transformedUsers)
 
             setPagination({
-                page: response.users.current_page,
-                limit: response.users.per_page,
-                total: response.users.total,
-                totalPages: response.users.last_page
+                page: response.data.current_page,
+                limit: response.data.per_page,
+                total: response.data.total,
+                totalPages: response.data.last_page
             })
         } catch (err) {
             toast.error('Error fetching users')
         } finally {
             setLoading(false)
         }
-    }, [])
+    }
 
     useEffect(() => {
-        fetchUsers(filters)
+
+        fetchUsers()
     }, [filters])
 
     const handleSearch = useCallback((searchTerm: string) => {
@@ -83,8 +80,8 @@ const UsersTable = () => {
     }, [])
 
     const handleRefresh = useCallback(() => {
-        fetchUsers(filters)
-    }, [fetchUsers, filters])
+        fetchUsers()
+    }, [])
 
     const columns = useMemo(() => createColumns(handleRefresh), [handleRefresh])
 
@@ -114,7 +111,7 @@ const UsersTable = () => {
                 onPageChange={handlePageChange}
                 onSearch={handleSearch}
                 loading={loading}
-                serverSide={true}
+                serverSide={false}
             />
         </TableCard>
     )

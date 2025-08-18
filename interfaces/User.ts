@@ -1,16 +1,30 @@
+import { PaginatedResponse } from "./Pagination"
+
 export interface User {
-    id: string;
-    email: string;
-    full_name?: string;
-    avatar_url?: string;
-    role: 'user' | 'admin';
-    status: 'pending' | 'approved' | 'rejected';
-    created_at: string;
-    updated_at: string;
+    id: number
+    supabase_id: string
+    name: string
+    email: string
+    email_verified_at: string | null
+    is_approved: boolean
+    role: string
+    created_at: string
+    updated_at: string
+    stripe_id: string | null
+    pm_type: string | null
+    pm_last_four: string | null
+    trial_ends_at: string | null
 }
 
 export interface UserFilters {
     search?: string;
     status?: 'pending' | 'approved' | 'rejected';
     page?: number;
+}
+
+export interface UsersApiResponse {
+    data: PaginatedResponse<User>
+    status: number
+    message: string
+    error: boolean
 }
