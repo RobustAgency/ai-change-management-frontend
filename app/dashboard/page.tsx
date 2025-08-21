@@ -1,8 +1,16 @@
+"use client"
 import React from 'react'
+import ContainerCard from '@/components/custom/ContainerCard'
+import Greetings from '@/components/app/dashboard/Greetings'
 
 const DashboardPage = () => {
     return (
-        <div>DashboardPage</div>
+        <ContainerCard
+            title="Dashboard"
+            description="Welcome to your dashboard"
+        >
+            <Greetings />
+        </ContainerCard>
     )
 }
 
