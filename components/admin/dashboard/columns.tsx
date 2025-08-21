@@ -4,13 +4,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import ActionCell from "./ActionCell"
-
-export type TableUser = {
-    id: string
-    full_name: string
-    email: string
-    status: "approved" | "rejected" | "pending"
-}
+import { TableUser } from "@/hooks/admin/useUsers"
 
 const getStatusBadge = (status: TableUser["status"]) => {
     const variants = {

@@ -1,5 +1,4 @@
-import { createClient } from '@/lib/supabase/client';
-import { toast } from 'react-toastify';
+import { api, type ApiResponse } from '@/lib/api';
 
 export interface Profile {
     id: string;
@@ -18,43 +17,64 @@ export interface ProfileResponse {
     };
 }
 
-export async function fetchProfile(): Promise<Profile | null> {
-    try {
-        const supabase = createClient();
+export interface ProfileResult {
+    success: boolean;
+    data: Profile | null;
+    error: boolean;
+    errorCode?: number;
+    message?: string;
+}
 
-        const { data: { session } } = await supabase.auth.getSession();
+export class ProfileService {
+    private baseUrl = '/profile';
 
-        if (!session?.access_token) {
-            throw new Error('No access token available');
+    async getProfile(): Promise<ProfileResult> {
+        try {
+            const response: ApiResponse<ProfileResponse['data']> = await api.get(this.baseUrl);
+
+            if (response.error) {
+                return {
+                    success: false,
+                    data: null,
+                    error: true,
+                    errorCode: 400,
+                    message: response.message
+                };
+            }
+
+            return {
+                success: true,
+                data: {
+                    ...response.data.user,
+                    has_payment_method: response.data.has_payment_method,
+                },
+                error: false
+            };
+        } catch (error: any) {
+            if (error?.status === 403) {
+                return {
+                    success: false,
+                    data: null,
+                    error: true,
+                    errorCode: 403,
+                    message: error.message || 'Account not approved'
+                };
+            }
+
+            return {
+                success: false,
+                data: null,
+                error: true,
+                errorCode: error?.status || 500,
+                message: error?.message || 'An unexpected error occurred'
+            };
         }
-
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profile`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${session.access_token}`,
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (!response.ok) {
-            const res = await response.json()
-            toast.error(res.message)
-            return null
-        }
-
-        const result: ProfileResponse = await response.json();
-
-        if (result.error) {
-            toast.error(result.message)
-            return null
-        }
-
-        return {
-            ...result.data.user,
-            has_payment_method: result.data.has_payment_method,
-        };
-    } catch (error) {
-        console.error('Error fetching profile:', error);
-        return null;
     }
+
+}
+
+export const profileService = new ProfileService();
+
+export async function fetchProfile(): Promise<ProfileResult> {
+    return profileService.getProfile();
 }

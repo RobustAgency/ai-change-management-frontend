@@ -36,7 +36,9 @@ apiClient.interceptors.request.use(
         if (session?.access_token) {
             config.headers.Authorization = `Bearer ${session.access_token}`;
         }
-        config.headers['X-Request-ID'] = crypto.randomUUID();
+        if (typeof window !== 'undefined') {
+            config.headers['X-Request-ID'] = crypto.randomUUID();
+        }
         return config;
     },
     (error) => {
@@ -51,6 +53,8 @@ apiClient.interceptors.response.use(
     },
     async (error) => {
         const originalRequest = error.config;
+        
+        // Handle 401 errors with token refresh
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
             try {
@@ -69,6 +73,7 @@ apiClient.interceptors.response.use(
             }
         }
 
+        // For other errors, throw ApiError as before
         const apiError = new ApiError(
             error.response?.status || 500,
             error.response?.data?.message || error.message || 'An unexpected error occurred',

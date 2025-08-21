@@ -1,87 +1,23 @@
 'use client'
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { DataTable } from '@/components/custom/DataTable'
-import { createColumns, TableUser } from './columns'
+import { createColumns } from './columns'
 import TableCard from '@/components/custom/TableCard'
-import { usersService } from '@/service/admin/users'
-import { UserFilters, User } from '@/interfaces/User'
 import { Button } from '@/components/ui/button'
 import { RefreshCw, AlertCircle } from 'lucide-react'
-import { toast } from 'react-toastify'
+import { useUsers } from '@/hooks/admin/useUsers'
 
 const UsersTable = () => {
-    const [users, setUsers] = useState<TableUser[]>([])
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<string | null>(null)
-    const [filters, setFilters] = useState<UserFilters>({
-        page: 1,
-        status: undefined,
-        search: undefined
-    })
-    const [pagination, setPagination] = useState({
-        page: 1,
-        limit: 10,
-        total: 0,
-        totalPages: 0
-    })
-
-    const fetchUsers = async () => {
-        try {
-            setLoading(true)
-            setError(null)
-
-            const response = await usersService.getUsers(filters)
-            if (response.error) {
-                toast.error(response.message)
-                return
-            }
-
-            const transformedUsers: TableUser[] = response.data.data.map((user: User) => ({
-                id: user.id.toString(),
-                full_name: user.name || 'N/A',
-                email: user.email,
-                status: user.is_approved ? 'approved' : 'pending'
-            }))
-
-            setUsers(transformedUsers)
-
-            setPagination({
-                page: response.data.current_page,
-                limit: response.data.per_page,
-                total: response.data.total,
-                totalPages: response.data.last_page
-            })
-        } catch (err) {
-            toast.error('Error fetching users')
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    useEffect(() => {
-
-        fetchUsers()
-    }, [filters])
-
-    const handleSearch = useCallback((searchTerm: string) => {
-        setFilters(prev => ({
-            ...prev,
-            search: searchTerm || undefined,
-            page: 1
-        }))
-    }, [])
-
-    const handlePageChange = useCallback((page: number) => {
-        setFilters(prev => ({
-            ...prev,
-            page
-        }))
-    }, [])
-
-    const handleRefresh = useCallback(() => {
-        fetchUsers()
-    }, [])
+    const {
+        users,
+        loading,
+        error,
+        pagination,
+        handleSearch,
+        handlePageChange,
+        handleRefresh
+    } = useUsers()
 
     const columns = useMemo(() => createColumns(handleRefresh), [handleRefresh])
 

@@ -1,7 +1,7 @@
 "use client"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { TableUser } from "./columns"
+import { TableUser } from "@/hooks/admin/useUsers"
 
 interface ConfirmationDialogProps {
     isOpen: boolean

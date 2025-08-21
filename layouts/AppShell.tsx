@@ -4,7 +4,6 @@ import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 import MainLayout from "@/layouts/MainLayout";
 import AuthLayout from "./AuthLayout";
-import { useAuth } from "@/providers/AuthProvider";
 
 type AppShellProps = {
     children: React.ReactNode;
@@ -12,8 +11,6 @@ type AppShellProps = {
 
 export default function AppShell({ children }: AppShellProps) {
     const pathname = usePathname();
-    const { profile } = useAuth();
-    console.log(profile);
     const isAuthRoute = useMemo(() => {
         const authRoutes = [
             "/login",

@@ -1,9 +1,8 @@
 import "./globals.css";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from "@/providers/AuthProvider";
 import { createClient } from "@/lib/supabase/server";
 import AppShell from "@/layouts/AppShell";
+import ToastProvider from "@/providers/ToastProvider";
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -20,28 +19,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en">
-      <body>
+      <body suppressHydrationWarning={true}>
         <AuthProvider initialUser={user} initialProfile={initialProfile}>
           <AppShell>{children}</AppShell>
         </AuthProvider>
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-          toastStyle={{
-            backgroundColor: 'white',
-            color: 'black',
-            border: 'none',
-            borderRadius: '8px'
-          }}
-        />
+        <ToastProvider />
       </body>
     </html>
   );

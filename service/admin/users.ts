@@ -17,7 +17,7 @@ export class UsersService {
     }
 
     async rejectUser(userId: string): Promise<ApiResponse<User>> {
-        return await api.post<User>(`${this.baseUrl}/${userId}/reject`);
+        return await api.post<User>(`${this.baseUrl}/${userId}/revoke-approval`);
     }
 
 }

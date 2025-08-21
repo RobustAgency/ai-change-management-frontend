@@ -1,9 +1,9 @@
 "use client";
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Session, User } from "@supabase/supabase-js";
-import { fetchProfile as fetchProfileFromAPI, type Profile } from "@/service/app/profile";
-import { toast } from "react-toastify";
+import { useProfile } from "@/hooks/app/useProfile";
+import type { Profile } from "@/service/app/profile";
 
 type AuthContextValue = {
     user: User | null;
@@ -32,40 +32,9 @@ export function AuthProvider({ children, initialUser = null, initialProfile = nu
     const [user, setUser] = useState<User | null>(initialUser);
     const [session, setSession] = useState<Session | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [profile, setProfile] = useState<Profile | null>(initialProfile);
     const previousUserIdRef = useRef<string | null>(initialUser?.id ?? null);
 
-    const fetchProfile = useCallback(async () => {
-        if (!user?.id) {
-            setProfile(null);
-            return;
-        }
-        const { data: supabaseData, error: supabaseError } = await supabase.from('profiles').select('*').eq('id', user.id).single();
-        if (supabaseError) {
-            toast.error(supabaseError.message);
-            return;
-        }
-        if (user?.user_metadata?.role === "user") {
-            const profileData = await fetchProfileFromAPI();
-            console.log(profileData);
-            if (profileData) {
-                setProfile({ ...supabaseData, has_payment_method: profileData.has_payment_method ?? null });
-            }
-            // Need to handle the case where the profile is not found because the user is not a not approved by the admin
-            // When user is not approved by the admin, the profile is not because of the unapproval
-            // The user is redirected to the onboarding page with the mode "unapproved-account"
-        } else {
-            setProfile(supabaseData);
-        }
-    }, [user?.id, user?.user_metadata?.role, supabase]);
-
-    useEffect(() => {
-        if (user?.id) {
-            void fetchProfile();
-        } else {
-            setProfile(null);
-        }
-    }, [user?.id, user?.user_metadata?.role, fetchProfile]);
+    const { profile, refetch: fetchProfile } = useProfile(user);
 
     useEffect(() => {
         let isMounted = true;
@@ -85,18 +54,15 @@ export function AuthProvider({ children, initialUser = null, initialProfile = nu
         const { data: sub } = supabase.auth.onAuthStateChange((event, newSession) => {
             setSession(newSession);
             setUser(newSession?.user ?? null);
-            if (!newSession?.user) setProfile(null);
 
             const newUserId = newSession?.user?.id ?? null;
             const previousUserId = previousUserIdRef.current;
 
             if (event === "SIGNED_OUT") {
                 previousUserIdRef.current = null;
-                window.location.href = "/login";
             } else if (event === "SIGNED_IN") {
                 if (newUserId !== previousUserId) {
                     previousUserIdRef.current = newUserId;
-                    window.location.href = "/";
                 }
             }
         });

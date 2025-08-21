@@ -2,11 +2,14 @@ import React from 'react'
 import { Button } from '../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { CreditCard } from 'lucide-react'
+import { usePaymentMethod } from '@/hooks/app/usePaymentMethod'
 
 const AddPaymentMethod = () => {
-    const handleAddPaymentMethod = () => {
-        // TODO: Implement payment method addition logic
-        console.log('Add payment method clicked')
+    const { addPaymentMethod, isLoading, error, clearError } = usePaymentMethod();
+
+    const handleAddPaymentMethod = async () => {
+        clearError();
+        await addPaymentMethod();
     }
 
     return (
@@ -24,11 +27,17 @@ const AddPaymentMethod = () => {
                     <p className="text-gray-600 mb-6">
                         Please add a payment method to continue using our services.
                     </p>
+                    {error && (
+                        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+                            <p className="text-red-600 text-sm">{error}</p>
+                        </div>
+                    )}
                     <Button
                         onClick={handleAddPaymentMethod}
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                        disabled={isLoading}
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white disabled:bg-blue-400"
                     >
-                        Add Payment Method
+                        {isLoading ? 'Redirecting...' : 'Add Payment Method'}
                     </Button>
                 </CardContent>
             </Card>
