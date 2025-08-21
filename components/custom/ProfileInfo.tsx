@@ -1,13 +1,20 @@
 import { useAuth } from '@/providers/AuthProvider'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const ProfileInfo = () => {
-    const { profile, user } = useAuth()
+    const { profile, fetchProfile, user } = useAuth()
     const avatarUrl = profile?.avatar_url
     const displayName = profile?.full_name ?? "User"
     const role = user?.user_metadata?.role ?? "user"
+
+    useEffect(() => {
+        if (!profile) {
+            fetchProfile()
+        }
+    }, [profile, fetchProfile])
+
     return (
         <div className="flex items-center gap-3 justify-end px-4">
             <Link href="/settings" className="relative h-10 w-10 overflow-hidden rounded-full bg-muted">

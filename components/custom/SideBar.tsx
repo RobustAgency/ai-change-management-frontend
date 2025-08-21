@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LayoutDashboard, Settings as SettingsIcon, LogOut } from "lucide-react";
+import { LayoutDashboard, Settings as SettingsIcon, LogOut, CreditCard, FileChartColumnIncreasing } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
 import Image from "next/image";
 
@@ -8,6 +8,8 @@ const adminRoutes = [
 ];
 const userRoutes = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/plans", label: "Plans", icon: CreditCard },
+    { href: "/invoices", label: "Invoices", icon: FileChartColumnIncreasing },
 ];
 
 const baseRoutes = [

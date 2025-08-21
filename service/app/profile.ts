@@ -5,6 +5,7 @@ export interface Profile {
     full_name?: string | null;
     email: string;
     avatar_url?: string | null;
+    plan_id: number | null;
     has_payment_method?: boolean | null;
 }
 
@@ -47,6 +48,7 @@ export class ProfileService {
                 data: {
                     ...response.data.user,
                     has_payment_method: response.data.has_payment_method,
+                    plan_id: response.data.user.plan_id ?? null
                 },
                 error: false
             };

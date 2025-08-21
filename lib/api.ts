@@ -21,10 +21,18 @@ export class ApiError extends Error {
 
 const API_CONFIG = {
     baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api',
-    timeout: 10000,
+    timeout: 60000,
     headers: {
         'Content-Type': 'application/json',
     },
+};
+
+// Retry configuration
+const RETRY_CONFIG = {
+    maxRetries: 3,
+    retryDelay: 1000,
+    retryableStatuses: [408, 429, 500, 502, 503, 504],
+    retryableErrors: ['ECONNABORTED', 'ETIMEDOUT', 'NETWORK_ERROR']
 };
 
 const apiClient: AxiosInstance = axios.create(API_CONFIG);
@@ -53,7 +61,7 @@ apiClient.interceptors.response.use(
     },
     async (error) => {
         const originalRequest = error.config;
-        
+
         // Handle 401 errors with token refresh
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
@@ -71,6 +79,37 @@ apiClient.interceptors.response.use(
                     window.location.href = '/login';
                 }
             }
+        }
+
+        // Handle retry logic for timeouts and network errors
+        if (!originalRequest._retryCount) {
+            originalRequest._retryCount = 0;
+        }
+
+        const shouldRetry = (
+            originalRequest._retryCount < RETRY_CONFIG.maxRetries &&
+            (
+                // Retry on timeout errors
+                error.code === 'ECONNABORTED' ||
+                error.message?.includes('timeout') ||
+                // Retry on network errors
+                !error.response ||
+                // Retry on specific HTTP status codes
+                RETRY_CONFIG.retryableStatuses.includes(error.response?.status)
+            )
+        );
+
+        if (shouldRetry) {
+            originalRequest._retryCount += 1;
+            const delay = RETRY_CONFIG.retryDelay * Math.pow(2, originalRequest._retryCount - 1); // Exponential backoff
+
+            console.log(`🔄 Retrying request (${originalRequest._retryCount}/${RETRY_CONFIG.maxRetries}) after ${delay}ms delay`);
+
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve(apiClient(originalRequest));
+                }, delay);
+            });
         }
 
         // For other errors, throw ApiError as before

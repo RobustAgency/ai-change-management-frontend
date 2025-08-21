@@ -48,7 +48,8 @@ export const useProfile = (user: User | null): UseProfileReturn => {
                 if (profileResult.success && profileResult.data) {
                     setProfile({
                         ...supabaseData,
-                        has_payment_method: profileResult.data.has_payment_method ?? null
+                        has_payment_method: profileResult.data.has_payment_method ?? null,
+                        plan_id: profileResult.data.plan_id ?? null
                     });
                     if (!profileResult.data.has_payment_method) {
                         router.push('/onboarding?mode=add-payment-method');

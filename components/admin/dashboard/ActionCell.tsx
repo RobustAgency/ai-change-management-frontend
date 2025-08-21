@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { MoreVertical } from "lucide-react"
 import { TableUser } from "@/hooks/admin/useUsers"
-import ConfirmationDialog from "./ConfirmationDialog"
+import ConfirmationDialog from "@/components/custom/ConfirmationDialog"
 import { usersService } from "@/service/admin/users"
 import { toast } from "react-toastify"
 
@@ -78,6 +78,32 @@ const ActionCell = ({ user, onRefresh }: ActionCellProps) => {
     const isApproved = user.status === "approved"
     const isRejected = user.status === "rejected"
 
+    const getDialogConfig = () => {
+        if (currentAction === "approve") {
+            return {
+                title: "Approve User",
+                description: `Are you sure you want to approve ${user.full_name}?`,
+                confirmText: "Approve",
+                type: "success" as const
+            }
+        } else if (currentAction === "reject") {
+            return {
+                title: "Reject User",
+                description: `Are you sure you want to reject ${user.full_name}?`,
+                confirmText: "Reject",
+                type: "danger" as const
+            }
+        }
+        return {
+            title: "",
+            description: "",
+            confirmText: "",
+            type: "danger" as const
+        }
+    }
+
+    const dialogConfig = getDialogConfig()
+
     return (
         <>
             <DropdownMenu>
@@ -109,9 +135,11 @@ const ActionCell = ({ user, onRefresh }: ActionCellProps) => {
                 <ConfirmationDialog
                     isOpen={showDialog}
                     onClose={handleClose}
-                    action={currentAction}
-                    user={user}
                     onConfirm={handleConfirm}
+                    title={dialogConfig.title}
+                    description={dialogConfig.description}
+                    confirmText={dialogConfig.confirmText}
+                    type={dialogConfig.type}
                     isLoading={isLoading}
                 />
             )}
