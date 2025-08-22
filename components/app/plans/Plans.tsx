@@ -6,15 +6,21 @@ import PlanCard from './PlanCard'
 import { Plan } from '@/interfaces/Plan'
 import Spinner from '@/components/ui/spinner'
 import { X } from 'lucide-react'
+import { useAuth } from '@/providers/AuthProvider'
 
 const Plans = () => {
     const { plans, loading: plansLoading, error: plansError } = usePlans()
     const { subscribe, loading: subscribeLoading } = useSubscribeToPlan()
+    const { fetchProfile } = useAuth()
     const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null)
 
     const handleSubscribe = async (plan: Plan) => {
-        await subscribe(plan.id)
         setSelectedPlan(plan)
+        try {
+            await subscribe(plan.id, fetchProfile)
+        } finally {
+            setSelectedPlan(null)
+        }
     }
 
     if (plansLoading) {
