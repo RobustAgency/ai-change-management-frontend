@@ -7,20 +7,14 @@ import ActionCell from "./ActionCell"
 import { TableUser } from "@/hooks/admin/useUsers"
 
 const getStatusBadge = (status: TableUser["status"]) => {
-    const variants = {
-        approved: "default",
-        rejected: "destructive",
-        pending: "secondary",
-    } as const
-
-    const colors = {
-        approved: "bg-green-100 text-green-800 hover:bg-green-100",
-        rejected: "bg-red-100 text-red-800 hover:bg-red-100",
-        pending: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100",
+    const colorMap = {
+        approved: "success" as const,
+        rejected: "error" as const,
+        pending: "warning" as const,
     }
 
     return (
-        <Badge className={cn(colors[status], "capitalize")} variant={variants[status]}>
+        <Badge variant="light" color={colorMap[status]} className="capitalize">
             {status}
         </Badge>
     )

@@ -1,5 +1,6 @@
 import React from 'react'
 import { useAuth } from '@/providers/AuthProvider'
+import { Badge } from '@/components/ui/badge'
 
 const Greetings = () => {
     const { profile } = useAuth()

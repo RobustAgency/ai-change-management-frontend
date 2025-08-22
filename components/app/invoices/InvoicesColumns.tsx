@@ -10,24 +10,18 @@ import { formatCurrency } from "@/utils/formatCurrency"
 import { formatDate } from "@/utils/formatDate"
 
 const getStatusBadge = (status: string) => {
-    const variants = {
-        paid: "default",
-        pending: "secondary",
-        failed: "destructive",
-        cancelled: "destructive",
-    } as const
-
-    const colors = {
-        paid: "bg-green-100 text-green-800 hover:bg-green-100",
-        pending: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100",
-        failed: "bg-red-100 text-red-800 hover:bg-red-100",
-        cancelled: "bg-red-100 text-red-800 hover:bg-red-100",
+    const colorMap: Record<string, "success" | "warning" | "error" | "info"> = {
+        paid: "success",
+        pending: "warning",
+        failed: "error",
+        cancelled: "error",
     }
 
-    const statusKey = status.toLowerCase() as keyof typeof colors
+    const statusKey = status.toLowerCase()
+    const color = colorMap[statusKey] || "info"
 
     return (
-        <Badge className={cn(colors[statusKey] || colors.pending, "capitalize")} variant={variants[statusKey] || "secondary"}>
+        <Badge variant="light" color={color} className="capitalize">
             {status}
         </Badge>
     )

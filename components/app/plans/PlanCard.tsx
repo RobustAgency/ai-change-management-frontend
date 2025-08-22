@@ -54,7 +54,7 @@ const PlanCard: React.FC<PlanCardProps> = ({
                     <div className="flex items-center justify-between">
                         <CardTitle className="text-xl">{plan.name}</CardTitle>
                         {isCurrentPlan && (
-                            <Badge className='bg-green-100 text-green-800 hover:bg-green-100' variant='default'>Subscribed</Badge>
+                            <Badge variant="light" color="success">Subscribed</Badge>
                         )}
                     </div>
                     <CardDescription>{plan.description}</CardDescription>
