@@ -1,7 +1,7 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
 import { createClient } from '@/lib/supabase/client';
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
     data: T
     status: number
     message: string
@@ -12,7 +12,7 @@ export class ApiError extends Error {
     constructor(
         public status: number,
         public message: string,
-        public data?: any
+        public data?: unknown
     ) {
         super(message);
         this.name = 'ApiError';
@@ -130,32 +130,32 @@ export class ApiService {
         this.client = client;
     }
 
-    async get<T = any>(url: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+    async get<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
         const response = await this.client.get<ApiResponse<T>>(url, config);
         return response.data;
     }
 
-    async post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+    async post<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
         const response = await this.client.post<ApiResponse<T>>(url, data, config);
         return response.data;
     }
 
-    async put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+    async put<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
         const response = await this.client.put<ApiResponse<T>>(url, data, config);
         return response.data;
     }
 
-    async patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+    async patch<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
         const response = await this.client.patch<ApiResponse<T>>(url, data, config);
         return response.data;
     }
 
-    async delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+    async delete<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
         const response = await this.client.delete<ApiResponse<T>>(url, config);
         return response.data;
     }
 
-    async upload<T = any>(url: string, file: File, onProgress?: (progress: number) => void): Promise<ApiResponse<T>> {
+    async upload<T = unknown>(url: string, file: File, onProgress?: (progress: number) => void): Promise<ApiResponse<T>> {
         const formData = new FormData();
         formData.append('file', file);
 
@@ -196,7 +196,7 @@ export const api = new ApiService();
 export { apiClient };
 
 export const apiUtils = {
-    createQueryString: (params: Record<string, any>): string => {
+    createQueryString: (params: Record<string, unknown>): string => {
         const searchParams = new URLSearchParams();
         Object.entries(params).forEach(([key, value]) => {
             if (value !== undefined && value !== null && value !== '') {
@@ -205,7 +205,7 @@ export const apiUtils = {
         });
         return searchParams.toString();
     },
-    handleError: (error: any, defaultMessage = 'An error occurred') => {
+    handleError: (error: unknown, defaultMessage = 'An error occurred') => {
         if (error instanceof ApiError) {
             return error.message;
         }

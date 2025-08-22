@@ -33,7 +33,7 @@ export default function ProfileForm() {
   const [fullName, setFullName] = useState<string>(initialFullName)
 
   const [state, formAction] = useActionState(
-    async (_prev: any, formData: FormData) => {
+    async (_prev: unknown, formData: FormData) => {
       return await updateProfile(formData)
     },
     null as null | { success: boolean; message?: string }
@@ -47,7 +47,7 @@ export default function ProfileForm() {
     } else if (state.message) {
       toast.error(state.message)
     }
-  }, [state])
+  }, [state, fetchProfile])
 
   return (
     <Card>

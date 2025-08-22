@@ -2,7 +2,6 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge"
-import { cn } from "@/lib/utils"
 import ActionCell from "./ActionCell"
 import { TableUser } from "@/hooks/admin/useUsers"
 

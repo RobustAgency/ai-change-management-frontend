@@ -16,7 +16,7 @@ export interface User {
     trial_ends_at: string | null
 }
 
-export interface UserFilters {
+export interface UserFilters extends Record<string, unknown> {
     search?: string;
     status?: 'pending' | 'approved' | 'rejected';
     page?: number;

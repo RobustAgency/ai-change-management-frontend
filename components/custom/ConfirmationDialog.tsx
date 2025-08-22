@@ -2,7 +2,7 @@
 
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { AlertTriangle, CheckCircle, XCircle, Info } from "lucide-react"
+import { AlertTriangle, CheckCircle, Info } from "lucide-react"
 import Spinner from "@/components/ui/spinner"
 
 export type ConfirmationType = "danger" | "warning" | "info" | "success"
@@ -112,7 +112,7 @@ const ConfirmationDialog = ({
                     </Button>
                     <Button
                         onClick={handleConfirm}
-                        variant={getConfirmButtonVariant() as any}
+                        variant={getConfirmButtonVariant() as "destructive" | "default"}
                         className={getConfirmButtonClassName()}
                         disabled={isLoading}
                     >

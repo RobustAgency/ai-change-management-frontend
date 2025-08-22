@@ -22,7 +22,7 @@ function SubmitButton() {
 export default function ChangePasswordForm() {
   const formRef = useRef<HTMLFormElement | null>(null)
   const [state, formAction] = useActionState(
-    async (_prev: any, formData: FormData) => {
+    async (_prev: unknown, formData: FormData) => {
       return await updatePassword(formData)
     },
     null as null | { success: boolean; message?: string }

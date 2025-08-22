@@ -77,7 +77,7 @@ const UpcomingInvoice = ({ upcomingInvoice, upcomingLoading, upcomingError }: Up
                         <div className="text-center py-8">
                             <Calendar className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                             <h3 className="text-lg font-semibold text-gray-900 mb-2">No Upcoming Invoice</h3>
-                            <p className="text-gray-600">You don't have any upcoming invoices at the moment.</p>
+                            <p className="text-gray-600">You don&apos;t have any upcoming invoices at the moment.</p>
                         </div>
                     )}
                 </CardContent>
