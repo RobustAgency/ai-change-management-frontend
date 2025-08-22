@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Upload } from 'lucide-react'
 
-const PLACEHOLDER = 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
+const PLACEHOLDER = '/placeholders/user_placeholder.png'
 const BUCKET = 'avatars'
 
 const ProfilePhoto = () => {
@@ -197,6 +197,7 @@ const ProfilePhoto = () => {
                         width={64}
                         height={64}
                         className="w-16 h-16 rounded-full object-cover border-2 border-gray-200"
+                        unoptimized
                     />
                     <div>
                         <div className="font-medium">Edit your photo</div>
