@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { BugIcon } from "lucide-react";
 
+export const runtime = "edge";
+
 export default function ErrorPage() {
     return (
         <div className="flex min-h-[80vh] items-center justify-center px-4">

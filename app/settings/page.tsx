@@ -3,6 +3,8 @@ import ProfileForm from '@/components/settings/ProfileForm'
 import ChangePasswordForm from '@/components/settings/ChangePasswordForm'
 import ProfilePhoto from '@/components/settings/ProfilePhoto'
 
+export const runtime = "edge";
+
 const SettingsPage = () => {
     return (
         <div className='grid grid-cols-1 xl:grid-cols-3 gap-4'>

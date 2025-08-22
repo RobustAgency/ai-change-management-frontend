@@ -2,6 +2,8 @@ import React from 'react'
 import ContainerCard from '@/components/custom/ContainerCard'
 import Plans from '@/components/app/plans/Plans'
 
+export const runtime = "edge";
+
 const PlansPage = () => {
 
     return (

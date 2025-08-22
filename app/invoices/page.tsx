@@ -8,6 +8,8 @@ import UpcomingInvoice from '@/components/app/invoices/UpcomingInvoice'
 import InvoiceHistory from '@/components/app/invoices/InvoiceHistory'
 import ContainerCard from '@/components/custom/ContainerCard'
 
+export const runtime = "edge";
+
 const InvoicesPage = () => {
     const { invoices, loading: invoicesLoading, error: invoicesError } = useInvoices()
     const { upcomingInvoice, loading: upcomingLoading, error: upcomingError } = useUpcomingInvoice()

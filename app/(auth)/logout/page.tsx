@@ -2,6 +2,8 @@
 import { useEffect } from "react";
 import { signout } from "@/lib/auth-actions";
 
+export const runtime = "edge";
+
 const LogoutPage = () => {
     const logout = async () => {
         const result = await signout();
