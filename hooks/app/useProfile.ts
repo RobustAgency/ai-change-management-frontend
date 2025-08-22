@@ -7,13 +7,14 @@ import type { User } from '@supabase/supabase-js';
 
 interface UseProfileReturn {
     profile: Profile | null;
+    setProfile: (profile: Profile | null) => void;
     loading: boolean;
     error: string | null;
     refetch: () => Promise<void>;
 }
 
-export const useProfile = (user: User | null): UseProfileReturn => {
-    const [profile, setProfile] = useState<Profile | null>(null);
+export const useProfile = (user: User | null, initialProfile: Profile | null): UseProfileReturn => {
+    const [profile, setProfile] = useState<Profile | null>(initialProfile);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
@@ -80,6 +81,7 @@ export const useProfile = (user: User | null): UseProfileReturn => {
 
     return {
         profile,
+        setProfile,
         loading,
         error,
         refetch: fetchProfile

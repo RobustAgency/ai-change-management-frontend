@@ -11,6 +11,7 @@ type AuthContextValue = {
     isLoading: boolean;
     profile: Profile | null;
     fetchProfile: () => Promise<void>;
+    setProfile: (profile: Profile | null) => void;
 };
 
 const AuthContext = createContext<AuthContextValue>({
@@ -19,6 +20,7 @@ const AuthContext = createContext<AuthContextValue>({
     isLoading: true,
     profile: null,
     fetchProfile: async () => { },
+    setProfile: () => { },
 });
 
 type AuthProviderProps = {
@@ -34,7 +36,7 @@ export function AuthProvider({ children, initialUser = null, initialProfile = nu
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const previousUserIdRef = useRef<string | null>(initialUser?.id ?? null);
 
-    const { profile, refetch: fetchProfile } = useProfile(user);
+    const { profile, refetch: fetchProfile, setProfile } = useProfile(user, initialProfile);
 
     useEffect(() => {
         let isMounted = true;
@@ -76,8 +78,8 @@ export function AuthProvider({ children, initialUser = null, initialProfile = nu
     }, []);
 
     const value = useMemo<AuthContextValue>(
-        () => ({ user, session, isLoading, profile, fetchProfile }),
-        [user, session, isLoading, profile, fetchProfile]
+        () => ({ user, session, isLoading, profile, fetchProfile, setProfile }),
+        [user, session, isLoading, profile, fetchProfile, setProfile]
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
