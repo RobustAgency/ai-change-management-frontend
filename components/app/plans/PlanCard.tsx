@@ -99,7 +99,7 @@ const PlanCard: React.FC<PlanCardProps> = ({
                         ) : (
                             <CreditCard className="h-4 w-4 mr-2" />
                         )}
-                        {isCurrentPlan ? 'Cancel Plan' : 'Subscribe'}
+                        {isCurrentPlan ? 'Cancel Plan' : (isLoading && isSelected ? 'Subscribing...' : 'Subscribe')}
                     </Button>
                 </CardContent>
             </Card>
