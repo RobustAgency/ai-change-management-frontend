@@ -29,15 +29,6 @@ export async function signup(formData: FormData) {
     const email = formData.get("email") as string;
     const fullName = formData.get("full-name") as string;
 
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: "dummy-password-for-check",
-    });
-
-    if (signInError && signInError.message.includes("Invalid login credentials")) {
-        return { success: false, message: "A user with this email already exists. Please sign in instead." } as const;
-    }
-
     const data = {
         email: email,
         password: formData.get("password") as string,
@@ -53,6 +44,9 @@ export async function signup(formData: FormData) {
     const { error } = await supabase.auth.signUp(data);
 
     if (error) {
+        if (error.message.includes("User already registered")) {
+            return { success: false, message: "A user with this email already exists. Please sign in instead." } as const;
+        }
         return { success: false, message: error.message } as const;
     }
 
