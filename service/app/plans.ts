@@ -17,7 +17,7 @@ export class PlansService {
      * Subscribe to a plan
      */
     static async subscribe(planId: number) {
-        return api.get(`/plans/subscribe/${planId}`)
+        return api.get<{ redirect_url?: string }>(`/plans/subscribe/${planId}`)
     }
 
     /**

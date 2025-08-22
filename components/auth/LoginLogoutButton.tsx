@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import type { User } from "@supabase/supabase-js";
 
 const LoginButton = () => {
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<User | null>(null);
     const router = useRouter();
     const supabase = createClient();
     useEffect(() => {
@@ -16,7 +17,7 @@ const LoginButton = () => {
             setUser(user);
         };
         fetchUser();
-    }, []);
+    }, [supabase.auth]);
     if (user) {
         return (
             <div className="flex items-center gap-2">

@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
+import Image from 'next/image'
 
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/providers/AuthProvider'
@@ -128,8 +129,9 @@ const ProfilePhoto = () => {
             setImage(PLACEHOLDER)
             fetchProfile()
             toast.success('Photo removed')
-        } catch (err: any) {
-            toast.error(err?.message ?? 'Failed to remove photo')
+        } catch (err: unknown) {
+            const errorMessage = err instanceof Error ? err.message : 'Failed to remove photo'
+            toast.error(errorMessage)
         } finally {
             setLoading(false)
         }
@@ -173,8 +175,9 @@ const ProfilePhoto = () => {
             setImage(publicUrl)
             fetchProfile()
             toast.success('Photo updated')
-        } catch (err: any) {
-            toast.error(err?.message ?? 'Failed to update photo')
+        } catch (err: unknown) {
+            const errorMessage = err instanceof Error ? err.message : 'Failed to update photo'
+            toast.error(errorMessage)
         } finally {
             setLoading(false)
         }
@@ -188,9 +191,11 @@ const ProfilePhoto = () => {
             </CardHeader>
             <CardContent>
                 <div className="flex items-center gap-4 mb-4">
-                    <img
+                    <Image
                         src={image || PLACEHOLDER}
                         alt="Profile Preview"
+                        width={64}
+                        height={64}
                         className="w-16 h-16 rounded-full object-cover border-2 border-gray-200"
                     />
                     <div>

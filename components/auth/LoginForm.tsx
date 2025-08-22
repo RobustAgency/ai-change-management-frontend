@@ -3,6 +3,7 @@ import Link from "next/link"
 import { useActionState, useEffect, useRef } from "react"
 import { useFormStatus } from "react-dom"
 import { toast } from "react-toastify"
+import type { User } from "@supabase/supabase-js"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -30,11 +31,11 @@ function SubmitButton() {
 export function LoginForm() {
     const formRef = useRef<HTMLFormElement | null>(null);
     const [state, formAction] = useActionState(
-        async (_prev: any, formData: FormData) => {
+        async (_prev: null | { success: false; message: string } | { success: true; data: User | null }, formData: FormData) => {
             const result = await login(formData);
             return result;
         },
-        null as null | { success: boolean; message?: string; data?: any }
+        null as null | { success: false; message: string } | { success: true; data: User | null }
     );
 
     useEffect(() => {
@@ -42,7 +43,7 @@ export function LoginForm() {
         if (state.success) {
             toast.success("Logged in successfully");
             formRef.current?.reset();
-            if (state.data.user_metadata.role === "admin") {
+            if (state.data?.user_metadata?.role === "admin") {
                 window.location.href = "/admin/dashboard";
             } else {
                 window.location.href = "/dashboard";

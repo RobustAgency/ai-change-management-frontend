@@ -35,7 +35,7 @@ const InvoiceHistory = ({ invoices, invoicesLoading }: InvoiceHistoryProps) => {
                         <div className="text-center py-12">
                             <FileChartColumnIncreasing className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                             <h3 className="text-lg font-semibold text-gray-900 mb-2">No Invoices Found</h3>
-                            <p className="text-gray-600">You haven't generated any invoices yet.</p>
+                            <p className="text-gray-600">You haven&apos;t generated any invoices yet.</p>
                         </div>
                     )}
                 </CardContent>
