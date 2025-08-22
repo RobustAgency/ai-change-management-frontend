@@ -1,6 +1,8 @@
 import React from 'react'
 import UsersTable from '@/components/admin/dashboard/UsersTable'
 
+export const runtime = "edge";
+
 const AdminDashboardPage = () => {
     return (
         <React.Fragment>
