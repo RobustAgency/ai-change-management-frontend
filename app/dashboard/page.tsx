@@ -1,13 +1,17 @@
 "use client"
 import React from 'react'
-import Dashboard from '@/components/app/dashboard/Dashboard';
+import Greetings from '@/components/app/dashboard/Greetings';
+import Metrics from '@/components/app/dashboard/Metrics';
+import Projects from '@/components/app/dashboard/Projects';
 
 export const runtime = "edge";
 
 const DashboardPage = () => {
     return (
         <React.Fragment>
-            <Dashboard />
+            <Greetings />
+            <Metrics />
+            <Projects />
         </React.Fragment>
     )
 }
