@@ -55,10 +55,10 @@ const Pricing = () => {
                 {/* Starter Plan */}
                 <Card className="border-2 border-indigo-500 bg-white relative shadow-xl scale-105">
                     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <div className="bg-indigo-600 text-white px-6 py-2 rounded-full text-sm font-bold">Most Popular</div>
+                        <div className="bg-primary text-white px-6 py-2 rounded-full text-sm font-bold">Most Popular</div>
                     </div>
                     <CardHeader className="text-center pb-6 pt-8">
-                        <div className="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center mx-auto mb-4">
                             <Sparkles className="w-6 h-6 text-white" />
                         </div>
                         <CardTitle className="text-2xl">Starter</CardTitle>
@@ -91,7 +91,7 @@ const Pricing = () => {
                             </li>
                         </ul>
                         <Link href={"/login"}>
-                            <Button className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold">
+                            <Button className="w-full h-12 bg-primary hover:bg-indigo-700 text-white font-semibold">
                                 Get Started
                             </Button>
                         </Link>

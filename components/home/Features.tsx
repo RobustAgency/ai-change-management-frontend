@@ -17,7 +17,7 @@ const Features = () => {
                     <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
                         <CardHeader className="text-center pb-4">
                             <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                                <Clock className="w-8 h-8 text-indigo-600" />
+                                <Clock className="w-8 h-8 text-primary" />
                             </div>
                             <CardTitle className="text-xl">Lightning Fast Generation</CardTitle>
                         </CardHeader>
@@ -32,7 +32,7 @@ const Features = () => {
                     <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
                         <CardHeader className="text-center pb-4">
                             <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                                <Users className="w-8 h-8 text-indigo-600" />
+                                <Users className="w-8 h-8 text-primary" />
                             </div>
                             <CardTitle className="text-xl">Smart Audience Targeting</CardTitle>
                         </CardHeader>
@@ -47,7 +47,7 @@ const Features = () => {
                     <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
                         <CardHeader className="text-center pb-4">
                             <div className="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                                <CheckCircle className="w-8 h-8 text-indigo-600" />
+                                <CheckCircle className="w-8 h-8 text-primary" />
                             </div>
                             <CardTitle className="text-xl">Professional Quality</CardTitle>
                         </CardHeader>

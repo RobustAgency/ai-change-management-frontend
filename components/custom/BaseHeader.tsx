@@ -23,20 +23,20 @@ const BaseHeader = () => {
             <div className={`container mx-auto px-6 ${isScrolled ? 'py-3' : 'py-5'} transition-all duration-300`}>
                 <div className="flex justify-between items-center">
                     <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+                        <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                             <Sparkles className="w-5 h-5 text-white" />
                         </div>
                         <span className="text-xl font-bold text-gray-900">ChangeAI</span>
                     </div>
                     <nav className="flex items-center space-x-8">
-                        <a href="#features" className="hidden md:block text-gray-600 hover:text-indigo-600 font-medium transition-colors">
+                        <a href="#features" className="hidden md:block text-gray-600 hover:text-primary font-medium transition-colors">
                             Features
                         </a>
-                        <a href="#pricing" className="hidden md:block text-gray-600 hover:text-indigo-600 font-medium transition-colors">
+                        <a href="#pricing" className="hidden md:block text-gray-600 hover:text-primary font-medium transition-colors">
                             Pricing
                         </a>
                         <Link href="/dashboard">
-                            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">Get Started</Button>
+                            <Button className="bg-primary hover:bg-indigo-700 text-white">Get Started</Button>
                         </Link>
                     </nav>
                 </div>

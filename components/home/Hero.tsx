@@ -21,7 +21,7 @@ const Hero = () => {
 
                     <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
                         Transform weeks of
-                        <span className="block text-indigo-600">manual work</span>
+                        <span className="block text-primary">manual work</span>
                         <span>into minutes</span>
                     </h1>
 
@@ -33,11 +33,11 @@ const Hero = () => {
                     {/* Value Props */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
-                            <Clock className="w-5 h-5 text-indigo-600" />
+                            <Clock className="w-5 h-5 text-primary" />
                             <span className="font-medium text-gray-700">Generate in minutes</span>
                         </div>
                         <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
-                            <Users className="w-5 h-5 text-indigo-600" />
+                            <Users className="w-5 h-5 text-primary" />
                             <span className="font-medium text-gray-700">Multi-audience targeting</span>
                         </div>
                     </div>
@@ -47,7 +47,7 @@ const Hero = () => {
                 {/* Right Column */}
                 <div className="lg:max-w-md mx-auto w-full place-self-end">
                     <Card className="bg-gray-50 shadow-xl border-0 overflow-hidden pt-0">
-                        <CardHeader className="text-center py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-tr-2xl rounded-tl-2xl">
+                        <CardHeader className="text-center py-4 bg-gradient-to-r from-primary to-purple-600 text-white rounded-tr-2xl rounded-tl-2xl">
                             <CardTitle className="text-xl font-bold">See What You'll Generate</CardTitle>
                             <CardDescription className="text-indigo-100">Professional assets ready in minutes</CardDescription>
                         </CardHeader>
@@ -56,27 +56,27 @@ const Hero = () => {
                                 <div className="relative grid w-full grid-cols-3 border-b">
                                     <button
                                         onClick={() => setActivePreview('slides')}
-                                        className={`cursor-pointer flex items-center justify-center gap-2 py-3 text-sm ${activePreview === 'slides' ? 'text-indigo-600' : 'text-gray-600'}`}
+                                        className={`cursor-pointer flex items-center justify-center gap-2 py-3 text-sm ${activePreview === 'slides' ? 'text-primary' : 'text-gray-600'}`}
                                     >
                                         <Presentation className="w-4 h-4" />
                                         Slides
                                     </button>
                                     <button
                                         onClick={() => setActivePreview('emails')}
-                                        className={`cursor-pointer flex items-center justify-center gap-2 py-3 text-sm ${activePreview === 'emails' ? 'text-indigo-600' : 'text-gray-600'}`}
+                                        className={`cursor-pointer flex items-center justify-center gap-2 py-3 text-sm ${activePreview === 'emails' ? 'text-primary' : 'text-gray-600'}`}
                                     >
                                         <Mail className="w-4 h-4" />
                                         Emails
                                     </button>
                                     <button
                                         onClick={() => setActivePreview('videos')}
-                                        className={`cursor-pointer flex items-center justify-center gap-2 py-3 text-sm ${activePreview === 'videos' ? 'text-indigo-600' : 'text-gray-600'}`}
+                                        className={`cursor-pointer flex items-center justify-center gap-2 py-3 text-sm ${activePreview === 'videos' ? 'text-primary' : 'text-gray-600'}`}
                                     >
                                         <Play className="w-4 h-4" />
                                         Scripts
                                     </button>
                                     <div
-                                        className="z-50 absolute bottom-0 left-0 h-[2px] bg-indigo-600 transition-transform duration-300 ease-in-out"
+                                        className="z-50 absolute bottom-0 left-0 h-[2px] bg-primary transition-transform duration-300 ease-in-out"
                                         style={{ width: '33.3333%', transform: `translateX(${activeIndex * 100}%)` }}
                                     />
                                 </div>
@@ -92,8 +92,8 @@ const Hero = () => {
                                                     <div className="h-2 bg-indigo-100 rounded w-2/3"></div>
                                                 </div>
                                                 <div className="flex justify-between items-center mt-3">
-                                                    <div className="text-xs text-indigo-600">PowerPoint Ready</div>
-                                                    <div className="w-6 h-6 bg-indigo-600 rounded flex items-center justify-center">
+                                                    <div className="text-xs text-primary">PowerPoint Ready</div>
+                                                    <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
                                                         <FileText className="w-3 h-3 text-white" />
                                                     </div>
                                                 </div>
@@ -161,7 +161,7 @@ const Hero = () => {
 
                             <div className="p-6 pt-4 bg-gray-50">
                                 <Link href="/login">
-                                    <Button className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold">
+                                    <Button className="w-full h-12 bg-primary hover:bg-indigo-700 text-white font-semibold">
                                         Get Started
                                         <ArrowRight className="w-4 h-4 ml-2" />
                                     </Button>

@@ -10,7 +10,7 @@ const Footer = () => {
                     {/* Company Info */}
                     <div className="space-y-4">
                         <div className="flex items-center space-x-3">
-                            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+                            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                                 <Sparkles className="w-5 h-5 text-white" />
                             </div>
                             <span className="text-xl font-bold">ChangeAI</span>
