@@ -1,15 +1,15 @@
 import Link from "next/link";
-import { LayoutDashboard, Settings as SettingsIcon, LogOut, CreditCard, FileChartColumnIncreasing } from "lucide-react";
+import { LayoutGrid, Settings as SettingsIcon, LogOut, CreditCard, FileChartColumnIncreasing } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
-import Image from "next/image";
+import { Sparkles } from 'lucide-react'
 import { usePathname } from "next/navigation";
 
 const adminRoutes = [
-    { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/admin/dashboard", label: "Dashboard", icon: LayoutGrid },
 ];
 const userRoutes = [
-    { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/plans", label: "Plans", icon: CreditCard },
+    { href: "/dashboard", label: "Dashboard", icon: LayoutGrid },
+    { href: "/billing", label: "Billing", icon: CreditCard },
     { href: "/invoices", label: "Invoices", icon: FileChartColumnIncreasing },
 ];
 
@@ -30,12 +30,17 @@ export function Sidebar({
     const navigationRoutes = role === "admin" ? adminRoutes : userRoutes;
     const pathname = usePathname();
     return (
-        <div className="flex h-full flex-col overflow-hidden">
+        <div className="bg-gray-50 flex h-full flex-col overflow-hidden">
             <div
                 aria-details="logo"
                 className="flex items-center justify-between md:hidden">
                 <Link href="/">
-                    <Image src="/logo.png" alt="logo" width={100} height={100} className='object-cover object-start w-30 h-14' />
+                    <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                            <Sparkles className="w-5 h-5 text-white" />
+                        </div>
+                        <span className="text-xl font-bold text-gray-900">ChangeAI</span>
+                    </div>
                 </Link>
             </div>
 
@@ -47,33 +52,33 @@ export function Sidebar({
                             key={item.href}
                             href={item.href}
                             onClick={onNavigate}
-                            className={"relative flex items-center rounded-md hover:bg-accent hover:text-accent-foreground gap-2 px-3 py-2 text-sm"}
+                            className={"flex items-center rounded-md hover:bg-accent hover:text-accent-foreground gap-2 px-3 py-2 text-sm"}
                         >
-                            {item.icon ? <item.icon className="shrink-0 size-4" /> : null}
+                            {item.icon ? <item.icon className={`shrink-0 size-6 text-gray-500 ${isActive && "text-primary"}`} strokeWidth="2" /> : null}
                             {!collapsed && (
-                                <span className={`whitespace-nowrap`}>{item.label}</span>
-                            )}
-                            {isActive && (
-                                <div className='absolute top-1/2 -translate-y-1/2 rounded-full -left-1 w-1 h-[calc(100%-10px)] bg-gradient-to-r from-black via-neutral-800 to-gray-900'></div>
+                                <span className={`text-gray-500 whitespace-nowrap font-semibold ${isActive && "text-primary"}`}>{item.label}</span>
                             )}
                         </Link>
                     )
                 })}
             </nav>
             <div className={"mt-auto border-t p-2 md:p-3"}>
-                {baseRoutes.map((item) => (
-                    <Link
-                        key={item.href}
-                        href={item.href}
-                        onClick={onNavigate}
-                        className={"flex items-center rounded-md hover:bg-accent hover:text-accent-foreground gap-2 px-3 py-2 text-sm"}
-                    >
-                        {item.icon ? <item.icon className="shrink-0 size-4" /> : null}
-                        {!collapsed && (
-                            <span className={`whitespace-nowrap`}>{item.label}</span>
-                        )}
-                    </Link>
-                ))}
+                {baseRoutes.map((item) => {
+                    const isActive = pathname.includes(item.href);
+                    return (
+                        <Link
+                            key={item.href}
+                            href={item.href}
+                            onClick={onNavigate}
+                            className={"flex items-center rounded-md hover:bg-accent hover:text-accent-foreground gap-2 px-3 py-2 text-sm"}
+                        >
+                            {item.icon ? <item.icon className={`shrink-0 size-4 text-gray-500 ${isActive && "text-primary"}`} strokeWidth="2" /> : null}
+                            {!collapsed && (
+                                <span className={`text-gray-500 whitespace-nowrap font-semibold ${isActive && "text-primary"}`}>{item.label}</span>
+                            )}
+                        </Link>
+                    )
+                })}
             </div>
         </div>
     );

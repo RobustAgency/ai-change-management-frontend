@@ -25,7 +25,7 @@ function SubmitButton() {
         <Button className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold" type="submit" disabled={pending}>
             {pending ? (
                 <>
-                    <Loader2 className="animate-spin" />
+                    <Loader2 className="animate-spin"  />
                 </>
             ) : (
                 <>

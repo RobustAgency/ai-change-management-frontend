@@ -23,7 +23,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en">
-      <body className={inter.className} suppressHydrationWarning={true}>
+      <body className={`${inter.className} bg-gray-50`} suppressHydrationWarning={true}>
         <AuthProvider initialUser={user} initialProfile={initialProfile}>
           <AppShell>{children}</AppShell>
         </AuthProvider>

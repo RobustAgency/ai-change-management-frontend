@@ -4,10 +4,12 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { Button } from '../ui/button'
 import { Sparkles } from 'lucide-react'
+import { useAuth } from '@/providers/AuthProvider'
 
 
 const BaseHeader = () => {
     const [isScrolled, setIsScrolled] = useState(false)
+    const { user, isLoading } = useAuth()
 
     useEffect(() => {
         const handleScroll = () => {
@@ -35,8 +37,10 @@ const BaseHeader = () => {
                         <a href="#pricing" className="hidden md:block text-gray-600 hover:text-primary font-medium transition-colors">
                             Pricing
                         </a>
-                        <Link href="/dashboard">
-                            <Button className="bg-primary hover:bg-indigo-700 text-white">Get Started</Button>
+                        <Link href={user ? "/dashboard" : "/login"}>
+                            <Button className="bg-primary hover:bg-indigo-700 text-white">
+                                {isLoading ? "Get Started" : user ? "Dashboard" : "Get Started"}
+                            </Button>
                         </Link>
                     </nav>
                 </div>

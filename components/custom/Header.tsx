@@ -3,8 +3,7 @@ import { Button } from '../ui/button'
 import { ChevronLeft } from 'lucide-react'
 import { DrawerTrigger } from '../ui/drawer'
 import ProfileInfo from './ProfileInfo'
-import Image from 'next/image'
-import Link from 'next/link'
+import { Sparkles } from 'lucide-react'
 
 type HeaderProps = {
     desktopCollapsed: boolean
@@ -13,22 +12,25 @@ type HeaderProps = {
 
 const Header = ({ desktopCollapsed, setDesktopCollapsed }: HeaderProps) => {
     const headerGridClass = cn(
-        "grid w-full min-h-14 sticky top-0 z-30 border-b bg-background/80 backdrop-blur transition-all duration-200 py-1",
+        "grid w-full min-h-14 sticky top-0 z-30  bg-background/80 backdrop-blur transition-all duration-200",
         // Mobile: content + profile columns
         "grid-cols-[minmax(0,1fr)_auto]",
         // Desktop: first column reserved for sidebar width
-        desktopCollapsed ? "md:grid-cols-[64px_minmax(0,1fr)]" : "md:grid-cols-[200px_minmax(0,1fr)]"
+        desktopCollapsed ? "md:grid-cols-[64px_minmax(0,1fr)]" : "md:grid-cols-[240px_minmax(0,1fr)]"
     )
 
     return (
         <header className={headerGridClass}>
-            <div className="h-full w-full md:border-r flex items-center justify-between px-4">
+            <div className="bg-gray-50 h-full w-full md:border-r flex items-center justify-between px-4">
                 <div className="w-full flex items-center justify-start md:justify-between gap-0 md:gap-2">
                     {!desktopCollapsed && (
-                        <div aria-details="logo">
-                            <Link href="/" className='hidden md:block'>
-                                <Image src="/logo.png" alt="logo" width={100} height={100} className='object-cover object-start w-30 h-14' />
-                            </Link>
+                        <div aria-details="logo" className='hidden md:block'>
+                            <div className="flex items-center space-x-3">
+                                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                                    <Sparkles className="w-5 h-5 text-white" />
+                                </div>
+                                <span className="text-xl font-bold text-gray-900">ChangeAI</span>
+                            </div>
                         </div>
                     )}
                     <DrawerTrigger className="md:hidden" asChild>
