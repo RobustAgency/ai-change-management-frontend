@@ -3,6 +3,14 @@
 
 @custom-variant dark (&:is(.dark *));
 
+html {
+  scroll-behavior: smooth;
+}
+
+.container {
+  @apply max-w-[1440px] mx-auto px-5 sm:px-8 md:px-10 lg:px-14;
+}
+
 :root {
   /* Theme colors */
   --primary: #252525;

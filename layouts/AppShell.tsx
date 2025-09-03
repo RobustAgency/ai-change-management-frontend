@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 import MainLayout from "@/layouts/MainLayout";
 import AuthLayout from "./AuthLayout";
+import BaseLayout from "./BaseLayout";
 
 type AppShellProps = {
     children: React.ReactNode;
@@ -28,7 +29,17 @@ export default function AppShell({ children }: AppShellProps) {
         );
     }, [pathname]);
 
+    const isPublicRoute = useMemo(() => {
+        const publicRoutes = [
+            "/",
+        ];
+        return publicRoutes.some(
+            (route) => pathname === route || pathname.startsWith(`${route}/`)
+        );
+    }, [pathname]);
+
     if (isAuthRoute) return <AuthLayout>{children}</AuthLayout>;
+    if (isPublicRoute) return <BaseLayout>{children}</BaseLayout>;
 
     return <MainLayout>{children}</MainLayout>;
 }

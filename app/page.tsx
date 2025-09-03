@@ -1,14 +1,21 @@
-import LoginButton from "@/components/auth/LoginLogoutButton";
+"use client"
+import React from 'react'
+import Footer from '@/components/home/Footer'
+import Hero from '@/components/home/Hero'
+import Features from '@/components/home/Features'
+import Pricing from '@/components/home/Pricing'
+import HowItWorks from '@/components/home/HowItWorks'
 
 export const runtime = "edge";
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
-      <header className="w-full border-b px-4 py-3 flex items-center justify-end">
-        <LoginButton />
-      </header>
-      <section className="p-4" />
-    </main>
+    <React.Fragment>
+      <Hero />
+      <HowItWorks/>
+      <Features />
+      <Pricing />
+      <Footer />
+    </React.Fragment>
   );
 }
