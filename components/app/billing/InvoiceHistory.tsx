@@ -11,7 +11,7 @@ const History = () => {
 
     return (
         <React.Fragment>
-            <Card className="border-0 shadow-sm bg-white gap-0">
+            <Card className="border-0 shadow-sm bg-white gap-0 pb-5">
                 <CardHeader>
                     <CardTitle className="flex items-center">
                         <FileChartColumnIncreasing className="h-5 w-5 mr-2" />

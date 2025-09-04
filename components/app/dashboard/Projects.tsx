@@ -186,13 +186,13 @@ const Projects = () => {
                                             ))}
                                         </div>
                                         <div className="flex gap-2">
-                                            <Link href={`/project/${project.id}/edit`}>
+                                            <Link href={`/projects/${project.id}/edit`}>
                                                 <Button variant="outline" size="sm">
                                                     <Edit className="w-4 h-4 mr-2" />
                                                     Edit
                                                 </Button>
                                             </Link>
-                                            <Link href={`/project/${project.id}/assets`}>
+                                            <Link href={`/projects/overview/${project.id}`}>
                                                 <Button size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white">
                                                     <FileText className="w-4 h-4 mr-2" />
                                                     View Assets
