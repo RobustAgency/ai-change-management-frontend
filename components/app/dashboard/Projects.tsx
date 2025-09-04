@@ -91,14 +91,22 @@ const Projects = () => {
                         <CardTitle className="text-2xl font-bold text-gray-900">Your Projects</CardTitle>
                         <CardDescription>Manage and track your change communication projects</CardDescription>
                     </div>
-                    <div className="relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                        <Input
-                            placeholder="Search projects..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="pl-10 w-64"
-                        />
+                    <div className="flex items-center gap-4">
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                            <Input
+                                placeholder="Search projects..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="pl-10 w-64"
+                            />
+                        </div>
+                        <Link href="/projects/create">
+                            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                                <Plus className="w-4 h-4 mr-2" />
+                                New Project
+                            </Button>
+                        </Link>
                     </div>
                 </div>
             </CardHeader>
@@ -151,10 +159,12 @@ const Projects = () => {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
-                                                <DropdownMenuItem>
-                                                    <Edit className="w-4 h-4 mr-2" />
-                                                    Edit Project
-                                                </DropdownMenuItem>
+                                                <Link href={`/projects/${project.id}`}>
+                                                    <DropdownMenuItem>
+                                                        <Edit className="w-4 h-4 mr-2" />
+                                                        Edit Project
+                                                    </DropdownMenuItem>
+                                                </Link>
                                                 <DropdownMenuItem>
                                                     <Download className="w-4 h-4 mr-2" />
                                                     Export All Assets
@@ -206,7 +216,7 @@ const Projects = () => {
                                 : "Create your first project to start generating professional change communication assets."}
                         </p>
                         {!searchTerm && (
-                            <Link href="/create-project">
+                            <Link href="/projects/create">
                                 <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
                                     <Plus className="w-4 h-4 mr-2" />
                                     Create Your First Project

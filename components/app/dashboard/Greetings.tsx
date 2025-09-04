@@ -15,7 +15,7 @@ const Greetings = () => {
                     </h1>
                     <p className="text-lg md:text-xl text-gray-600">Here's what's happening with your change communications</p>
                 </div>
-                <Link href="/create-project">
+                <Link href="/projects/create">
                     <Button size="lg" className="h-12 px-6 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold">
                         <Plus className="w-5 h-5 mr-2" />
                         Create New Project
