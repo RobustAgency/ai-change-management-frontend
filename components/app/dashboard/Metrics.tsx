@@ -11,7 +11,6 @@ const Metrics = () => {
                         <div>
                             <p className="text-sm font-medium text-gray-600 mb-1">Total Projects</p>
                             <p className="text-3xl font-bold text-gray-900">12</p>
-                            <p className="text-sm text-green-600 font-medium">+3 this month</p>
                         </div>
                         <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center">
                             <FileText className="w-6 h-6 text-indigo-600" />
@@ -26,7 +25,6 @@ const Metrics = () => {
                         <div>
                             <p className="text-sm font-medium text-gray-600 mb-1">This Month</p>
                             <p className="text-3xl font-bold text-gray-900">3</p>
-                            <p className="text-sm text-gray-600">2 remaining</p>
                         </div>
                         <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
                             <Calendar className="w-6 h-6 text-green-600" />
@@ -41,7 +39,6 @@ const Metrics = () => {
                         <div>
                             <p className="text-sm font-medium text-gray-600 mb-1">Assets Generated</p>
                             <p className="text-3xl font-bold text-gray-900">48</p>
-                            <p className="text-sm text-green-600 font-medium">24 this week</p>
                         </div>
                         <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center">
                             <Download className="w-6 h-6 text-indigo-600" />
@@ -56,7 +53,6 @@ const Metrics = () => {
                         <div>
                             <p className="text-sm font-medium text-gray-600 mb-1">Time Saved</p>
                             <p className="text-3xl font-bold text-gray-900">47h</p>
-                            <p className="text-sm text-gray-600">This month</p>
                         </div>
                         <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
                             <Clock className="w-6 h-6 text-green-600" />
