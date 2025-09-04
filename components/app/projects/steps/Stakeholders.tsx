@@ -5,21 +5,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Plus, Trash2, Users } from 'lucide-react';
-import type { ProjectFormData, Stakeholder } from '@/interfaces/Project';
+import { useProjectForm } from '../../../../providers/app/ProjectFormProvider';
 
-interface StakeholdersProps {
-    formData: ProjectFormData;
-    onStakeholderChange: (index: number, field: keyof Stakeholder, value: string) => void;
-    onAddStakeholder: () => void;
-    onRemoveStakeholder: (index: number) => void;
-}
-
-const Stakeholders: React.FC<StakeholdersProps> = ({
-    formData,
-    onStakeholderChange,
-    onAddStakeholder,
-    onRemoveStakeholder,
-}) => {
+const Stakeholders: React.FC = () => {
+    const {
+        formData,
+        handleStakeholderChange,
+        addStakeholder,
+        removeStakeholder,
+    } = useProjectForm();
     return (
         <div className="space-y-6">
             <div className="bg-indigo-50 p-6 rounded-lg border border-indigo-100">
@@ -38,7 +32,7 @@ const Stakeholders: React.FC<StakeholdersProps> = ({
                     type="button"
                     variant="outline"
                     size="sm"
-                    onClick={onAddStakeholder}
+                    onClick={addStakeholder}
                     className="h-10"
                 >
                     <Plus className="w-4 h-4 mr-2" />
@@ -56,7 +50,7 @@ const Stakeholders: React.FC<StakeholdersProps> = ({
                                     <Input
                                         placeholder="Enter stakeholder name"
                                         value={stakeholder.name || ''}
-                                        onChange={(e) => onStakeholderChange(index, 'name', e.target.value)}
+                                        onChange={(e) => handleStakeholderChange(index, 'name', e.target.value)}
                                         className="h-12"
                                     />
                                 </div>
@@ -65,7 +59,7 @@ const Stakeholders: React.FC<StakeholdersProps> = ({
                                     <Input
                                         placeholder="Enter department"
                                         value={stakeholder.department || ''}
-                                        onChange={(e) => onStakeholderChange(index, 'department', e.target.value)}
+                                        onChange={(e) => handleStakeholderChange(index, 'department', e.target.value)}
                                         className="h-12"
                                     />
                                 </div>
@@ -73,7 +67,7 @@ const Stakeholders: React.FC<StakeholdersProps> = ({
                                     <label className="text-sm font-medium text-gray-600">Role Level</label>
                                     <Select
                                         value={stakeholder.role_level || ''}
-                                        onValueChange={(value) => onStakeholderChange(index, 'role_level', value)}
+                                        onValueChange={(value) => handleStakeholderChange(index, 'role_level', value)}
                                     >
                                         <SelectTrigger className="h-12">
                                             <SelectValue placeholder="Select role level" />
@@ -91,7 +85,7 @@ const Stakeholders: React.FC<StakeholdersProps> = ({
                                 type="button"
                                 variant="destructive"
                                 size="sm"
-                                onClick={() => onRemoveStakeholder(index)}
+                                onClick={() => removeStakeholder(index)}
                                 className="h-10 w-10 p-0"
                             >
                                 <Trash2 className="w-4 h-4" />
@@ -106,7 +100,7 @@ const Stakeholders: React.FC<StakeholdersProps> = ({
                         <Button
                             type="button"
                             variant="outline"
-                            onClick={onAddStakeholder}
+                            onClick={addStakeholder}
                             className="h-12 px-6"
                         >
                             <Plus className="w-4 h-4 mr-2" />

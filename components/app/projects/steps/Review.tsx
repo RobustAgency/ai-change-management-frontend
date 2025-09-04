@@ -2,15 +2,10 @@
 
 import React from 'react';
 import { CheckCircle, FileText, Users, Calendar, Building, Target, Briefcase } from 'lucide-react';
-import type { ProjectFormData } from '@/interfaces/Project';
+import { useProjectForm } from '../../../../providers/app/ProjectFormProvider';
 
-interface ReviewProps {
-    formData: ProjectFormData;
-    customType: string;
-    project?: any;
-}
-
-const Review: React.FC<ReviewProps> = ({ formData, customType, project }) => {
+const Review: React.FC = () => {
+    const { formData, customType, project } = useProjectForm();
     const getTypeDisplay = () => {
         if (formData.type === 'other') {
             return customType || 'Not specified';

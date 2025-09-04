@@ -7,33 +7,21 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Upload, X } from 'lucide-react';
-import type { ProjectFormData } from '@/interfaces/Project';
+import { useProjectForm } from '../../../../providers/app/ProjectFormProvider';
 
-interface BasicInformationProps {
-    formData: ProjectFormData;
-    validationErrors: Record<string, string>;
-    customType: string;
-    clientLogo: File | null;
-    logoPreview: string | null;
-    onInputChange: (field: keyof ProjectFormData, value: string) => void;
-    onTypeChange: (value: string) => void;
-    onCustomTypeChange: (value: string) => void;
-    onLogoChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onRemoveLogo: () => void;
-}
-
-const BasicInformation: React.FC<BasicInformationProps> = ({
-    formData,
-    validationErrors,
-    customType,
-    clientLogo,
-    logoPreview,
-    onInputChange,
-    onTypeChange,
-    onCustomTypeChange,
-    onLogoChange,
-    onRemoveLogo,
-}) => {
+const BasicInformation: React.FC = () => {
+    const {
+        formData,
+        validationErrors,
+        customType,
+        clientLogo,
+        logoPreview,
+        handleInputChange,
+        handleTypeChange,
+        handleCustomTypeChange,
+        handleLogoChange,
+        removeLogo,
+    } = useProjectForm();
     const [localPreview, setLocalPreview] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const previewUrlRef = useRef<string | null>(null);
@@ -71,7 +59,7 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
             }
         } as unknown as React.ChangeEvent<HTMLInputElement>;
         
-        onLogoChange(syntheticEvent);
+        handleLogoChange(syntheticEvent);
     };
 
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -98,7 +86,7 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
         e.currentTarget.classList.remove('border-indigo-400', 'bg-indigo-50');
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
             handleFileSelect(file);
@@ -119,7 +107,7 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
         }
         
         // Call parent handler
-        onRemoveLogo();
+        removeLogo();
     };
 
     const openFileDialog = () => {
@@ -139,7 +127,7 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
                     <Input
                         id="name"
                         value={formData.name}
-                        onChange={(e) => onInputChange('name', e.target.value)}
+                        onChange={(e) => handleInputChange('name', e.target.value)}
                         placeholder="e.g., Q4 Digital Transformation Initiative"
                         className="h-12"
                     />
@@ -156,7 +144,7 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
                         id="launch_date"
                         type="date"
                         value={formData.launch_date}
-                        onChange={(e) => onInputChange('launch_date', e.target.value)}
+                        onChange={(e) => handleInputChange('launch_date', e.target.value)}
                         className="h-12"
                     />
                     {validationErrors.launch_date && (
@@ -168,7 +156,7 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
                     <Label htmlFor="type" className="text-base font-semibold text-gray-700">
                         Project Type
                     </Label>
-                    <Select value={formData.type} onValueChange={onTypeChange}>
+                    <Select value={formData.type} onValueChange={handleTypeChange}>
                         <SelectTrigger className="h-12">
                             <SelectValue placeholder="Select the type of change initiative" />
                         </SelectTrigger>
@@ -187,7 +175,7 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
                             <Input
                                 placeholder="Please specify the type of change"
                                 value={customType}
-                                onChange={(e) => onCustomTypeChange(e.target.value)}
+                                onChange={(e) => handleCustomTypeChange(e.target.value)}
                                 className="h-12"
                             />
                             {validationErrors.customType && (
@@ -201,7 +189,7 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
                     <Label htmlFor="status" className="text-base font-semibold text-gray-700">
                         Status *
                     </Label>
-                    <Select value={formData.status} onValueChange={(value) => onInputChange('status', value)}>
+                    <Select value={formData.status} onValueChange={(value) => handleInputChange('status', value)}>
                         <SelectTrigger className="h-12">
                             <SelectValue placeholder="Select status" />
                         </SelectTrigger>
@@ -224,7 +212,7 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
                     <Input
                         id="client_organization"
                         value={formData.client_organization}
-                        onChange={(e) => onInputChange('client_organization', e.target.value)}
+                        onChange={(e) => handleInputChange('client_organization', e.target.value)}
                         placeholder="Enter client organization name"
                         className="h-12"
                     />
@@ -238,7 +226,7 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
                 <Textarea
                     id="summary"
                     value={formData.summary}
-                    onChange={(e) => onInputChange('summary', e.target.value)}
+                    onChange={(e) => handleInputChange('summary', e.target.value)}
                     placeholder="Provide a brief overview of what this change initiative involves and its main objectives..."
                     rows={4}
                 />
@@ -294,7 +282,7 @@ const BasicInformation: React.FC<BasicInformationProps> = ({
                         id="client_logo"
                         type="file"
                         accept="image/png,image/jpg,image/jpeg,image/webp"
-                        onChange={handleInputChange}
+                        onChange={handleFileInputChange}
                         className="hidden"
                     />
                 </div>

@@ -4,17 +4,10 @@ import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import type { ProjectFormData } from '@/interfaces/Project';
+import { useProjectForm } from '../../../../providers/app/ProjectFormProvider';
 
-interface ProjectDetailsProps {
-    formData: ProjectFormData;
-    onInputChange: (field: keyof ProjectFormData, value: string) => void;
-}
-
-const ProjectDetails: React.FC<ProjectDetailsProps> = ({
-    formData,
-    onInputChange,
-}) => {
+const ProjectDetails: React.FC = () => {
+    const { formData, handleInputChange } = useProjectForm();
     return (
         <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -25,7 +18,7 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({
                     <Input
                         id="sponsor_name"
                         value={formData.sponsor_name}
-                        onChange={(e) => onInputChange('sponsor_name', e.target.value)}
+                        onChange={(e) => handleInputChange('sponsor_name', e.target.value)}
                         placeholder="Enter sponsor name"
                         className="h-12"
                     />
@@ -38,7 +31,7 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({
                     <Input
                         id="sponsor_title"
                         value={formData.sponsor_title}
-                        onChange={(e) => onInputChange('sponsor_title', e.target.value)}
+                        onChange={(e) => handleInputChange('sponsor_title', e.target.value)}
                         placeholder="Enter sponsor title"
                         className="h-12"
                     />
@@ -52,7 +45,7 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({
                 <Textarea
                     id="business_goals"
                     value={formData.business_goals}
-                    onChange={(e) => onInputChange('business_goals', e.target.value)}
+                    onChange={(e) => handleInputChange('business_goals', e.target.value)}
                     placeholder="Describe the business goals and what you want to achieve with this change..."
                     rows={4}
                 />
@@ -65,7 +58,7 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({
                 <Textarea
                     id="expected_outcomes"
                     value={formData.expected_outcomes}
-                    onChange={(e) => onInputChange('expected_outcomes', e.target.value)}
+                    onChange={(e) => handleInputChange('expected_outcomes', e.target.value)}
                     placeholder="Describe the expected outcomes and benefits this change will bring..."
                     rows={4}
                 />
