@@ -10,7 +10,6 @@ const adminRoutes = [
 const userRoutes = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutGrid },
     { href: "/billing", label: "Billing", icon: CreditCard },
-    { href: "/invoices", label: "Invoices", icon: FileChartColumnIncreasing },
 ];
 
 const baseRoutes = [

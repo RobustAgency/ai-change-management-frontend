@@ -1,20 +1,24 @@
-'use client'
-import { Card } from '@/components/ui/card'
 import React, { useState } from 'react'
 import { usePlans, useSubscribeToPlan } from '@/hooks/app/usePlans'
-import PlanCard from './PlanCard'
-import { Plan } from '@/interfaces/Plan'
 import Spinner from '@/components/ui/spinner'
 import { X } from 'lucide-react'
+import PlanCard from '@/components/app/billing/PlanCard'
+import { Plan } from '@/interfaces/Plan'
+import { useAuth } from '@/providers/AuthProvider'
 
-const Plans = () => {
+interface PlansProps { }
+
+const Plans: React.FC<PlansProps> = () => {
     const { plans, loading: plansLoading, error: plansError } = usePlans()
     const { subscribe, loading: subscribeLoading } = useSubscribeToPlan()
+    const { fetchProfile } = useAuth()
     const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null)
 
+
     const handleSubscribe = async (plan: Plan) => {
-        await subscribe(plan.id)
         setSelectedPlan(plan)
+        await subscribe(plan.id, fetchProfile)
+        setSelectedPlan(null)
     }
 
     if (plansLoading) {
@@ -36,18 +40,26 @@ const Plans = () => {
             </div>
         )
     }
+
     return (
-        <Card className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 border-0 shadow-none'>
-            {plans.map((plan) => (
-                <PlanCard
-                    key={plan.id}
-                    plan={plan}
-                    onSubscribe={handleSubscribe}
-                    isLoading={subscribeLoading}
-                    isSelected={selectedPlan?.id === plan.id}
-                />
-            ))}
-        </Card>
+        <React.Fragment>
+            <div className="text-center mb-8 sm:mb-12">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 sm:mb-4">Choose Your Plan</h2>
+                <p className="text-base sm:text-lg lg:text-xl text-gray-600">Upgrade or downgrade your subscription at any time</p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+                {plans.map((plan) => (
+                    <PlanCard
+                        key={plan.id}
+                        plan={plan}
+                        onSubscribe={handleSubscribe}
+                        isLoading={subscribeLoading}
+                        isSelected={selectedPlan?.id === plan.id}
+                    />
+                ))}
+            </div>
+        </React.Fragment>
     )
 }
 

@@ -1,18 +1,14 @@
 import React from 'react'
-import ContainerCard from '@/components/custom/ContainerCard'
-import Plans from '@/components/app/plans/Plans'
+import Billing from '@/components/app/billing/Billing';
 
 export const runtime = "edge";
 
 const PlansPage = () => {
 
     return (
-        <ContainerCard
-            title="Plans & Billing"
-            description="Choose the perfect plan for your needs"
-        >
-            <Plans />
-        </ContainerCard>
+        <React.Fragment>
+            <Billing />
+        </React.Fragment>
 
     )
 }
