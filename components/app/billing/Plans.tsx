@@ -6,9 +6,7 @@ import PlanCard from '@/components/app/billing/PlanCard'
 import { Plan } from '@/interfaces/Plan'
 import { useAuth } from '@/providers/AuthProvider'
 
-interface PlansProps { }
-
-const Plans: React.FC<PlansProps> = () => {
+const Plans = () => {
     const { plans, loading: plansLoading, error: plansError } = usePlans()
     const { subscribe, loading: subscribeLoading } = useSubscribeToPlan()
     const { fetchProfile } = useAuth()
@@ -49,13 +47,14 @@ const Plans: React.FC<PlansProps> = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
-                {plans.map((plan) => (
+                {plans.map((plan, index) => (
                     <PlanCard
                         key={plan.id}
                         plan={plan}
                         onSubscribe={handleSubscribe}
                         isLoading={subscribeLoading}
                         isSelected={selectedPlan?.id === plan.id}
+                        index={index}
                     />
                 ))}
             </div>

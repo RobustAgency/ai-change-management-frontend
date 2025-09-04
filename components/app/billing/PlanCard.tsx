@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import Spinner from '@/components/ui/spinner'
 import { CheckCircle, CreditCard, Star, Sparkles, Zap } from 'lucide-react'
 import type { Plan } from '@/interfaces/Plan'
@@ -15,6 +14,7 @@ interface PlanCardProps {
     onSubscribe: (plan: Plan) => Promise<void>
     isLoading: boolean
     isSelected: boolean
+    index: number
 }
 
 const PlanCard: React.FC<PlanCardProps> = ({
@@ -22,6 +22,7 @@ const PlanCard: React.FC<PlanCardProps> = ({
     onSubscribe,
     isLoading,
     isSelected,
+    index,
 }) => {
     const { cancel, loading: isCancelling } = useCancelSubscription()
     const { profile, fetchProfile } = useAuth()
@@ -31,15 +32,13 @@ const PlanCard: React.FC<PlanCardProps> = ({
     const isPopular = plan.name.toLowerCase().includes('pro') || plan.name.toLowerCase().includes('premium')
 
     const getPlanIcon = () => {
-        const planName = plan.name.toLowerCase()
-        if (planName.includes('free') || planName.includes('basic')) {
-            return <Star className="w-8 h-8 text-gray-600" />
-        } else if (planName.includes('starter') || planName.includes('standard')) {
-            return <Sparkles className="w-8 h-8 text-indigo-600" />
-        } else if (planName.includes('pro') || planName.includes('premium')) {
-            return <Zap className="w-8 h-8 text-purple-600" />
-        }
-        return <Star className="w-8 h-8 text-gray-600" />
+        const icons = [
+            <Star className="w-8 h-8 text-primary" />,
+            <Sparkles className="w-8 h-8 text-primary" />,
+            <Zap className="w-8 h-8 text-primary" />
+        ]
+        
+        return icons[index] || <Star className="w-8 h-8 text-primary" />
     }
 
     const handleCancelClick = () => {
