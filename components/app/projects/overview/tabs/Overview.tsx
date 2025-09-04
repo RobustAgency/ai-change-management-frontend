@@ -74,7 +74,7 @@ const Overview = ({ assetData }: OverviewProps) => {
             </div>
 
             {/* Quick Actions */}
-            <Card className="border-0 shadow-sm bg-white pb-5">
+            <Card className="border-0 shadow-sm bg-white">
                 <CardHeader>
                     <CardTitle className="text-xl">Quick Actions</CardTitle>
                     <CardDescription>Common tasks for your generated assets</CardDescription>

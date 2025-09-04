@@ -163,7 +163,7 @@ const Overview: React.FC<OverviewProps> = () => {
             </div>
 
             {/* Payment Method */}
-            <Card className="border-0 shadow-sm bg-white pb-5">
+            <Card className="border-0 shadow-sm bg-white">
                 <CardHeader>
                     <CardTitle className="text-lg sm:text-xl flex items-center gap-2">
                         <CreditCard className="w-4 h-4 sm:w-5 sm:h-5" />
