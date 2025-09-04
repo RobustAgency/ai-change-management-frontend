@@ -5,7 +5,7 @@ import { DataTable } from '@/components/custom/DataTable'
 import { createColumns } from './columns'
 import TableCard from '@/components/custom/TableCard'
 import { Button } from '@/components/ui/button'
-import { RefreshCw, AlertCircle } from 'lucide-react'
+import { RefreshCw, AlertCircle, Users } from 'lucide-react'
 import { useUsers } from '@/hooks/admin/useUsers'
 
 const UsersTable = () => {
@@ -37,8 +37,11 @@ const UsersTable = () => {
     }
 
     return (
-        <TableCard title="Users">
+        <TableCard>
             <DataTable
+                title="User Management"
+                description="Manage application users and their roles"
+                icon={Users}
                 columns={columns}
                 data={users}
                 searchKey="full_name"
@@ -46,6 +49,7 @@ const UsersTable = () => {
                 pagination={pagination}
                 onPageChange={handlePageChange}
                 onSearch={handleSearch}
+                cellPadding={'15px'}
                 loading={loading}
                 serverSide={false}
             />

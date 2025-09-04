@@ -4,8 +4,13 @@ import { ColumnDef, flexRender, getCoreRowModel, useReactTable, getPaginationRow
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
 import Pagniation from "./Pagniation"
+import { CardDescription, CardTitle } from "../ui/card"
+import { Search, Sparkle } from "lucide-react"
 
 interface DataTableProps<TData, TValue> {
+    title?: string
+    description?: string
+    icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
     searchKey?: string
@@ -18,11 +23,15 @@ interface DataTableProps<TData, TValue> {
     }
     onPageChange?: (page: number) => void
     onSearch?: (searchTerm: string) => void
+    cellPadding?: string | number
     loading?: boolean
     serverSide?: boolean
 }
 
 export function DataTable<TData, TValue>({
+    title,
+    description,
+    icon,
     columns,
     data,
     searchKey,
@@ -30,6 +39,7 @@ export function DataTable<TData, TValue>({
     pagination,
     onPageChange,
     onSearch,
+    cellPadding = '0.75rem',
     loading = false,
     serverSide = false,
 }: DataTableProps<TData, TValue>) {
@@ -84,28 +94,39 @@ export function DataTable<TData, TValue>({
 
     const currentPage = serverSide ? (pagination?.page || 1) : table.getState().pagination.pageIndex + 1
     const totalPages = serverSide ? (pagination?.totalPages || 0) : table.getPageCount()
+    const Icon = icon || Sparkle
 
     return (
         <div>
-            {searchKey && (
-                <div className="flex items-center mt-4">
-                    <Input
-                        placeholder={searchPlaceholder}
-                        value={serverSide ? searchValue : (table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
-                        onChange={handleSearchChange}
-                        className="max-w-sm"
-                        disabled={loading}
-                    />
+            <div className="flex items-center justify-between mb-4 ">
+                <div>
+                    <CardTitle className="text-xl flex items-center gap-2">
+                        <Icon className="w-5 h-5" />
+                        {title}
+                    </CardTitle>
+                    <CardDescription>{description}</CardDescription>
                 </div>
-            )}
-            <div className="rounded-md border mt-4">
+                {searchKey && (
+                    <div className="relative max-w-md">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                        <Input
+                            placeholder={searchPlaceholder}
+                            value={serverSide ? searchValue : (table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
+                            onChange={handleSearchChange}
+                            className="pl-10 max-w-sm"
+                            disabled={loading}
+                        />
+                    </div>
+                )}
+            </div>
+            <div className="mt-5">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead key={header.id}>
+                                        <TableHead key={header.id} className="py-4">
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
@@ -138,7 +159,9 @@ export function DataTable<TData, TValue>({
                                     data-state={row.getIsSelected() && "selected"}
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
+                                        <TableCell key={cell.id}
+                                            style={{ paddingTop: cellPadding, paddingBottom: cellPadding }}
+                                        >
                                             {flexRender(
                                                 cell.column.columnDef.cell,
                                                 cell.getContext()

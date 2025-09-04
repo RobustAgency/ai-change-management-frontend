@@ -7,6 +7,7 @@ export type TableUser = {
     id: string
     full_name: string
     email: string
+    created_at?: string
     status: "approved" | "rejected" | "pending"
 }
 
@@ -50,6 +51,7 @@ export const useUsers = (): UseUsersReturn => {
         id: user.id.toString(),
         full_name: user.name || 'N/A',
         email: user.email,
+        created_at: user.created_at,
         status: user.is_approved ? 'approved' : 'pending'
     })
 

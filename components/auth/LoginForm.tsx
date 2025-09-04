@@ -65,7 +65,7 @@ export function LoginForm() {
 
     return (
         <>
-            <Card className="shadow-xl border">
+            <Card className="shadow-xl border pb-5">
                 <CardHeader className="text-center">
                     <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-2">
                         <Sparkles className="w-8 h-8 text-white" />
