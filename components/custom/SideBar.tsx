@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LayoutGrid, Settings as SettingsIcon, LogOut, CreditCard, FileChartColumnIncreasing } from "lucide-react";
+import { LayoutGrid, Settings as SettingsIcon, LogOut, CreditCard } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
 import { Sparkles } from 'lucide-react'
 import { usePathname } from "next/navigation";

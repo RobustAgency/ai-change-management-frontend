@@ -48,7 +48,7 @@ const Hero = () => {
                 <div className="lg:max-w-md mx-auto w-full place-self-end">
                     <Card className="bg-gray-50 shadow-xl border-0 overflow-hidden pt-0">
                         <CardHeader className="text-center py-4 bg-gradient-to-r from-primary to-purple-600 text-white rounded-tr-2xl rounded-tl-2xl">
-                            <CardTitle className="text-xl font-bold">See What You'll Generate</CardTitle>
+                            <CardTitle className="text-xl font-bold">See What You&apos;ll Generate</CardTitle>
                             <CardDescription className="text-indigo-100">Professional assets ready in minutes</CardDescription>
                         </CardHeader>
                         <CardContent className="p-0">

@@ -7,11 +7,19 @@ interface Step {
     icon: React.ComponentType<{ className?: string }>;
 }
 
+import { Project } from '@/interfaces/Project';
+
+interface Step {
+    id: number;
+    title: string;
+    description: string;
+}
+
 interface ProgressHeaderProps {
     currentStep: number;
     steps: Step[];
     progress: number;
-    project?: any;
+    project?: Project | null;
 }
 
 const ProgressHeader: React.FC<ProgressHeaderProps> = ({

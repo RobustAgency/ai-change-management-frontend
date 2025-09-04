@@ -13,7 +13,7 @@ const Greetings = () => {
                     <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
                         Welcome back, <span className="text-indigo-600">{profile?.full_name}</span>
                     </h1>
-                    <p className="text-lg md:text-xl text-gray-600">Here's what's happening with your change communications</p>
+                    <p className="text-lg md:text-xl text-gray-600">Here&apos;s what&apos;s happening with your change communications</p>
                 </div>
                 <Link href="/projects/create">
                     <Button size="lg" className="h-12 px-6 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold">

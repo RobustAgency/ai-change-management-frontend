@@ -10,7 +10,9 @@ import { formatCurrency } from '@/utils/formatCurrency'
 import { formatDate } from '@/utils/formatDate'
 import Spinner from '@/components/ui/spinner'
 
-interface OverviewProps { }
+interface OverviewProps {
+    className?: string;
+}
 
 const Overview: React.FC<OverviewProps> = () => {
     const { profile } = useAuth()
@@ -35,7 +37,7 @@ const Overview: React.FC<OverviewProps> = () => {
             <div className="text-center py-12">
                 <Star className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">No Active Plan</h3>
-                <p className="text-gray-600">You don't have an active subscription plan.</p>
+                <p className="text-gray-600">You don&apos;t have an active subscription plan.</p>
             </div>
         )
     }

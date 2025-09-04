@@ -32,7 +32,7 @@ const History = () => {
                         <div className="text-center py-12">
                             <FileChartColumnIncreasing className="h-16 w-16 text-gray-400 mx-auto mb-4" />
                             <h3 className="text-lg font-semibold text-gray-900 mb-2">No Invoices Found</h3>
-                            <p className="text-gray-600">You don't have any billing history yet.</p>
+                            <p className="text-gray-600">You don&apos;t have any billing history yet.</p>
                         </div>
                     ) : (
                         <DataTable

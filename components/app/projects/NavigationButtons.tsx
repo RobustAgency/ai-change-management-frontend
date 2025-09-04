@@ -2,11 +2,13 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
+import { Project } from '@/interfaces/Project';
+
 interface NavigationButtonsProps {
     currentStep: number;
     totalSteps: number;
     loading: boolean;
-    project?: any;
+    project?: Project | null;
     onPrevious: () => void;
     onNext: () => void;
     onSubmit: () => void;

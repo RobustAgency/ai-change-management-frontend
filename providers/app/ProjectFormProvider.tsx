@@ -40,6 +40,7 @@ interface ProjectFormContextType {
     steps: Array<{
         id: number;
         title: string;
+        description: string;
         icon: any;
     }>;
 
@@ -85,21 +86,25 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
         {
             id: 1,
             title: 'Basic Info',
+            description: 'Project name, type, and logo',
             icon: FileText,
         },
         {
             id: 2,
             title: 'Project Details',
+            description: 'Goals, outcomes, and summary',
             icon: Briefcase,
         },
         {
             id: 3,
             title: 'Stakeholders',
+            description: 'Key project stakeholders',
             icon: Users,
         },
         {
             id: 4,
             title: 'Review',
+            description: 'Review and submit',
             icon: CheckCircle,
         },
     ];

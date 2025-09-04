@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
+import Image from 'next/image';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -14,7 +15,6 @@ const BasicInformation: React.FC = () => {
         formData,
         validationErrors,
         customType,
-        clientLogo,
         logoPreview,
         handleInputChange,
         handleTypeChange,
@@ -246,9 +246,11 @@ const BasicInformation: React.FC = () => {
                                 onDrop={handleDrop}
                                 onClick={openFileDialog}
                             >
-                                <img
+                                <Image
                                     src={displayImage}
                                     alt="Logo preview"
+                                    width={200}
+                                    height={128}
                                     className="max-w-full max-h-full object-contain rounded-md"
                                 />
                             </div>

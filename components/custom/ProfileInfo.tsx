@@ -4,10 +4,9 @@ import Link from 'next/link'
 import React, { useEffect } from 'react'
 
 const ProfileInfo = () => {
-    const { profile, fetchProfile, user } = useAuth()
+    const { profile, fetchProfile } = useAuth()
     const avatarUrl = profile?.avatar_url
     const displayName = profile?.full_name ?? "User"
-    const role = user?.user_metadata?.role ?? "user"
 
     useEffect(() => {
         if (!profile) {

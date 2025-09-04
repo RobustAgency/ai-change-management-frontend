@@ -33,9 +33,9 @@ const PlanCard: React.FC<PlanCardProps> = ({
 
     const getPlanIcon = () => {
         const icons = [
-            <Star className="w-8 h-8 text-primary" />,
-            <Sparkles className="w-8 h-8 text-primary" />,
-            <Zap className="w-8 h-8 text-primary" />
+            <Star key="star" className="w-8 h-8 text-primary" />,
+            <Sparkles key="sparkles" className="w-8 h-8 text-primary" />,
+            <Zap key="zap" className="w-8 h-8 text-primary" />
         ]
         
         return icons[index] || <Star className="w-8 h-8 text-primary" />

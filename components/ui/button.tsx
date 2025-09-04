@@ -42,7 +42,7 @@ const Button = React.forwardRef<
     asChild?: boolean
     loading?: boolean
   }
->(({ className, variant, size, loading, asChild = false, children, ...props }, ref) => {
+>(({ className, variant, size, loading, children, ...props }, ref) => {
   const [buttonWidth, setButtonWidth] = React.useState<number | undefined>(undefined)
   const buttonRef = React.useRef<HTMLButtonElement>(null)
 
