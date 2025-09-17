@@ -73,38 +73,6 @@ const Overview = ({ assetData }: OverviewProps) => {
                 </Card>
             </div>
 
-            {/* Quick Actions */}
-            <Card className="border-0 shadow-sm bg-white">
-                <CardHeader>
-                    <CardTitle className="text-xl">Quick Actions</CardTitle>
-                    <CardDescription>Common tasks for your generated assets</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid md:grid-cols-3 gap-4">
-                        <Button className="h-16 bg-indigo-600 hover:bg-indigo-700 text-white justify-start p-6">
-                            <Download className="w-5 h-5 mr-3" />
-                            <div className="text-left">
-                                <div className="font-semibold">Download All</div>
-                                <div className="text-sm opacity-90">Export complete package</div>
-                            </div>
-                        </Button>
-                        <Button variant="outline" className="h-16 justify-start p-6 bg-transparent">
-                            <Eye className="w-5 h-5 mr-3" />
-                            <div className="text-left">
-                                <div className="font-semibold">Preview All</div>
-                                <div className="text-sm text-gray-600">Review before download</div>
-                            </div>
-                        </Button>
-                        <Button variant="outline" className="h-16 justify-start p-6 bg-transparent">
-                            <RefreshCw className="w-5 h-5 mr-3" />
-                            <div className="text-left">
-                                <div className="font-semibold">Regenerate</div>
-                                <div className="text-sm text-gray-600">Create new versions</div>
-                            </div>
-                        </Button>
-                    </div>
-                </CardContent>
-            </Card>
         </React.Fragment>
     )
 }

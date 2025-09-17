@@ -1,7 +1,5 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Download } from "lucide-react"
 import ProjectOverviewTabs from "./ProjectOverviewTabs"
 import ContainerCard from "@/components/custom/ContainerCard"
 import { AssetData } from "./types"
@@ -112,16 +110,16 @@ export default function ProjectOverview() {
 
     return (
         <div className="bg-gray-50">
-            <div className="flex items-center justify-end space-x-3 pb-5">
-                {/* <Button variant="outline" size="sm">
+            {/* <div className="flex items-center justify-end space-x-3 pb-5">
+                <Button variant="outline" size="sm">
                     <RefreshCw className="w-4 h-4 mr-2" />
                     Regenerate All
-                </Button> */}
+                </Button>
                 <Button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold" size="sm">
                     <Download className="w-4 h-4 mr-2" />
                     Export All Assets
                 </Button>
-            </div>
+            </div> */}
             <ContainerCard
                 title="Q4 Digital Transformation"
                 description="Your AI-generated communication assets are ready for review and export"

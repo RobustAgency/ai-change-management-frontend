@@ -4,7 +4,7 @@ import { useActionState, useEffect, useRef, useState } from "react"
 import { useFormStatus } from "react-dom"
 import { toast } from "react-toastify"
 import type { User } from "@supabase/supabase-js"
-import { Loader2, Sparkles,  Eye, EyeOff } from "lucide-react"
+import { Loader2, Sparkles, Eye, EyeOff } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {

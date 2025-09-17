@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { FileText, Download, Edit, Eye } from "lucide-react"
 import { SlideDeck } from '../types'
+import DownloadPPTX from './DownloadPPTX'
 
 interface SlideDecksProps {
     slideDecks: SlideDeck[]
@@ -30,22 +31,16 @@ const SlideDecks = ({ slideDecks }: SlideDecksProps) => {
                         </div>
                     </CardHeader>
                     <CardContent className="p-6">
-                        <div className="flex gap-3">
-                            <Button variant="outline" size="sm" className="flex-1 h-12 bg-transparent">
+                        <div className="flex gap-3 justify-end">
+                            {/* <Button variant="outline" size="sm" className="flex-1 h-12 bg-transparent">
                                 <Eye className="w-4 h-4 mr-2" />
                                 Preview Slides
-                            </Button>
-                            <Button variant="outline" size="sm" className="flex-1 h-12 bg-transparent">
+                            </Button> */}
+                            {/* <Button variant="outline" size="sm" className="flex-1 h-12 bg-transparent">
                                 <Edit className="w-4 h-4 mr-2" />
                                 Edit Content
-                            </Button>
-                            <Button
-                                size="sm"
-                                className="flex-1 h-12 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold"
-                            >
-                                <Download className="w-4 h-4 mr-2" />
-                                Download PPTX
-                            </Button>
+                            </Button> */}
+                            <DownloadPPTX />
                         </div>
                     </CardContent>
                 </Card>
