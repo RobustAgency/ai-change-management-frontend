@@ -8,7 +8,7 @@ export type TableUser = {
     full_name: string
     email: string
     created_at?: string
-    status: "approved" | "rejected" | "pending"
+    status: "active" | "inactive"
 }
 
 interface PaginationState {
@@ -52,7 +52,7 @@ export const useUsers = (): UseUsersReturn => {
         full_name: user.name || 'N/A',
         email: user.email,
         created_at: user.created_at,
-        status: user.is_approved ? 'approved' : 'pending'
+        status: user.is_active ? 'active' : 'inactive'
     })
 
     const fetchUsers = useCallback(async () => {

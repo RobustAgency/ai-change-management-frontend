@@ -6,7 +6,7 @@ export interface User {
     name: string
     email: string
     email_verified_at: string | null
-    is_approved: boolean
+    is_active: boolean
     role: string
     created_at: string
     updated_at: string
@@ -18,7 +18,7 @@ export interface User {
 
 export interface UserFilters extends Record<string, unknown> {
     search?: string;
-    status?: 'pending' | 'approved' | 'rejected';
+    status?: 'active' | 'inactive';
     page?: number;
 }
 

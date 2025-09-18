@@ -15,6 +15,8 @@ interface ProjectFormContextType {
     // State Management
     currentStep: number;
     setCurrentStep: (step: number) => void;
+    loading: boolean;
+    setLoading: (loading: boolean) => void;
 
     // Form Actions
     handleInputChange: (field: keyof ProjectFormData, value: string) => void;
@@ -46,7 +48,6 @@ interface ProjectFormContextType {
 
     // External Props
     project?: Project | null;
-    loading?: boolean;
 }
 
 const ProjectFormContext = createContext<ProjectFormContextType | undefined>(undefined);
@@ -60,13 +61,14 @@ interface ProjectFormProviderProps {
 export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
     children,
     project,
-    loading = false,
+    loading: externalLoading = false,
 }) => {
     const [currentStep, setCurrentStep] = useState(1);
     const [clientLogo, setClientLogo] = useState<File | null>(null);
     const [logoPreview, setLogoPreview] = useState<string | null>(null);
     const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
     const [customType, setCustomType] = useState('');
+    const [loading, setLoading] = useState(externalLoading);
 
     const [formData, setFormData] = useState<ProjectFormData>({
         name: '',
@@ -108,6 +110,11 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
             icon: CheckCircle,
         },
     ];
+
+    // Sync external loading state with internal state
+    useEffect(() => {
+        setLoading(externalLoading);
+    }, [externalLoading]);
 
     // Populate form when editing
     useEffect(() => {
@@ -266,6 +273,8 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
         // State Management
         currentStep,
         setCurrentStep,
+        loading,
+        setLoading,
 
         // Form Actions
         handleInputChange,
@@ -292,7 +301,6 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
 
         // External Props
         project,
-        loading,
     };
 
     return (

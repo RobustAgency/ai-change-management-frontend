@@ -6,9 +6,8 @@ import { TableUser } from "@/hooks/admin/useUsers"
 
 const getStatusBadge = (status: TableUser["status"]) => {
     const colorMap = {
-        approved: "success" as const,
-        rejected: "error" as const,
-        pending: "warning" as const,
+        active: "success" as const,
+        inactive: "error" as const,
     }
 
     return (

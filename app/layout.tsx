@@ -5,22 +5,37 @@ import { createClient } from "@/lib/supabase/server";
 import AppShell from "@/layouts/AppShell";
 import ToastProvider from "@/providers/ToastProvider";
 
-export const runtime = "edge";
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+})
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  let user = null;
   let initialProfile: { id: string; full_name?: string | null; avatar_url?: string | null } | null = null;
-  if (user?.id) {
-    const { data } = await supabase
-      .from("profiles")
-      .select("id, full_name, avatar_url")
-      .eq("id", user.id)
-      .single();
-    initialProfile = (data as typeof initialProfile) ?? null;
-  }
 
+  try {
+    const supabase = await createClient();
+    const { data: { user: authUser }, error } = await supabase.auth.getUser();
+
+    if (!error && authUser) {
+      user = authUser;
+
+      try {
+        const { data } = await supabase
+          .from("profiles")
+          .select("id, full_name, avatar_url")
+          .eq("id", authUser.id)
+          .single();
+        initialProfile = (data as typeof initialProfile) ?? null;
+      } catch (profileError) {
+        console.warn('Failed to fetch user profile:', profileError);
+      }
+    }
+  } catch (error) {
+    console.error('Failed to initialize auth:', error);
+  }
   return (
     <html lang="en">
       <body className={`${inter.className} bg-gray-50`} suppressHydrationWarning={true}>

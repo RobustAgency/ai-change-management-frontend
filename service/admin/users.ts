@@ -12,12 +12,12 @@ export class UsersService {
         return response;
     }
 
-    async approveUser(userId: string): Promise<ApiResponse<User>> {
-        return await api.post<User>(`${this.baseUrl}/${userId}/approve`);
+    async activateUser(userId: string): Promise<ApiResponse<User>> {
+        return await api.post<User>(`${this.baseUrl}/${userId}/activate`);
     }
 
-    async rejectUser(userId: string): Promise<ApiResponse<User>> {
-        return await api.post<User>(`${this.baseUrl}/${userId}/revoke-approval`);
+    async deactivateUser(userId: string): Promise<ApiResponse<User>> {
+        return await api.post<User>(`${this.baseUrl}/${userId}/deactivate`);
     }
 
 }
