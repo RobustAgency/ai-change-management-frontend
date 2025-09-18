@@ -102,18 +102,18 @@ export const useSubscribeToPlan = () => {
             setLoading(true)
             const response = await PlansService.subscribe(planId)
 
-            if (response.error) {
-                if (response.data?.redirect_url) {
-                    window.location.href = response.data.redirect_url
+            if (!response.error) {
+                if (response.data?.checkout_url) {
+                    // Redirect to Stripe checkout
+                    window.location.href = response.data.checkout_url
                 } else {
-                    toast.error(response.message || 'Failed to subscribe to plan')
+                    toast.success(response.message || 'Successfully subscribed to plan')
+                    if (onSuccess) {
+                        await onSuccess()
+                    }
                 }
             } else {
-                toast.success(response.message || 'Successfully subscribed to plan')
-
-                if (onSuccess) {
-                    await onSuccess()
-                }
+                toast.error(response.message || 'Failed to subscribe to plan')
             }
 
             return response
@@ -127,6 +127,36 @@ export const useSubscribeToPlan = () => {
     }, [])
 
     return { subscribe, loading }
+}
+
+export const useSwitchPlan = () => {
+    const [loading, setLoading] = useState(false)
+
+    const switchPlan = useCallback(async (planId: number, onSuccess?: () => Promise<void>) => {
+        try {
+            setLoading(true)
+            const response = await PlansService.switchPlan(planId)
+
+            if (!response.error) {
+                toast.success(response.message || 'Successfully switched plan')
+                if (onSuccess) {
+                    await onSuccess()
+                }
+            } else {
+                toast.error(response.message || 'Failed to switch plan')
+            }
+
+            return response
+        } catch (err) {
+            const errorMessage = apiUtils.handleError(err, 'Failed to switch plan')
+            toast.error(errorMessage)
+            throw err
+        } finally {
+            setLoading(false)
+        }
+    }, [])
+
+    return { switchPlan, loading }
 }
 
 export const useCancelSubscription = () => {

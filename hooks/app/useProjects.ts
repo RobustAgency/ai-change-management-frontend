@@ -89,6 +89,7 @@ export const useProject = (id?: string) => {
     const [project, setProject] = useState<Project | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [isGeneratingContent, setIsGeneratingContent] = useState(false);
 
     const fetchProject = async () => {
         if (!id) return;
@@ -105,6 +106,30 @@ export const useProject = (id?: string) => {
         }
     };
 
+    const generateContent = async (): Promise<boolean> => {
+        if (!id) return false;
+        try {
+            setIsGeneratingContent(true);
+            setError(null);
+            const response = await projectService.generateContent(id);
+            if (response && response.error === false) {
+                return true;
+            } else {
+                const errorMessage = response?.message || 'Failed to generate content';
+                setError(errorMessage);
+                toast.error(errorMessage);
+                return false;
+            }
+        } catch (err) {
+            const errorMessage = err instanceof Error ? err.message : 'Failed to generate content';
+            setError(errorMessage);
+            toast.error(errorMessage);
+            return false;
+        } finally {
+            setIsGeneratingContent(false);
+        }
+    };
+
     useEffect(() => {
         if (id && id !== 'create') {
             fetchProject();
@@ -116,5 +141,7 @@ export const useProject = (id?: string) => {
         loading,
         error,
         fetchProject,
+        generateContent,
+        isGeneratingContent,
     };
 };

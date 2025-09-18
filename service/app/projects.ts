@@ -4,7 +4,7 @@ import type { Project, ProjectFormData, ProjectFilters, ProjectsResponse } from 
 export const projectService = {
   async getProjects(filters?: ProjectFilters): Promise<ProjectsResponse> {
     const params = new URLSearchParams();
-    
+
     if (filters?.term) params.append('term', filters.term);
     if (filters?.status) params.append('status', filters.status);
     if (filters?.per_page) params.append('per_page', filters.per_page.toString());
@@ -21,12 +21,12 @@ export const projectService = {
 
   async createProject(data: ProjectFormData): Promise<void> {
     const formData = new FormData();
-    
+
     // Add all the fields to FormData
     formData.append('name', data.name);
     formData.append('launch_date', data.launch_date);
     formData.append('status', data.status);
-    
+
     if (data.type) formData.append('type', data.type);
     if (data.sponsor_name) formData.append('sponsor_name', data.sponsor_name);
     if (data.sponsor_title) formData.append('sponsor_title', data.sponsor_title);
@@ -34,11 +34,21 @@ export const projectService = {
     if (data.summary) formData.append('summary', data.summary);
     if (data.expected_outcomes) formData.append('expected_outcomes', data.expected_outcomes);
     if (data.client_organization) formData.append('client_organization', data.client_organization);
-    
-    if (data.stakeholders) {
-      formData.append('stakeholders', JSON.stringify(data.stakeholders));
+
+    if (data.stakeholders && data.stakeholders.length > 0) {
+      data.stakeholders.forEach((stakeholder, index) => {
+        if (stakeholder.name) {
+          formData.append(`stakeholders[${index}][name]`, stakeholder.name);
+        }
+        if (stakeholder.department) {
+          formData.append(`stakeholders[${index}][department]`, stakeholder.department);
+        }
+        if (stakeholder.role_level) {
+          formData.append(`stakeholders[${index}][role_level]`, stakeholder.role_level);
+        }
+      });
     }
-    
+
     if (data.client_logo instanceof File) {
       formData.append('client_logo', data.client_logo);
     }
@@ -52,12 +62,12 @@ export const projectService = {
 
   async updateProject(id: string, data: ProjectFormData): Promise<Project> {
     const formData = new FormData();
-    
+
     // Add all the fields to FormData
     formData.append('name', data.name);
     formData.append('launch_date', data.launch_date);
     formData.append('status', data.status);
-    
+
     if (data.type) formData.append('type', data.type);
     if (data.sponsor_name) formData.append('sponsor_name', data.sponsor_name);
     if (data.sponsor_title) formData.append('sponsor_title', data.sponsor_title);
@@ -65,11 +75,22 @@ export const projectService = {
     if (data.summary) formData.append('summary', data.summary);
     if (data.expected_outcomes) formData.append('expected_outcomes', data.expected_outcomes);
     if (data.client_organization) formData.append('client_organization', data.client_organization);
-    
-    if (data.stakeholders) {
-      formData.append('stakeholders', JSON.stringify(data.stakeholders));
+
+    // Add stakeholders as individual FormData fields
+    if (data.stakeholders && data.stakeholders.length > 0) {
+      data.stakeholders.forEach((stakeholder, index) => {
+        if (stakeholder.name) {
+          formData.append(`stakeholders[${index}][name]`, stakeholder.name);
+        }
+        if (stakeholder.department) {
+          formData.append(`stakeholders[${index}][department]`, stakeholder.department);
+        }
+        if (stakeholder.role_level) {
+          formData.append(`stakeholders[${index}][role_level]`, stakeholder.role_level);
+        }
+      });
     }
-    
+
     if (data.client_logo instanceof File) {
       formData.append('client_logo', data.client_logo);
     }
@@ -84,5 +105,10 @@ export const projectService = {
 
   async deleteProject(id: string): Promise<void> {
     await api.delete(`/projects/${id}`);
+  },
+
+  async generateContent(id: string): Promise<any> {
+    const response = await api.get(`/projects/generate-content/${id}`);
+    return response;
   },
 };

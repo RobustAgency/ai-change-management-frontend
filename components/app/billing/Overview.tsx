@@ -87,12 +87,8 @@ const Overview: React.FC<OverviewProps> = () => {
                         </p>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                        <Button variant="outline" className="flex-1 h-10 sm:h-12 text-sm sm:text-base font-semibold bg-transparent">
-                            <CreditCard className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
-                            Update Payment Method
-                        </Button>
-                        <Button className="flex-1 h-10 sm:h-12 text-sm sm:text-base bg-indigo-600 hover:bg-indigo-700 text-white font-semibold">
+                    <div className="flex justify-end">
+                        <Button className="h-10 sm:h-12 text-sm sm:text-base bg-indigo-600 hover:bg-indigo-700 text-white font-semibold">
                             Upgrade Plan
                         </Button>
                     </div>
@@ -161,33 +157,6 @@ const Overview: React.FC<OverviewProps> = () => {
                     </CardContent>
                 </Card>
             </div>
-
-            {/* Payment Method */}
-            <Card className="border-0 shadow-sm bg-white">
-                <CardHeader>
-                    <CardTitle className="text-lg sm:text-xl flex items-center gap-2">
-                        <CreditCard className="w-4 h-4 sm:w-5 sm:h-5" />
-                        Payment Method
-                    </CardTitle>
-                    <CardDescription className="text-sm sm:text-base">Your default payment method for subscriptions</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 sm:p-6 border-2 border-gray-200 rounded-lg hover:border-indigo-300 transition-colors gap-4 sm:gap-0">
-                        <div className="flex items-center gap-3 sm:gap-4">
-                            <div className="w-10 h-6 sm:w-12 sm:h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-                                <span className="text-white text-xs font-bold">VISA</span>
-                            </div>
-                            <div>
-                                <p className="font-semibold text-gray-900 text-base sm:text-lg">•••• •••• •••• 4242</p>
-                                <p className="text-xs sm:text-sm text-gray-600">Expires 12/2027</p>
-                            </div>
-                        </div>
-                        <Button variant="outline" size="sm" className="h-8 sm:h-10 text-xs sm:text-sm bg-transparent self-start sm:self-auto">
-                            Update Card
-                        </Button>
-                    </div>
-                </CardContent>
-            </Card>
         </React.Fragment>
     )
 }

@@ -14,6 +14,7 @@ export interface User {
     pm_type: string | null
     pm_last_four: string | null
     trial_ends_at: string | null
+    plan_id: number | null
 }
 
 export interface UserFilters extends Record<string, unknown> {

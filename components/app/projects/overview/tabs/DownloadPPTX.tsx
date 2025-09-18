@@ -2,204 +2,223 @@ import { Button } from '@/components/ui/button'
 import { Download } from 'lucide-react'
 import React from 'react'
 import PptxGenJS from 'pptxgenjs'
+import { ProjectData } from '../types'
 
-// Dummy data structure - in the future this will come from API
-const dummyProjectData = {
-    projectName: "AI Change Management Initiative",
-    overview: "This project aims to implement AI-driven change management solutions to improve organizational efficiency and employee adaptation.",
-    keyMetrics: [
-        { metric: "Employee Adoption Rate", value: "85%", change: "+12%" },
-        { metric: "Process Efficiency", value: "92%", change: "+18%" },
-        { metric: "Cost Reduction", value: "$250K", change: "+25%" },
-        { metric: "Time Savings", value: "40 hrs/week", change: "+30%" }
-    ],
-    timeline: [
-        { phase: "Planning & Assessment", duration: "4 weeks", status: "Completed" },
-        { phase: "Implementation", duration: "8 weeks", status: "In Progress" },
-        { phase: "Training & Rollout", duration: "6 weeks", status: "Upcoming" },
-        { phase: "Evaluation & Optimization", duration: "4 weeks", status: "Planned" }
-    ],
-    risks: [
-        { risk: "Employee Resistance", impact: "Medium", mitigation: "Comprehensive training program" },
-        { risk: "Technical Integration", impact: "High", mitigation: "Phased rollout approach" },
-        { risk: "Budget Overrun", impact: "Low", mitigation: "Regular budget reviews" }
-    ]
+interface DownloadPPTXProps {
+    project?: ProjectData
 }
 
-const generatePPTX = async () => {
+const generatePPTX = async (project?: ProjectData) => {
     try {
         // Create a new presentation
         const pptx = new PptxGenJS()
 
-        // Slide 1: Title Slide
+        // Slide 1: Change Management Strategy (Title slide - matching your image)
         const slide1 = pptx.addSlide()
-        slide1.addText(dummyProjectData.projectName, {
-            x: 1,
-            y: 2,
-            w: 8,
-            h: 1.5,
-            fontSize: 32,
+        slide1.addText('Change Management Strategy', {
+            x: 0.5,
+            y: 1.5,
+            w: 9,
+            h: 2.5,
+            fontSize: 48,
             bold: true,
-            align: 'center',
-            color: '363636'
+            align: 'left',
+            color: '1F2937',
+            lineSpacing: 32
         })
-        slide1.addText('Project Overview & Analytics', {
-            x: 1,
-            y: 4,
-            w: 8,
+
+        slide1.addText(project?.name || 'S4/HANA Enterprise Resource Planning (ERP)', {
+            x: 0.5,
+            y: 4.5,
+            w: 9,
             h: 1,
-            fontSize: 18,
-            align: 'center',
-            color: '666666'
+            fontSize: 20,
+            align: 'left',
+            color: '6B7280'
         })
 
-        // Slide 2: Project Overview
+        // Slide 2: Agenda (Fixed slide - matching Google Slides format)
         const slide2 = pptx.addSlide()
-        slide2.addText('Project Overview', {
+        slide2.addText('Agenda', {
             x: 0.5,
             y: 0.5,
             w: 9,
-            h: 0.8,
-            fontSize: 24,
+            h: 1.5,
+            fontSize: 48,
             bold: true,
-            color: '363636'
-        })
-        slide2.addText(dummyProjectData.overview, {
-            x: 0.5,
-            y: 1.5,
-            w: 9,
-            h: 2,
-            fontSize: 14,
-            color: '666666',
-            valign: 'top'
+            align: 'left',
+            color: '1F2937'
         })
 
-        // Slide 3: Key Metrics
+        const agendaItems = [
+            'Executive Summary',
+            'Benefits',
+            'Key Stakeholders',
+            'High-Level Change Management Strategy'
+        ]
+
+        agendaItems.forEach((item, index) => {
+            slide2.addText(`• ${item}`, {
+                x: 0.5,
+                y: 2.5 + (index * 0.8),
+                w: 9,
+                h: 0.7,
+                fontSize: 18,
+                align: 'left',
+                color: '374151'
+            })
+        })
+
+        // Slide 3: Executive Summary (Dynamic content)
         const slide3 = pptx.addSlide()
-        slide3.addText('Key Performance Metrics', {
+        slide3.addText('Executive Summary', {
             x: 0.5,
             y: 0.5,
             w: 9,
-            h: 0.8,
-            fontSize: 24,
+            h: 1.5,
+            fontSize: 48,
             bold: true,
-            color: '363636'
+            align: 'left',
+            color: '1F2937'
         })
 
-        // Add metrics as a table
-        const metricsTableData = [
-            [
-                { text: 'Metric', options: { bold: true } },
-                { text: 'Current Value', options: { bold: true } },
-                { text: 'Change', options: { bold: true } }
-            ],
-            ...dummyProjectData.keyMetrics.map(item => [
-                { text: item.metric },
-                { text: item.value },
-                { text: item.change }
-            ])
-        ]
+        const executiveSummary = project?.ai_content?.slides_content?.executive_summary ||
+            'This project represents a strategic initiative to transform our organization through effective change management practices.'
 
-        slide3.addTable(metricsTableData, {
-            x: 1,
-            y: 1.5,
-            w: 8,
-            h: 3,
-            fontSize: 12,
-            border: { pt: 1, color: 'CCCCCC' },
-            fill: { color: 'F8F9FA' }
+        slide3.addText(executiveSummary, {
+            x: 0.5,
+            y: 2.5,
+            w: 9,
+            h: 4.5,
+            fontSize: 16,
+            align: 'left',
+            color: '374151',
+            wrap: true,
+            lineSpacing: 20
         })
 
-        // Slide 4: Timeline
+        // Slide 4: Benefits (Dynamic content)
         const slide4 = pptx.addSlide()
-        slide4.addText('Project Timeline', {
+        slide4.addText('Benefits', {
             x: 0.5,
             y: 0.5,
             w: 9,
-            h: 0.8,
-            fontSize: 24,
+            h: 1.5,
+            fontSize: 48,
             bold: true,
-            color: '363636'
+            align: 'left',
+            color: '1F2937'
         })
 
-        const timelineTableData = [
-            [
-                { text: 'Phase', options: { bold: true } },
-                { text: 'Duration', options: { bold: true } },
-                { text: 'Status', options: { bold: true } }
-            ],
-            ...dummyProjectData.timeline.map(item => [
-                { text: item.phase },
-                { text: item.duration },
-                { text: item.status }
-            ])
+        const benefits = project?.ai_content?.slides_content?.benefits || [
+            'Improved operational efficiency',
+            'Enhanced employee engagement',
+            'Reduced resistance to change',
+            'Better stakeholder alignment'
         ]
 
-        slide4.addTable(timelineTableData, {
-            x: 1,
-            y: 1.5,
-            w: 8,
-            h: 3,
-            fontSize: 12,
-            border: { pt: 1, color: 'CCCCCC' },
-            fill: { color: 'F8F9FA' }
+        benefits.forEach((benefit, index) => {
+            slide4.addText(`• ${benefit}`, {
+                x: 0.5,
+                y: 2.5 + (index * 0.8),
+                w: 9,
+                h: 0.7,
+                fontSize: 16,
+                align: 'left',
+                color: '374151',
+                wrap: true
+            })
         })
 
-        // Slide 5: Risk Assessment
+        // Slide 5: Key Stakeholders (Dynamic content)
         const slide5 = pptx.addSlide()
-        slide5.addText('Risk Assessment', {
+        slide5.addText('Key Stakeholders', {
             x: 0.5,
             y: 0.5,
             w: 9,
-            h: 0.8,
-            fontSize: 24,
+            h: 1.5,
+            fontSize: 48,
             bold: true,
-            color: '363636'
+            align: 'left',
+            color: '1F2937'
         })
 
-        const riskTableData = [
-            [
-                { text: 'Risk', options: { bold: true } },
-                { text: 'Impact', options: { bold: true } },
-                { text: 'Mitigation Strategy', options: { bold: true } }
-            ],
-            ...dummyProjectData.risks.map(item => [
-                { text: item.risk },
-                { text: item.impact },
-                { text: item.mitigation }
-            ])
+        const stakeholders = project?.ai_content?.slides_content?.key_stakeholders || [
+            'Executive Leadership',
+            'Project Team',
+            'End Users',
+            'IT Department',
+            'Human Resources'
         ]
 
-        slide5.addTable(riskTableData, {
-            x: 0.5,
-            y: 1.5,
-            w: 9,
-            h: 3,
-            fontSize: 11,
-            border: { pt: 1, color: 'CCCCCC' },
-            fill: { color: 'F8F9FA' }
+        stakeholders.forEach((stakeholder, index) => {
+            slide5.addText(`• ${stakeholder}`, {
+                x: 0.5,
+                y: 2.5 + (index * 0.8),
+                w: 9,
+                h: 0.7,
+                fontSize: 16,
+                align: 'left',
+                color: '374151',
+                wrap: true
+            })
         })
 
-        // Generate and download the presentation
-        const fileName = `${dummyProjectData.projectName.replace(/\s+/g, '_')}_Report_${new Date().toISOString().split('T')[0]}.pptx`
+        // Slide 6: High-Level Change Management Strategy (Dynamic content)
+        const slide6 = pptx.addSlide()
+        slide6.addText('High-Level Change Management Strategy', {
+            x: 0.5,
+            y: 0.5,
+            w: 9,
+            h: 1.5,
+            fontSize: 42,
+            bold: true,
+            align: 'left',
+            color: '1F2937'
+        })
+
+        const strategy = project?.ai_content?.slides_content?.change_management_strategy ||
+            'Our comprehensive change management strategy focuses on stakeholder engagement, communication, training, and continuous support to ensure successful transformation.'
+
+        slide6.addText(strategy, {
+            x: 0.5,
+            y: 2.5,
+            w: 9,
+            h: 4.5,
+            fontSize: 16,
+            align: 'left',
+            color: '374151',
+            wrap: true,
+            lineSpacing: 20
+        })
+
+        // Save the presentation
+        const fileName = project?.name ?
+            `${project.name.replace(/[^a-zA-Z0-9]/g, '_')}_Change_Management_Strategy.pptx` :
+            'Change_Management_Strategy.pptx'
+
         await pptx.writeFile({ fileName })
-        
-        console.log('PPTX generated successfully!')
+
+        console.log('PowerPoint presentation generated successfully!')
     } catch (error) {
-        console.error('Error generating PPTX:', error)
-        alert('Error generating PPTX. Please try again.')
+        console.error('Error generating PowerPoint:', error)
+        alert('Error generating PowerPoint presentation. Please try again.')
     }
 }
 
-const DownloadPPTX = () => {
+const DownloadPPTX = ({ project }: DownloadPPTXProps) => {
+    const handleDownload = () => {
+        generatePPTX(project)
+    }
+
     return (
         <Button
-            size="sm"
-            className="h-12 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold"
-            onClick={generatePPTX}
+            className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3"
+            onClick={handleDownload}
+            size="lg"
         >
             <Download className="w-4 h-4 mr-2" />
-            Download PPTX
+            Export All
         </Button>
     )
 }

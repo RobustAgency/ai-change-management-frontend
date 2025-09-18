@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { usePlans, useSubscribeToPlan } from '@/hooks/app/usePlans'
+import { usePlans, useSubscribeToPlan, useSwitchPlan } from '@/hooks/app/usePlans'
 import Spinner from '@/components/ui/spinner'
 import { X } from 'lucide-react'
 import PlanCard from '@/components/app/billing/PlanCard'
@@ -9,14 +9,26 @@ import { useAuth } from '@/providers/AuthProvider'
 const Plans = () => {
     const { plans, loading: plansLoading, error: plansError } = usePlans()
     const { subscribe, loading: subscribeLoading } = useSubscribeToPlan()
-    const { fetchProfile } = useAuth()
+    const { switchPlan, loading: switchLoading } = useSwitchPlan()
+    const { fetchProfile, profile } = useAuth()
     const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null)
 
+    const hasActiveSubscription = Boolean(profile?.plan_id)
 
-    const handleSubscribe = async (plan: Plan) => {
+    const handlePlanAction = async (plan: Plan) => {
         setSelectedPlan(plan)
-        await subscribe(plan.id, fetchProfile)
-        setSelectedPlan(null)
+
+        try {
+            if (hasActiveSubscription) {
+                // User has an active subscription - switch plans
+                await switchPlan(plan.id, fetchProfile)
+            } else {
+                // User doesn't have a subscription - subscribe to new plan
+                await subscribe(plan.id, fetchProfile)
+            }
+        } finally {
+            setSelectedPlan(null)
+        }
     }
 
     if (plansLoading) {
@@ -51,10 +63,12 @@ const Plans = () => {
                     <PlanCard
                         key={plan.id}
                         plan={plan}
-                        onSubscribe={handleSubscribe}
-                        isLoading={subscribeLoading}
+                        onSubscribe={handlePlanAction}
+                        isLoading={subscribeLoading || switchLoading}
                         isSelected={selectedPlan?.id === plan.id}
                         index={index}
+                        hasActiveSubscription={hasActiveSubscription}
+                        currentPlanId={profile?.plan_id}
                     />
                 ))}
             </div>

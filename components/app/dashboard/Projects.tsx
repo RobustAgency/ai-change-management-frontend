@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -19,38 +19,39 @@ import {
     Target,
 } from "lucide-react"
 import Link from "next/link"
+import { useProjects } from "@/hooks/app/useProjects"
+import Spinner from "@/components/ui/spinner"
+import type { Project } from "@/interfaces/Project"
 
-const projects = [
-    {
-        id: 1,
-        name: "Q4 Digital Transformation",
-        createdDate: "2024-01-15",
-        status: "completed",
-        audiences: ["Executives", "Managers", "Frontline Workers"],
-        lastModified: "2024-01-20",
-        assetsGenerated: 12,
-    },
-    {
-        id: 2,
-        name: "Remote Work Policy Update",
-        createdDate: "2024-01-10",
-        status: "in-progress",
-        audiences: ["Managers", "HR Team"],
-        lastModified: "2024-01-18",
-        assetsGenerated: 8,
-    },
-    {
-        id: 3,
-        name: "New CRM Implementation",
-        createdDate: "2024-01-05",
-        status: "draft",
-        audiences: ["Sales Team", "IT Team"],
-        lastModified: "2024-01-12",
-        assetsGenerated: 4,
-    },
-]
 const Projects = () => {
     const [searchTerm, setSearchTerm] = useState("")
+    const { projects, loading, error, fetchProjects, deleteProject } = useProjects()
+
+    useEffect(() => {
+        fetchProjects()
+    }, [])
+
+    // Debounce search to avoid too many API calls
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (searchTerm) {
+                fetchProjects({ term: searchTerm })
+            } else {
+                fetchProjects()
+            }
+        }, 500) // 500ms delay
+
+        return () => clearTimeout(timeoutId)
+    }, [searchTerm])
+
+    const handleDeleteProject = async (id: number) => {
+        if (window.confirm('Are you sure you want to delete this project?')) {
+            const success = await deleteProject(id.toString())
+            if (success) {
+                fetchProjects() // Refresh the list
+            }
+        }
+    }
 
     const getStatusConfig = (status: string) => {
         switch (status) {
@@ -64,6 +65,12 @@ const Projects = () => {
                 return {
                     color: "bg-indigo-100 text-indigo-800 border-indigo-200",
                     label: "In Progress",
+                    dot: "bg-indigo-500",
+                }
+            case "active":
+                return {
+                    color: "bg-indigo-100 text-indigo-800 border-indigo-200",
+                    label: "Active",
                     dot: "bg-indigo-500",
                 }
             case "draft":
@@ -81,7 +88,56 @@ const Projects = () => {
         }
     }
 
-    const filteredProjects = projects.filter((project) => project.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    // Get the projects array from the API response
+    const projectsData = projects?.data || []
+
+    // Helper function to get stakeholder count and display text
+    const getStakeholdersInfo = (stakeholders?: Project['stakeholders']) => {
+        if (!stakeholders || stakeholders.length === 0) {
+            return { count: 0, text: "No stakeholders" }
+        }
+        return {
+            count: stakeholders.length,
+            text: `${stakeholders.length} stakeholder${stakeholders.length !== 1 ? "s" : ""}`
+        }
+    }
+
+    // Helper function to get client logo URL
+    const getClientLogoUrl = (media?: Project['media']) => {
+        const clientLogo = media?.find(m => m.collection_name === 'client_logos')
+        return clientLogo?.original_url || null
+    }
+
+    if (loading) {
+        return (
+            <Card className="border-0 shadow-sm bg-white">
+                <CardContent className="py-12">
+                    <div className="flex items-center justify-center">
+                        <Spinner size="lg" />
+                    </div>
+                </CardContent>
+            </Card>
+        )
+    }
+
+    if (error) {
+        return (
+            <Card className="border-0 shadow-sm bg-white">
+                <CardContent className="py-12">
+                    <div className="text-center text-red-600">
+                        <p>Error loading projects: {error}</p>
+                        <Button
+                            onClick={() => fetchProjects()}
+                            className="mt-4"
+                            variant="outline"
+                        >
+                            Try Again
+                        </Button>
+                    </div>
+                </CardContent>
+            </Card>
+        )
+    }
 
     return (
         <Card className="border-0 shadow-sm bg-white">
@@ -111,10 +167,12 @@ const Projects = () => {
                 </div>
             </CardHeader>
             <CardContent>
-                {filteredProjects.length > 0 ? (
+                {projectsData.length > 0 ? (
                     <div className="space-y-4">
-                        {filteredProjects.map((project) => {
+                        {projectsData.map((project: Project) => {
                             const statusConfig = getStatusConfig(project.status)
+                            const stakeholdersInfo = getStakeholdersInfo(project.stakeholders)
+                            const logoUrl = getClientLogoUrl(project.media)
                             return (
                                 <div
                                     key={project.id}
@@ -132,23 +190,23 @@ const Projects = () => {
                                             <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
                                                 <div className="flex items-center gap-1">
                                                     <Calendar className="w-4 h-4" />
-                                                    Created {new Date(project.createdDate).toLocaleDateString()}
+                                                    Created {new Date(project.created_at || '').toLocaleDateString()}
                                                 </div>
                                                 <div className="flex items-center gap-1">
                                                     <Clock className="w-4 h-4" />
-                                                    Modified {new Date(project.lastModified).toLocaleDateString()}
+                                                    Modified {new Date(project.updated_at || '').toLocaleDateString()}
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-6">
                                                 <div className="flex items-center gap-2">
                                                     <Target className="w-4 h-4 text-gray-500" />
                                                     <span className="text-sm text-gray-600">
-                                                        {project.audiences.length} audience{project.audiences.length !== 1 ? "s" : ""}
+                                                        {stakeholdersInfo.text}
                                                     </span>
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <FileText className="w-4 h-4 text-gray-500" />
-                                                    <span className="text-sm text-gray-600">{project.assetsGenerated} assets generated</span>
+                                                    <span className="text-sm text-gray-600">Launch: {new Date(project.launch_date).toLocaleDateString()}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -165,11 +223,14 @@ const Projects = () => {
                                                         Edit Project
                                                     </DropdownMenuItem>
                                                 </Link>
-                                                <DropdownMenuItem>
+                                                {/* <DropdownMenuItem>
                                                     <Download className="w-4 h-4 mr-2" />
                                                     Export All Assets
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem className="text-red-600">
+                                                </DropdownMenuItem> */}
+                                                <DropdownMenuItem
+                                                    className="text-red-600"
+                                                    onClick={() => handleDeleteProject(project.id!)}
+                                                >
                                                     <Trash2 className="w-4 h-4 mr-2" />
                                                     Delete Project
                                                 </DropdownMenuItem>
@@ -179,19 +240,19 @@ const Projects = () => {
 
                                     <div className="flex items-center justify-between">
                                         <div className="flex flex-wrap gap-2">
-                                            {project.audiences.map((audience) => (
-                                                <Badge key={audience} className="text-xs bg-white">
-                                                    {audience}
+                                            {project.stakeholders?.map((stakeholder, index) => (
+                                                <Badge key={index} className="text-xs bg-white">
+                                                    {stakeholder.name || stakeholder.department || `Stakeholder ${index + 1}`}
                                                 </Badge>
                                             ))}
                                         </div>
                                         <div className="flex gap-2">
-                                            <Link href={`/projects/${project.id}/edit`}>
+                                            {/* <Link href={`/projects/${project.id}/edit`}>
                                                 <Button variant="outline" size="sm">
                                                     <Edit className="w-4 h-4 mr-2" />
                                                     Edit
                                                 </Button>
-                                            </Link>
+                                            </Link> */}
                                             <Link href={`/projects/overview/${project.id}`}>
                                                 <Button size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white">
                                                     <FileText className="w-4 h-4 mr-2" />

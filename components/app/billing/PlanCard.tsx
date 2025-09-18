@@ -15,6 +15,8 @@ interface PlanCardProps {
     isLoading: boolean
     isSelected: boolean
     index: number
+    hasActiveSubscription?: boolean
+    currentPlanId?: number | null
 }
 
 const PlanCard: React.FC<PlanCardProps> = ({
@@ -23,10 +25,12 @@ const PlanCard: React.FC<PlanCardProps> = ({
     isLoading,
     isSelected,
     index,
+    hasActiveSubscription = false,
+    currentPlanId,
 }) => {
     const { cancel, loading: isCancelling } = useCancelSubscription()
     const { profile, fetchProfile } = useAuth()
-    const isCurrentPlan = profile?.plan_id === plan.id
+    const isCurrentPlan = currentPlanId === plan.id
     const [showCancelModal, setShowCancelModal] = useState(false)
 
     const isPopular = plan.name.toLowerCase().includes('pro') || plan.name.toLowerCase().includes('premium')
@@ -37,7 +41,7 @@ const PlanCard: React.FC<PlanCardProps> = ({
             <Sparkles key="sparkles" className="w-8 h-8 text-primary" />,
             <Zap key="zap" className="w-8 h-8 text-primary" />
         ]
-        
+
         return icons[index] || <Star className="w-8 h-8 text-primary" />
     }
 
@@ -118,7 +122,12 @@ const PlanCard: React.FC<PlanCardProps> = ({
                         ) : (
                             <CreditCard className="h-4 w-4 mr-2" />
                         )}
-                        {isCurrentPlan ? 'Cancel Plan' : 'Subscribe'}
+                        {isCurrentPlan 
+                            ? 'Cancel Plan' 
+                            : hasActiveSubscription 
+                                ? 'Switch to Plan' 
+                                : 'Subscribe'
+                        }
                     </Button>
                 </CardContent>
             </Card>

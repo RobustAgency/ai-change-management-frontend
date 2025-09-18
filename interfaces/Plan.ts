@@ -32,7 +32,7 @@ export interface SubscriptionResponse {
     error: boolean
     message: string
     data: {
-        redirect_url?: string
+        checkout_url?: string
     } | null
 }
 

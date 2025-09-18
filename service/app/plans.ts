@@ -14,10 +14,17 @@ export class PlansService {
     }
 
     /**
-     * Subscribe to a plan
+     * Subscribe to a plan (for new subscriptions)
      */
     static async subscribe(planId: number) {
-        return api.get<{ redirect_url?: string }>(`/plans/subscribe/${planId}`)
+        return api.get<{ checkout_url?: string }>(`/plans/subscribe/${planId}`)
+    }
+
+    /**
+     * Switch to a different plan (for existing subscriptions)
+     */
+    static async switchPlan(planId: number) {
+        return api.get(`/plans/switch/${planId}`)
     }
 
     /**

@@ -15,7 +15,7 @@ interface ProjectOverviewTabsProps {
 const ProjectOverviewTabs = ({ assetData, onEdit }: ProjectOverviewTabsProps) => {
     const tabs = [
         { value: "overview", label: "Overview", component: <Overview assetData={assetData} /> },
-        { value: "slides", label: "Slide Decks", component: <SlideDecks slideDecks={assetData.slideDecks} /> },
+        { value: "slides", label: "Slide Decks", component: <SlideDecks slideDecks={assetData.slideDecks} project={assetData.project} /> },
         { value: "emails", label: "Email Series", component: <EmailSeries emails={assetData.emails} onEdit={onEdit} /> },
         { value: "video", label: "Video Script", component: <VideoScript videoScript={assetData.videoScript} /> },
         { value: "faqs", label: "FAQs", component: <FAQs faqs={assetData.faqs} /> },
