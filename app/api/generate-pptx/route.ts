@@ -1,218 +1,217 @@
 import { NextRequest, NextResponse } from 'next/server';
 import PptxGenJS from 'pptxgenjs';
 
-// Use Node.js runtime for this API route to support pptxgenjs
-export const runtime = 'nodejs';
+export const runtime = 'edge';
 
 export async function POST(request: NextRequest) {
-  try {
-    const projectData = await request.json();
-    
-    // Create a new presentation
-    const pptx = new PptxGenJS();
+    try {
+        const projectData = await request.json();
 
-    // Slide 1: Change Management Strategy (Title slide)
-    const slide1 = pptx.addSlide();
-    slide1.addText('Change Management Strategy', {
-      x: 0.5,
-      y: 1.5,
-      w: 9,
-      h: 2.5,
-      fontSize: 48,
-      bold: true,
-      align: 'left',
-      color: '1F2937',
-      lineSpacing: 32
-    });
+        // Create a new presentation
+        const pptx = new PptxGenJS();
 
-    slide1.addText(projectData?.name || 'S4/HANA Enterprise Resource Planning (ERP)', {
-      x: 0.5,
-      y: 4.5,
-      w: 9,
-      h: 1,
-      fontSize: 20,
-      align: 'left',
-      color: '6B7280'
-    });
+        // Slide 1: Change Management Strategy (Title slide)
+        const slide1 = pptx.addSlide();
+        slide1.addText('Change Management Strategy', {
+            x: 0.5,
+            y: 1.5,
+            w: 9,
+            h: 2.5,
+            fontSize: 48,
+            bold: true,
+            align: 'left',
+            color: '1F2937',
+            lineSpacing: 32
+        });
 
-    // Slide 2: Agenda
-    const slide2 = pptx.addSlide();
-    slide2.addText('Agenda', {
-      x: 0.5,
-      y: 0.5,
-      w: 9,
-      h: 1.5,
-      fontSize: 48,
-      bold: true,
-      align: 'left',
-      color: '1F2937'
-    });
+        slide1.addText(projectData?.name || 'S4/HANA Enterprise Resource Planning (ERP)', {
+            x: 0.5,
+            y: 4.5,
+            w: 9,
+            h: 1,
+            fontSize: 20,
+            align: 'left',
+            color: '6B7280'
+        });
 
-    const agendaItems = [
-      'Executive Summary',
-      'Benefits',
-      'Key Stakeholders',
-      'High-Level Change Management Strategy'
-    ];
+        // Slide 2: Agenda
+        const slide2 = pptx.addSlide();
+        slide2.addText('Agenda', {
+            x: 0.5,
+            y: 0.5,
+            w: 9,
+            h: 1.5,
+            fontSize: 48,
+            bold: true,
+            align: 'left',
+            color: '1F2937'
+        });
 
-    agendaItems.forEach((item, index) => {
-      slide2.addText(`• ${item}`, {
-        x: 0.5,
-        y: 2.5 + (index * 0.8),
-        w: 9,
-        h: 0.7,
-        fontSize: 18,
-        align: 'left',
-        color: '374151'
-      });
-    });
+        const agendaItems = [
+            'Executive Summary',
+            'Benefits',
+            'Key Stakeholders',
+            'High-Level Change Management Strategy'
+        ];
 
-    // Slide 3: Executive Summary
-    const slide3 = pptx.addSlide();
-    slide3.addText('Executive Summary', {
-      x: 0.5,
-      y: 0.5,
-      w: 9,
-      h: 1.5,
-      fontSize: 48,
-      bold: true,
-      align: 'left',
-      color: '1F2937'
-    });
+        agendaItems.forEach((item, index) => {
+            slide2.addText(`• ${item}`, {
+                x: 0.5,
+                y: 2.5 + (index * 0.8),
+                w: 9,
+                h: 0.7,
+                fontSize: 18,
+                align: 'left',
+                color: '374151'
+            });
+        });
 
-    const executiveSummary = projectData?.ai_content?.slides_content?.executive_summary ||
-      'This project represents a strategic initiative to transform our organization through effective change management practices.';
+        // Slide 3: Executive Summary
+        const slide3 = pptx.addSlide();
+        slide3.addText('Executive Summary', {
+            x: 0.5,
+            y: 0.5,
+            w: 9,
+            h: 1.5,
+            fontSize: 48,
+            bold: true,
+            align: 'left',
+            color: '1F2937'
+        });
 
-    slide3.addText(executiveSummary, {
-      x: 0.5,
-      y: 2.5,
-      w: 9,
-      h: 4.5,
-      fontSize: 16,
-      align: 'left',
-      color: '374151',
-      wrap: true,
-      lineSpacing: 20
-    });
+        const executiveSummary = projectData?.ai_content?.slides_content?.executive_summary ||
+            'This project represents a strategic initiative to transform our organization through effective change management practices.';
 
-    // Slide 4: Benefits
-    const slide4 = pptx.addSlide();
-    slide4.addText('Benefits', {
-      x: 0.5,
-      y: 0.5,
-      w: 9,
-      h: 1.5,
-      fontSize: 48,
-      bold: true,
-      align: 'left',
-      color: '1F2937'
-    });
+        slide3.addText(executiveSummary, {
+            x: 0.5,
+            y: 2.5,
+            w: 9,
+            h: 4.5,
+            fontSize: 16,
+            align: 'left',
+            color: '374151',
+            wrap: true,
+            lineSpacing: 20
+        });
 
-    const benefits = projectData?.ai_content?.slides_content?.benefits || [
-      'Improved operational efficiency',
-      'Enhanced employee engagement',
-      'Reduced resistance to change',
-      'Better stakeholder alignment'
-    ];
+        // Slide 4: Benefits
+        const slide4 = pptx.addSlide();
+        slide4.addText('Benefits', {
+            x: 0.5,
+            y: 0.5,
+            w: 9,
+            h: 1.5,
+            fontSize: 48,
+            bold: true,
+            align: 'left',
+            color: '1F2937'
+        });
 
-    benefits.forEach((benefit: string, index: number) => {
-      slide4.addText(`• ${benefit}`, {
-        x: 0.5,
-        y: 2.5 + (index * 0.8),
-        w: 9,
-        h: 0.7,
-        fontSize: 16,
-        align: 'left',
-        color: '374151',
-        wrap: true
-      });
-    });
+        const benefits = projectData?.ai_content?.slides_content?.benefits || [
+            'Improved operational efficiency',
+            'Enhanced employee engagement',
+            'Reduced resistance to change',
+            'Better stakeholder alignment'
+        ];
 
-    // Slide 5: Key Stakeholders
-    const slide5 = pptx.addSlide();
-    slide5.addText('Key Stakeholders', {
-      x: 0.5,
-      y: 0.5,
-      w: 9,
-      h: 1.5,
-      fontSize: 48,
-      bold: true,
-      align: 'left',
-      color: '1F2937'
-    });
+        benefits.forEach((benefit: string, index: number) => {
+            slide4.addText(`• ${benefit}`, {
+                x: 0.5,
+                y: 2.5 + (index * 0.8),
+                w: 9,
+                h: 0.7,
+                fontSize: 16,
+                align: 'left',
+                color: '374151',
+                wrap: true
+            });
+        });
 
-    const stakeholders = projectData?.ai_content?.slides_content?.key_stakeholders || [
-      'Executive Leadership',
-      'Project Team',
-      'End Users',
-      'IT Department',
-      'Human Resources'
-    ];
+        // Slide 5: Key Stakeholders
+        const slide5 = pptx.addSlide();
+        slide5.addText('Key Stakeholders', {
+            x: 0.5,
+            y: 0.5,
+            w: 9,
+            h: 1.5,
+            fontSize: 48,
+            bold: true,
+            align: 'left',
+            color: '1F2937'
+        });
 
-    stakeholders.forEach((stakeholder: string, index: number) => {
-      slide5.addText(`• ${stakeholder}`, {
-        x: 0.5,
-        y: 2.5 + (index * 0.8),
-        w: 9,
-        h: 0.7,
-        fontSize: 16,
-        align: 'left',
-        color: '374151',
-        wrap: true
-      });
-    });
+        const stakeholders = projectData?.ai_content?.slides_content?.key_stakeholders || [
+            'Executive Leadership',
+            'Project Team',
+            'End Users',
+            'IT Department',
+            'Human Resources'
+        ];
 
-    // Slide 6: High-Level Change Management Strategy
-    const slide6 = pptx.addSlide();
-    slide6.addText('High-Level Change Management Strategy', {
-      x: 0.5,
-      y: 0.5,
-      w: 9,
-      h: 1.5,
-      fontSize: 42,
-      bold: true,
-      align: 'left',
-      color: '1F2937'
-    });
+        stakeholders.forEach((stakeholder: string, index: number) => {
+            slide5.addText(`• ${stakeholder}`, {
+                x: 0.5,
+                y: 2.5 + (index * 0.8),
+                w: 9,
+                h: 0.7,
+                fontSize: 16,
+                align: 'left',
+                color: '374151',
+                wrap: true
+            });
+        });
 
-    const strategy = projectData?.ai_content?.slides_content?.change_management_strategy ||
-      'Our comprehensive change management strategy focuses on stakeholder engagement, communication, training, and continuous support to ensure successful transformation.';
+        // Slide 6: High-Level Change Management Strategy
+        const slide6 = pptx.addSlide();
+        slide6.addText('High-Level Change Management Strategy', {
+            x: 0.5,
+            y: 0.5,
+            w: 9,
+            h: 1.5,
+            fontSize: 42,
+            bold: true,
+            align: 'left',
+            color: '1F2937'
+        });
 
-    slide6.addText(strategy, {
-      x: 0.5,
-      y: 2.5,
-      w: 9,
-      h: 4.5,
-      fontSize: 16,
-      align: 'left',
-      color: '374151',
-      wrap: true,
-      lineSpacing: 20
-    });
+        const strategy = projectData?.ai_content?.slides_content?.change_management_strategy ||
+            'Our comprehensive change management strategy focuses on stakeholder engagement, communication, training, and continuous support to ensure successful transformation.';
 
-    // Generate the presentation as a buffer
-    const pptxData = await pptx.write({ outputType: 'nodebuffer' }) as Buffer;
+        slide6.addText(strategy, {
+            x: 0.5,
+            y: 2.5,
+            w: 9,
+            h: 4.5,
+            fontSize: 16,
+            align: 'left',
+            color: '374151',
+            wrap: true,
+            lineSpacing: 20
+        });
 
-    // Create filename
-    const fileName = projectData?.name 
-      ? `${projectData.name.replace(/[^a-zA-Z0-9]/g, '_')}_Change_Management_Strategy.pptx`
-      : 'Change_Management_Strategy.pptx';
+        // Generate the presentation as a buffer
+        const pptxData = await pptx.write({ outputType: 'nodebuffer' }) as Buffer;
 
-    // Return the file as a download
-    return new NextResponse(new Uint8Array(pptxData), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-        'Content-Disposition': `attachment; filename="${fileName}"`,
-        'Content-Length': pptxData.byteLength.toString(),
-      },
-    });
+        // Create filename
+        const fileName = projectData?.name
+            ? `${projectData.name.replace(/[^a-zA-Z0-9]/g, '_')}_Change_Management_Strategy.pptx`
+            : 'Change_Management_Strategy.pptx';
 
-  } catch (error) {
-    console.error('Error generating PowerPoint:', error);
-    return NextResponse.json(
-      { error: 'Failed to generate PowerPoint presentation' },
-      { status: 500 }
-    );
-  }
+        // Return the file as a download
+        return new NextResponse(new Uint8Array(pptxData), {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                'Content-Disposition': `attachment; filename="${fileName}"`,
+                'Content-Length': pptxData.byteLength.toString(),
+            },
+        });
+
+    } catch (error) {
+        console.error('Error generating PowerPoint:', error);
+        return NextResponse.json(
+            { error: 'Failed to generate PowerPoint presentation' },
+            { status: 500 }
+        );
+    }
 }
