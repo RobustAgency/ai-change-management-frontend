@@ -11,13 +11,12 @@ const UnApprovedAccount = () => {
                         <AlertCircle className="w-8 h-8 text-yellow-600" />
                     </div>
                     <CardTitle className="text-xl font-semibold text-gray-900">
-                        Account Pending Approval
+                        Account Pending Activation
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
                     <p className="text-gray-600 mb-6">
-                        Your account is pending approval by an administrator.
-                        You will be notified once your account has been reviewed and approved.
+                        Your account is pending activation by an administrator.
                     </p>
                     <div className="text-sm text-gray-500">
                         Please check back later.
