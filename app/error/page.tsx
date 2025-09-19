@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { BugIcon } from "lucide-react";
 
-export const runtime = "edge";
+export const dynamic = 'force-dynamic'
 
 export default function ErrorPage() {
     return (

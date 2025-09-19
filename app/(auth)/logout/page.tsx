@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { signout } from "@/lib/auth-actions";
 
-export const runtime = "edge";
+export const dynamic = 'force-dynamic'
 
 const LogoutPage = () => {
     const logout = async () => {

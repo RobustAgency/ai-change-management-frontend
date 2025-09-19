@@ -5,6 +5,8 @@ import { createClient } from "@/lib/supabase/server";
 import AppShell from "@/layouts/AppShell";
 import ToastProvider from "@/providers/ToastProvider";
 
+export const dynamic = 'force-dynamic'
+
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',

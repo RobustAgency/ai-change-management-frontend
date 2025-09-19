@@ -3,7 +3,7 @@ import UsersTable from '@/components/admin/dashboard/UsersTable'
 import ContainerCard from '@/components/custom/ContainerCard';
 import Metrics from '@/components/admin/dashboard/Metrics';
 
-export const runtime = "edge";
+export const dynamic = 'force-dynamic'
 
 const AdminDashboardPage = () => {
     return (

@@ -1,6 +1,6 @@
 import { ForgotPasswordForm } from '@/components/auth/ForgotPasswordForm'
 
-export const runtime = "edge";
+export const dynamic = 'force-dynamic'
 
 export default function ForgotPasswordPage() {
     return (

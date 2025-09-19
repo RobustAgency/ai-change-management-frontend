@@ -4,7 +4,7 @@ import Greetings from '@/components/app/dashboard/Greetings';
 import Metrics from '@/components/app/dashboard/Metrics';
 import Projects from '@/components/app/dashboard/Projects';
 
-export const runtime = "edge";
+export const dynamic = 'force-dynamic'
 
 const DashboardPage = () => {
     return (

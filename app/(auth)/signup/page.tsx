@@ -1,7 +1,7 @@
 import React from 'react'
 import { SignUpForm } from '@/components/auth/SignupForm'
 
-export const runtime = "edge";
+export const dynamic = 'force-dynamic'
 
 const SignPage = () => {
     return (

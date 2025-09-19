@@ -6,7 +6,7 @@ import Features from '@/components/home/Features'
 import Pricing from '@/components/home/Pricing'
 import HowItWorks from '@/components/home/HowItWorks'
 
-export const runtime = "edge";
+export const dynamic = 'force-dynamic'
 
 export default function Home() {
   return (

@@ -1,7 +1,7 @@
 import React from 'react'
 import Billing from '@/components/app/billing/Billing';
 
-export const runtime = "edge";
+export const dynamic = 'force-dynamic'
 
 const PlansPage = () => {
 
