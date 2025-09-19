@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack --port 3002",
-    "build": "next build && npx @opennextjs/cloudflare@1.8.3 build",
+    "build": "next build",
+    "build:cloudflare": "npx @opennextjs/cloudflare@1.8.3 build",
+    "build:full": "npm run build && npm run build:cloudflare",
     "build:next": "next build",
     "start": "next start",
     "lint": "next lint",

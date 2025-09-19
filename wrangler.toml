@@ -1,4 +1,4 @@
-name = "ai-change-management-frontend"
+name = 'ai-management'
 main = ".open-next/worker.js"
 compatibility_date = "2024-09-15"
 compatibility_flags = ["nodejs_compat"]
