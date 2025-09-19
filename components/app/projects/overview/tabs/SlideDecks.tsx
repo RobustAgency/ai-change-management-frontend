@@ -1,7 +1,6 @@
 import React from 'react'
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { FileText, Download } from "lucide-react"
+import { Download } from "lucide-react"
 import { SlideDeck, ProjectData } from '../types'
 import dynamic from 'next/dynamic'
 
@@ -68,126 +67,125 @@ const getSlideTitle = (deck: SlideDeck, slideIndex: number): string => {
 }
 
 // Helper function to render slide content
-const renderSlideContent = (deck: SlideDeck, slideIndex: number) => {
+const renderSlideContent = (deck: SlideDeck, slideIndex: number, project?: ProjectData) => {
     if (deck.title.toLowerCase().includes('executive')) {
-        return renderExecutiveSummarySlide(slideIndex)
+        return renderExecutiveSummarySlide(slideIndex, project)
     } else if (deck.title.toLowerCase().includes('stakeholder')) {
-        return renderStakeholderSlide(slideIndex)
+        return renderStakeholderSlide(slideIndex, project)
     } else if (deck.title.toLowerCase().includes('strategy')) {
-        return renderStrategySlide(slideIndex)
+        return renderStrategySlide(slideIndex, project)
     } else if (deck.title.toLowerCase().includes('communication')) {
-        return renderCommunicationSlide(slideIndex)
+        return renderCommunicationSlide(slideIndex, project)
     }
 
-    return renderDefaultSlide(slideIndex)
+    return renderDefaultSlide(slideIndex, project)
 }
 
-const renderExecutiveSummarySlide = (slideIndex: number) => {
+const renderExecutiveSummarySlide = (slideIndex: number, project?: ProjectData) => {
+    const aiContent = project?.ai_content?.slides_content
+
     const slides = [
-        // Project Overview
-        <div className="space-y-6">
-            <div className="grid grid-cols-2 gap-8">
+        // Executive Summary
+        <div key="executive-0" className="space-y-4">
+            <div className="space-y-4">
                 <div>
-                    <h4 className="text-lg font-semibold text-gray-800 mb-4">Project Scope</h4>
-                    <ul className="space-y-2 text-gray-700">
-                        <li className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>
-                            Digital transformation initiative
-                        </li>
-                        <li className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>
-                            Cross-functional team alignment
-                        </li>
-                        <li className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>
-                            Process optimization
-                        </li>
-                    </ul>
+                    <h4 className="text-lg font-semibold text-gray-800 mb-3">Executive Summary</h4>
+                    <p className="text-gray-700 leading-relaxed">
+                        {aiContent?.executive_summary || "No executive summary available"}
+                    </p>
                 </div>
+
                 <div>
-                    <h4 className="text-lg font-semibold text-gray-800 mb-4">Key Objectives</h4>
-                    <div className="space-y-3">
-                        <div className="bg-blue-50 p-3 rounded-lg">
-                            <div className="font-medium text-blue-800">Efficiency</div>
-                            <div className="text-sm text-blue-600">Improve operational efficiency by 30%</div>
-                        </div>
-                        <div className="bg-green-50 p-3 rounded-lg">
-                            <div className="font-medium text-green-800">Adoption</div>
-                            <div className="text-sm text-green-600">Achieve 95% user adoption rate</div>
-                        </div>
+                    <h4 className="text-lg font-semibold text-gray-800 mb-3">Project Details</h4>
+                    <div className="space-y-2 text-gray-700">
+                        <p><strong>Project:</strong> {project?.name || "N/A"}</p>
+                        <p><strong>Organization:</strong> {project?.client_organization || "N/A"}</p>
+                        <p><strong>Launch Date:</strong> {project?.launch_date ? new Date(project.launch_date).toLocaleDateString() : "N/A"}</p>
+                        <p><strong>Status:</strong> {project?.status || "N/A"}</p>
                     </div>
                 </div>
             </div>
         </div>,
 
-        // Business Impact
-        <div className="space-y-6">
-            <div className="grid grid-cols-3 gap-6">
-                <div className="text-center bg-blue-50 p-4 rounded-lg">
-                    <div className="text-3xl font-bold text-blue-600">$2.5M</div>
-                    <div className="text-sm text-blue-800">Annual Savings</div>
-                </div>
-                <div className="text-center bg-green-50 p-4 rounded-lg">
-                    <div className="text-3xl font-bold text-green-600">30%</div>
-                    <div className="text-sm text-green-800">Efficiency Gain</div>
-                </div>
-                <div className="text-center bg-purple-50 p-4 rounded-lg">
-                    <div className="text-3xl font-bold text-purple-600">500+</div>
-                    <div className="text-sm text-purple-800">Users Impacted</div>
-                </div>
-            </div>
-            <div className="mt-6">
-                <h4 className="text-lg font-semibold text-gray-800 mb-3">Expected Benefits</h4>
-                <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                        <div className="h-3 bg-blue-200 rounded-full overflow-hidden">
-                            <div className="h-full bg-blue-500 rounded-full" style={{ width: '85%' }}></div>
+        // Benefits
+        <div key="benefits-1" className="space-y-4">
+            <h4 className="text-lg font-semibold text-gray-800 mb-3">Key Benefits</h4>
+            <div className="space-y-2">
+                {aiContent?.benefits && aiContent.benefits.length > 0 ? (
+                    aiContent.benefits.map((benefit, idx) => (
+                        <div key={idx} className="flex items-start gap-2">
+                            <span className="text-blue-600 font-bold">{idx + 1}.</span>
+                            <span className="text-gray-700">{benefit}</span>
                         </div>
-                        <div className="text-sm text-gray-600">Process Automation: 85%</div>
-                    </div>
-                    <div className="space-y-2">
-                        <div className="h-3 bg-green-200 rounded-full overflow-hidden">
-                            <div className="h-full bg-green-500 rounded-full" style={{ width: '70%' }}></div>
-                        </div>
-                        <div className="text-sm text-gray-600">Cost Reduction: 70%</div>
-                    </div>
-                </div>
+                    ))
+                ) : (
+                    <p className="text-gray-500">No benefits data available</p>
+                )}
             </div>
+        </div>,
+
+        // Business Goals
+        <div key="goals-2" className="space-y-4">
+            <h4 className="text-lg font-semibold text-gray-800 mb-3">Business Goals</h4>
+            <p className="text-gray-700 leading-relaxed mb-4">
+                {project?.business_goals || "No business goals specified"}
+            </p>
+
+            <h4 className="text-lg font-semibold text-gray-800 mb-3">Expected Outcomes</h4>
+            <p className="text-gray-700 leading-relaxed">
+                {project?.expected_outcomes || "No expected outcomes specified"}
+            </p>
         </div>
     ]
 
     return slides[slideIndex] || slides[0]
 }
 
-const renderStakeholderSlide = (slideIndex: number) => {
+const renderStakeholderSlide = (slideIndex: number, project?: ProjectData) => {
+    const stakeholders = project?.stakeholders || []
+    const keyStakeholders = project?.ai_content?.slides_content?.key_stakeholders || []
+
     const slides = [
-        // Stakeholder Mapping
-        <div className="space-y-6">
-            <div className="grid grid-cols-2 gap-6">
+        // Stakeholder Analysis
+        <div key="stakeholders-0" className="space-y-4">
+            <h4 className="text-lg font-semibold text-gray-800 mb-3">Stakeholder Analysis</h4>
+
+            <div className="space-y-4">
                 <div>
-                    <h4 className="text-lg font-semibold text-gray-800 mb-4">High Impact</h4>
-                    <div className="space-y-3">
-                        <div className="bg-red-50 border-l-4 border-red-400 p-3">
-                            <div className="font-medium text-red-800">Executive Leadership</div>
-                            <div className="text-sm text-red-600">CEO, CTO, Department Heads</div>
+                    <h5 className="text-md font-semibold text-gray-700 mb-2">Project Stakeholders</h5>
+                    {stakeholders.length > 0 ? (
+                        <div className="space-y-2">
+                            {stakeholders.map((stakeholder, idx) => (
+                                <div key={idx} className="text-gray-700">
+                                    <strong>{stakeholder.name}</strong> - {stakeholder.department} ({stakeholder.role_level})
+                                </div>
+                            ))}
                         </div>
-                        <div className="bg-orange-50 border-l-4 border-orange-400 p-3">
-                            <div className="font-medium text-orange-800">Project Managers</div>
-                            <div className="text-sm text-orange-600">Direct project oversight</div>
-                        </div>
-                    </div>
+                    ) : (
+                        <p className="text-gray-500">No stakeholder data available</p>
+                    )}
                 </div>
+
                 <div>
-                    <h4 className="text-lg font-semibold text-gray-800 mb-4">Medium Impact</h4>
-                    <div className="space-y-3">
-                        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3">
-                            <div className="font-medium text-yellow-800">End Users</div>
-                            <div className="text-sm text-yellow-600">Daily system interaction</div>
+                    <h5 className="text-md font-semibold text-gray-700 mb-2">Key Stakeholders</h5>
+                    {keyStakeholders.length > 0 ? (
+                        <div className="space-y-1">
+                            {keyStakeholders.map((stakeholder, idx) => (
+                                <div key={idx} className="text-gray-700">
+                                    • {stakeholder}
+                                </div>
+                            ))}
                         </div>
-                        <div className="bg-blue-50 border-l-4 border-blue-400 p-3">
-                            <div className="font-medium text-blue-800">IT Support</div>
-                            <div className="text-sm text-blue-600">Technical implementation</div>
-                        </div>
+                    ) : (
+                        <p className="text-gray-500">No key stakeholder data available</p>
+                    )}
+                </div>
+
+                <div>
+                    <h5 className="text-md font-semibold text-gray-700 mb-2">Project Sponsor</h5>
+                    <div className="text-gray-700">
+                        <p><strong>Name:</strong> {project?.sponsor_name || "Not specified"}</p>
+                        <p><strong>Title:</strong> {project?.sponsor_title || "Not specified"}</p>
                     </div>
                 </div>
             </div>
@@ -197,38 +195,22 @@ const renderStakeholderSlide = (slideIndex: number) => {
     return slides[slideIndex] || slides[0]
 }
 
-const renderStrategySlide = (slideIndex: number) => {
+const renderStrategySlide = (slideIndex: number, project?: ProjectData) => {
+    const strategy = project?.ai_content?.slides_content?.change_management_strategy || "No strategy available"
+
     const slides = [
-        // Change Framework
-        <div className="space-y-6">
-            <div className="text-center mb-6">
-                <h4 className="text-lg font-semibold text-gray-800 mb-4">8-Step Change Process</h4>
-            </div>
-            <div className="grid grid-cols-4 gap-4">
-                {[
-                    { step: 1, title: 'Urgency', color: 'bg-red-100 text-red-800' },
-                    { step: 2, title: 'Coalition', color: 'bg-orange-100 text-orange-800' },
-                    { step: 3, title: 'Vision', color: 'bg-yellow-100 text-yellow-800' },
-                    { step: 4, title: 'Communicate', color: 'bg-green-100 text-green-800' }
-                ].map((item, idx) => (
-                    <div key={idx} className={`${item.color} p-4 rounded-lg text-center`}>
-                        <div className="text-2xl font-bold">{item.step}</div>
-                        <div className="text-sm font-medium">{item.title}</div>
-                    </div>
-                ))}
-            </div>
-            <div className="grid grid-cols-4 gap-4 mt-4">
-                {[
-                    { step: 5, title: 'Empower', color: 'bg-blue-100 text-blue-800' },
-                    { step: 6, title: 'Wins', color: 'bg-indigo-100 text-indigo-800' },
-                    { step: 7, title: 'Sustain', color: 'bg-purple-100 text-purple-800' },
-                    { step: 8, title: 'Anchor', color: 'bg-pink-100 text-pink-800' }
-                ].map((item, idx) => (
-                    <div key={idx} className={`${item.color} p-4 rounded-lg text-center`}>
-                        <div className="text-2xl font-bold">{item.step}</div>
-                        <div className="text-sm font-medium">{item.title}</div>
-                    </div>
-                ))}
+        // Change Management Strategy
+        <div key="strategy-0" className="space-y-4">
+            <h4 className="text-lg font-semibold text-gray-800 mb-3">Change Management Strategy</h4>
+            <p className="text-gray-700 leading-relaxed">
+                {strategy}
+            </p>
+
+            <div className="mt-4">
+                <h5 className="text-md font-semibold text-gray-700 mb-2">Project Summary</h5>
+                <p className="text-gray-700 leading-relaxed">
+                    {project?.summary || "No project summary available"}
+                </p>
             </div>
         </div>
     ]
@@ -236,31 +218,36 @@ const renderStrategySlide = (slideIndex: number) => {
     return slides[slideIndex] || slides[0]
 }
 
-const renderCommunicationSlide = (slideIndex: number) => {
+const renderCommunicationSlide = (slideIndex: number, project?: ProjectData) => {
     const slides = [
-        // Communication Channels
-        <div className="space-y-6">
-            <div className="grid grid-cols-3 gap-6">
-                <div className="text-center">
-                    <div className="bg-blue-100 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
-                        <div className="w-8 h-8 bg-blue-500 rounded"></div>
-                    </div>
-                    <h5 className="font-semibold text-gray-800">Email Updates</h5>
-                    <p className="text-sm text-gray-600">Weekly progress reports</p>
+        // Communication Plan
+        <div key="communication-0" className="space-y-4">
+            <h4 className="text-lg font-semibold text-gray-800 mb-3">Communication Plan</h4>
+
+            <div className="space-y-3">
+                <div>
+                    <h5 className="text-md font-semibold text-gray-700 mb-2">Email Updates</h5>
+                    <p className="text-gray-700">Regular progress reports and milestone announcements</p>
                 </div>
-                <div className="text-center">
-                    <div className="bg-green-100 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
-                        <div className="w-8 h-8 bg-green-500 rounded"></div>
-                    </div>
-                    <h5 className="font-semibold text-gray-800">Town Halls</h5>
-                    <p className="text-sm text-gray-600">Monthly all-hands meetings</p>
+
+                <div>
+                    <h5 className="text-md font-semibold text-gray-700 mb-2">Town Hall Meetings</h5>
+                    <p className="text-gray-700">Monthly all-hands meetings for transparency and updates</p>
                 </div>
-                <div className="text-center">
-                    <div className="bg-purple-100 p-4 rounded-full w-16 h-16 mx-auto mb-3 flex items-center justify-center">
-                        <div className="w-8 h-8 bg-purple-500 rounded"></div>
+
+                <div>
+                    <h5 className="text-md font-semibold text-gray-700 mb-2">Training Sessions</h5>
+                    <p className="text-gray-700">Hands-on workshops and skill development programs</p>
+                </div>
+
+                <div>
+                    <h5 className="text-md font-semibold text-gray-700 mb-2">Timeline</h5>
+                    <div className="space-y-1 text-gray-700">
+                        <p>• Week 1-2: Initial announcement</p>
+                        <p>• Week 3-4: Training begins</p>
+                        <p>• Week 5-8: Implementation phase</p>
+                        <p>• Week 9+: Follow-up and support</p>
                     </div>
-                    <h5 className="font-semibold text-gray-800">Training</h5>
-                    <p className="text-sm text-gray-600">Hands-on workshops</p>
                 </div>
             </div>
         </div>
@@ -269,7 +256,7 @@ const renderCommunicationSlide = (slideIndex: number) => {
     return slides[slideIndex] || slides[0]
 }
 
-const renderDefaultSlide = (slideIndex: number) => {
+const renderDefaultSlide = (slideIndex: number, project?: ProjectData) => {
     return (
         <div className="space-y-6">
             <div className="text-center">
@@ -279,6 +266,11 @@ const renderDefaultSlide = (slideIndex: number) => {
                     <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
                     <div className="h-4 bg-gray-200 rounded w-2/3 mx-auto"></div>
                 </div>
+                {project && (
+                    <div className="mt-6 bg-blue-50 p-4 rounded-lg">
+                        <p className="text-blue-700">Project: {project.name}</p>
+                    </div>
+                )}
             </div>
         </div>
     )
@@ -340,21 +332,13 @@ const SlideDecks = ({ slideDecks, project }: SlideDecksProps) => {
                                                     <h3 className="text-xl font-bold">
                                                         {getSlideTitle(deck, slideIndex)}
                                                     </h3>
-                                                    <div className="text-sm opacity-75">
-                                                        Slide {slideIndex + 1} of {deck.slides}
-                                                    </div>
                                                 </div>
                                             </div>
 
                                             {/* Slide Content */}
                                             <div className="p-6 h-full">
-                                                {renderSlideContent(deck, slideIndex)}
+                                                {renderSlideContent(deck, slideIndex, project)}
                                             </div>
-                                        </div>
-
-                                        {/* Slide Number Indicator */}
-                                        <div className="text-center mt-2 text-sm text-gray-500">
-                                            {deck.title} - Slide {slideIndex + 1}
                                         </div>
                                     </div>
                                 ))}
