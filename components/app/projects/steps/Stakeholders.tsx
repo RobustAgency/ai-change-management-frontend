@@ -44,16 +44,7 @@ const Stakeholders: React.FC = () => {
                 {formData.stakeholders && formData.stakeholders.length > 0 ? (
                     formData.stakeholders.map((stakeholder, index) => (
                         <div key={index} className="flex items-center space-x-3 p-6 border-2 border-gray-200 rounded-lg hover:border-indigo-300 transition-all">
-                            <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium text-gray-600">Name</label>
-                                    <Input
-                                        placeholder="Enter stakeholder name"
-                                        value={stakeholder.name || ''}
-                                        onChange={(e) => handleStakeholderChange(index, 'name', e.target.value)}
-                                        className="h-12"
-                                    />
-                                </div>
+                            <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium text-gray-600">Department</label>
                                     <Input
