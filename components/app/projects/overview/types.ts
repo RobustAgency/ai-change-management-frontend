@@ -1,4 +1,5 @@
 // TypeScript interfaces for Project Overview components
+import { MediaFile } from '@/interfaces/Project'
 
 export interface SlideDeck {
     id: number
@@ -46,8 +47,8 @@ export interface AIContent {
         executive_summary: string
         change_management_strategy: string
     }
-    faqs: any | null
-    video_script: any | null
+    faqs: Record<string, unknown> | null
+    video_script: Record<string, unknown> | null
     created_at: string
     updated_at: string
 }
@@ -69,7 +70,7 @@ export interface ProjectData {
     }>
     client_organization: string
     status: string
-    media: any[]
+    media: MediaFile[]
     ai_content: AIContent
     created_at: string
     updated_at: string

@@ -68,7 +68,7 @@ const AIContentGenerationModal = ({
                                 <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5 mr-3 flex-shrink-0" />
                                 <div className="text-sm text-amber-800">
                                     <p className="font-medium mb-1">Important Notice:</p>
-                                    <p>Once AI content is generated, you won't be able to edit the project details. Make sure all project information is accurate before proceeding.</p>
+                                    <p>Once AI content is generated, you won&apos;t be able to edit the project details. Make sure all project information is accurate before proceeding.</p>
                                 </div>
                             </div>
                         </div>
