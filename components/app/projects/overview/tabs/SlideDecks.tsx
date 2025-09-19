@@ -4,7 +4,23 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { FileText, Download, Edit, Eye } from "lucide-react"
 import { SlideDeck, ProjectData } from '../types'
-import DownloadPPTX from './DownloadPPTX'
+import dynamic from 'next/dynamic'
+
+// Dynamically import DownloadPPTX to ensure it's only loaded on the client
+const DownloadPPTX = dynamic(() => import('./DownloadPPTX'), {
+    ssr: false,
+    loading: () => (
+        <Button
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2"
+            disabled
+        >
+            <Download className="w-4 h-4" />
+            Loading...
+        </Button>
+    )
+})
 
 interface SlideDecksProps {
     slideDecks: SlideDeck[]

@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer, nextRuntime }) => {
     // Handle Node.js modules for client-side builds
     if (!isServer) {
       config.resolve.fallback = {
@@ -32,7 +32,7 @@ const nextConfig: NextConfig = {
         util: false,
       };
 
-      // Add externals to prevent bundling of Node.js modules
+      // Add externals to handle node: imports
       config.externals = config.externals || [];
       config.externals.push({
         'node:fs': 'commonjs node:fs',
@@ -47,6 +47,19 @@ const nextConfig: NextConfig = {
         'node:os': 'commonjs node:os',
         'node:util': 'commonjs node:util',
       });
+    }
+
+    // For server builds, completely exclude pptxgenjs to prevent Node.js module issues
+    if (isServer) {
+      config.externals = config.externals || [];
+      if (Array.isArray(config.externals)) {
+        config.externals.push(({ request }: { request?: string }, callback: (error?: Error | null, result?: string) => void) => {
+          if (request === 'pptxgenjs') {
+            return callback(null, 'commonjs pptxgenjs');
+          }
+          return callback();
+        });
+      }
     }
 
     // Handle node: protocol imports with alias
