@@ -63,6 +63,7 @@ export interface ProjectData {
     business_goals: string
     summary: string
     expected_outcomes: string
+    template_id: number
     stakeholders: Array<{
         name: string
         department: string

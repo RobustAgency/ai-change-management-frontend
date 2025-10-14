@@ -9,6 +9,7 @@ export interface Project {
   summary?: string;
   expected_outcomes?: string;
   client_organization?: string;
+  template_id?: number;
   status: 'draft' | 'active' | 'completed' | 'cancelled' | 'in-progress';
   stakeholders?: Stakeholder[];
   client_logo?: File | string;

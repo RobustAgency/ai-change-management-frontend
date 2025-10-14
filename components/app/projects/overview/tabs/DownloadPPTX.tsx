@@ -10,15 +10,18 @@ interface DownloadPPTXProps {
     project?: ProjectData
 }
 
-const generatePPTX = async (project?: ProjectData, template: number = 1) => {
+const generatePPTX = async (project?: ProjectData, template?: number) => {
     try {
+        // Use project's template_id if available, otherwise default to 1
+        const selectedTemplate = template || project?.template_id || 1;
+        
         // Call the API route to generate PPTX with template selection
         const response = await fetch('/api/generate-pptx', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ project, template }),
+            body: JSON.stringify({ project, template: selectedTemplate }),
         });
 
         if (!response.ok) {

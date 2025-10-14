@@ -18,14 +18,14 @@ const getTemplate1Styles = () => ({
   }
 });
 
-// Template 2: Modern Green Theme (Fresh, Growth-oriented)
+// Template 2: Modern Red Theme (Bold, Dynamic)
 const getTemplate2Styles = () => ({
-  titleColor: '065F46',
-  subtitleColor: '059669',
-  textColor: '047857',
-  accentColor: '10B981',
-  backgroundColor: 'F0FDF4',
-  secondaryAccent: 'A7F3D0',
+  titleColor: '1F2937',
+  subtitleColor: '374151',
+  textColor: '1F2937',
+  accentColor: 'DC2626',
+  backgroundColor: 'FFFFFF',
+  secondaryAccent: 'F3F4F6',
   fontSize: {
     title: 44,
     subtitle: 18,

@@ -25,12 +25,12 @@ const templates = [
   },
   {
     id: 2,
-    name: 'Modern Green',
-    description: 'Fresh and modern design with green theme. Ideal for growth and sustainability topics.',
-    color: '#10B981',
-    bgColor: '#F0FDF4',
+    name: 'Modern Red',
+    description: 'Bold and dynamic design with red accents. Perfect for impactful business presentations.',
+    color: '#DC2626',
+    bgColor: '#FEF2F2',
     icon: <Sparkles className="w-6 h-6" />,
-    features: ['Modern design', 'Growth-focused', 'Green color palette']
+    features: ['Bold design', 'Dynamic layout', 'Red accent scheme']
   },
   {
     id: 3,
@@ -73,7 +73,7 @@ const TemplateSelectionModal = ({
       case 1:
         return "Professional blue theme with clean typography and corporate styling";
       case 2:
-        return "Modern green theme with fresh colors and growth-oriented design";
+        return "Modern red theme with bold accents and dynamic business styling";
       case 3:
         return "Executive purple theme with elegant styling and premium appearance";
       default:
