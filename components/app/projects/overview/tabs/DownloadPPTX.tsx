@@ -4,17 +4,16 @@ import { Button } from '@/components/ui/button'
 import { Download } from 'lucide-react'
 import React, { useState } from 'react'
 import { ProjectData } from '../types'
-import TemplateSelectionModal from './TemplateSelectionModal'
 
 interface DownloadPPTXProps {
     project?: ProjectData
 }
 
-const generatePPTX = async (project?: ProjectData, template?: number) => {
+const generatePPTX = async (project?: ProjectData) => {
     try {
-        // Use project's template_id if available, otherwise default to 1
-        const selectedTemplate = template || project?.template_id || 1;
-        
+        // Use project's template_id, default to 1 if not available
+        const selectedTemplate = project?.template_id || 1;
+
         // Call the API route to generate PPTX with template selection
         const response = await fetch('/api/generate-pptx', {
             method: 'POST',
@@ -32,7 +31,7 @@ const generatePPTX = async (project?: ProjectData, template?: number) => {
         const blob = await response.blob();
 
         // Create filename with template name
-        const templateName = `Template_${template}`;
+        const templateName = `Template_${selectedTemplate}`;
         const fileName = project?.name
             ? `${project.name.replace(/[^a-zA-Z0-9]/g, '_')}_Change_Management_Strategy_${templateName}.pptx`
             : `Change_Management_Strategy_${templateName}.pptx`;
@@ -56,22 +55,12 @@ const generatePPTX = async (project?: ProjectData, template?: number) => {
 }
 
 const DownloadPPTX = ({ project }: DownloadPPTXProps) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [isGenerating, setIsGenerating] = useState(false);
 
-    const handleOpenModal = () => {
-        setIsModalOpen(true);
-    };
-
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-    };
-
-    const handleSelectTemplate = async (templateId: number) => {
+    const handleDownload = async () => {
         setIsGenerating(true);
         try {
-            await generatePPTX(project, templateId);
-            setIsModalOpen(false);
+            await generatePPTX(project);
         } catch (error) {
             console.error('Error generating presentation:', error);
         } finally {
@@ -80,24 +69,15 @@ const DownloadPPTX = ({ project }: DownloadPPTXProps) => {
     };
 
     return (
-        <>
-            <Button
-                className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3"
-                onClick={handleOpenModal}
-                size="lg"
-                disabled={isGenerating}
-            >
-                <Download className="w-4 h-4 mr-2" />
-                Export All
-            </Button>
-
-            <TemplateSelectionModal
-                isOpen={isModalOpen}
-                onClose={handleCloseModal}
-                onSelectTemplate={handleSelectTemplate}
-                isGenerating={isGenerating}
-            />
-        </>
+        <Button
+            className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3"
+            onClick={handleDownload}
+            size="lg"
+            disabled={isGenerating}
+        >
+            <Download className="w-4 h-4 mr-2" />
+            {isGenerating ? 'Generating...' : 'Export All'}
+        </Button>
     )
 }
 

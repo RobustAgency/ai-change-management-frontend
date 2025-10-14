@@ -76,20 +76,13 @@ const addTemplateHeader = (slide: any, template: number, styles: any) => {
       fill: { color: styles.accentColor }
     });
   } else if (template === 2) {
-    // Modern Green - Gradient-like effect
+    // Modern Red - Bold accent line
     slide.addShape('rect', {
       x: 0,
       y: 0,
       w: 10,
       h: 0.2,
       fill: { color: styles.accentColor }
-    });
-    slide.addShape('rect', {
-      x: 0,
-      y: 0.2,
-      w: 10,
-      h: 0.1,
-      fill: { color: styles.secondaryAccent }
     });
   } else if (template === 3) {
     // Corporate Purple - Elegant corner design
@@ -114,10 +107,10 @@ const addTemplateHeader = (slide: any, template: number, styles: any) => {
 export async function POST(request: NextRequest) {
   try {
     const { project, template = 1 } = await request.json();
-    
+
     // Get template styles
     const styles = getTemplateStyles(template);
-    
+
     // Create a new presentation
     const pptx = new PptxGenJS()
 
@@ -135,88 +128,81 @@ export async function POST(request: NextRequest) {
       slide1.background = { color: styles.backgroundColor };
     }
     
-    // Add template-specific header
-    addTemplateHeader(slide1, template, styles);
+    // Create two-column layout: white left side, dark right side
+    // Dark background section (right side)
+    slide1.addShape('rect', {
+      x: 4.8,
+      y: 0,
+      w: 5.2,
+      h: 5.625,
+      fill: { color: '2D3748' }
+    });
     
-    slide1.addText('Change Management Strategy', {
+    // Main title on white background (left side)
+    slide1.addText('Change\nManagement\nStrategy', {
       x: 0.5,
       y: 1.5,
-      w: 9,
-      h: 2.5,
-      fontSize: styles.fontSize.title,
+      w: 4,
+      h: 3,
+      fontSize: 48,
       bold: true,
       align: 'left',
-      color: styles.titleColor,
-      lineSpacing: 32
-    })
-
-    slide1.addText(project?.name || 'S4/HANA Enterprise Resource Planning (ERP)', {
-      x: 0.5,
-      y: 4.5,
-      w: 9,
-      h: 1,
-      fontSize: styles.fontSize.subtitle,
-      align: 'left',
-      color: styles.subtitleColor
-    })
-
-    // Add accent line for visual appeal
-    slide1.addShape(pptx.ShapeType.rect, {
-      x: 0.5,
-      y: 4.0,
-      w: 2.0,
-      h: 0.1,
-      fill: { color: styles.accentColor }
+      color: '2D3748',
+      lineSpacing: 52
     });
+
 
     // Slide 2: Agenda
     const slide2 = pptx.addSlide()
-    
+
     if (template === 2 || template === 3) {
       slide2.background = { color: styles.backgroundColor };
     }
-    
-    // Add template-specific header
-    addTemplateHeader(slide2, template, styles);
-    
+
     slide2.addText('Agenda', {
       x: 0.5,
-      y: 0.5,
+      y: 0.8,
       w: 9,
-      h: 1.5,
+      h: 1,
       fontSize: styles.fontSize.title,
       bold: true,
       align: 'left',
       color: styles.titleColor
-    })
-
-    // Add accent line
-    slide2.addShape(pptx.ShapeType.rect, {
-      x: 0.5,
-      y: 1.8,
-      w: 2.0,
-      h: 0.1,
-      fill: { color: styles.accentColor }
     });
 
     const agendaItems = [
-      'Executive Summary',
-      'Benefits',
-      'Key Stakeholders',
-      'High-Level Change Management Strategy'
-    ]
+      { number: '01', text: 'Executive Summary', color: '000000' },
+      { number: '02', text: 'Benefits', color: '000000' },
+      { number: '03', text: 'Key Stakeholders', color: '000000' },
+      { number: '04', text: 'High Level Change Management Strategy', color: '000000' }
+    ];
 
     agendaItems.forEach((item, index) => {
-      slide2.addText(`• ${item}`, {
+      const yPos = 2.2 + (index * 0.7);
+      
+      // Red number
+      slide2.addText(item.number, {
         x: 0.5,
-        y: 2.5 + (index * 0.8),
-        w: 9,
-        h: 0.7,
-        fontSize: styles.fontSize.bullet,
+        y: yPos,
+        w: 1,
+        h: 0.6,
+        fontSize: 24,
+        bold: true,
+        align: 'left',
+        color: item.color
+      });
+      
+      // Agenda item text
+      slide2.addText(item.text, {
+        x: 1.8,
+        y: yPos,
+        w: 7.7,
+        h: 0.6,
+        fontSize: 18,
         align: 'left',
         color: styles.textColor
-      })
-    })
+      });
+    });
 
     // Slide 3: Executive Summary
     const slide3 = pptx.addSlide()
@@ -225,196 +211,400 @@ export async function POST(request: NextRequest) {
       slide3.background = { color: styles.backgroundColor };
     }
     
-    // Add template-specific header
-    addTemplateHeader(slide3, template, styles);
-    
     slide3.addText('Executive Summary', {
       x: 0.5,
-      y: 0.5,
+      y: 0.8,
       w: 9,
-      h: 1.5,
+      h: 1,
       fontSize: styles.fontSize.title,
       bold: true,
       align: 'left',
       color: styles.titleColor
-    })
-
-    // Add accent line
-    slide3.addShape(pptx.ShapeType.rect, {
-      x: 0.5,
-      y: 1.8,
-      w: 2.0,
-      h: 0.1,
-      fill: { color: styles.accentColor }
     });
 
-    const executiveSummary = project?.ai_content?.slides_content?.executive_summary ||
-      'This project represents a strategic initiative to transform our organization through effective change management practices.'
+    const execSummaryData = project?.ai_content?.slides_content?.executive_summary_slide;
 
-    slide3.addText(executiveSummary, {
-      x: 0.5,
-      y: 2.5,
-      w: 9,
-      h: 4.5,
-      fontSize: styles.fontSize.body,
-      align: 'left',
-      color: styles.textColor,
-      wrap: true,
-      lineSpacing: 20
-    })
+    // Create table structure for Executive Summary
+    const tableRows = [
+      {
+        label: 'Project Overview',
+        content: execSummaryData?.project_overview || 'This project represents a strategic initiative to transform our organization through effective change management practices.'
+      },
+      {
+        label: 'Purpose of the OCM Plan',
+        content: execSummaryData?.purpose_of_ocm_plan || 'This Organizational Change Management (OCM) Plan outlines a comprehensive, inclusive, and mission-aligned approach to support the successful adoption of the Project Name.'
+      },
+      {
+        label: 'Aligned with Client\'s Org Mission and Vision',
+        content: Array.isArray(execSummaryData?.aligned_with_org_mission_and_vision) 
+          ? execSummaryData.aligned_with_org_mission_and_vision.map((item: string) => `• ${item}`).join('\n')
+          : '• Bulleted list'
+      },
+      {
+        label: 'Benefits',
+        content: Array.isArray(execSummaryData?.benefits)
+          ? execSummaryData.benefits.map((item: string) => `• ${item}`).join('\n')
+          : '• Bulleted list'
+      },
+      {
+        label: 'Strategic Objectives of the OCM Plan',
+        content: Array.isArray(execSummaryData?.strategic_objectives_of_ocm_plan)
+          ? execSummaryData.strategic_objectives_of_ocm_plan.map((item: string) => `• ${item}`).join('\n')
+          : execSummaryData?.strategic_objectives_of_ocm_plan || 'Strategic objectives content'
+      }
+    ];
+
+    let currentY = 2.0;
+    const rowHeight = 0.8;
+
+    tableRows.forEach((row, index) => {
+      // Left column - Label
+      slide3.addShape('rect', {
+        x: 0.5,
+        y: currentY,
+        w: 2.2,
+        h: rowHeight,
+        fill: { color: '4A5568' },
+        line: { color: '2D3748', width: 1 }
+      });
+
+      slide3.addText(row.label, {
+        x: 0.6,
+        y: currentY + 0.1,
+        w: 2.0,
+        h: rowHeight - 0.2,
+        fontSize: 11,
+        bold: true,
+        color: 'FFFFFF',
+        align: 'left',
+        wrap: true,
+        valign: 'top'
+      });
+
+      // Right column - Content
+      slide3.addShape('rect', {
+        x: 2.7,
+        y: currentY,
+        w: 6.8,
+        h: rowHeight,
+        fill: { color: 'F7FAFC' },
+        line: { color: '2D3748', width: 1 }
+      });
+
+      slide3.addText(row.content, {
+        x: 2.8,
+        y: currentY + 0.1,
+        w: 6.6,
+        h: rowHeight - 0.2,
+        fontSize: 10,
+        color: '2D3748',
+        align: 'left',
+        wrap: true,
+        valign: 'top',
+        lineSpacing: 14
+      });
+
+      currentY += rowHeight;
+    });
 
     // Slide 4: Benefits
     const slide4 = pptx.addSlide()
-    
+
     if (template === 2 || template === 3) {
       slide4.background = { color: styles.backgroundColor };
     }
     
-    // Add template-specific header
-    addTemplateHeader(slide4, template, styles);
-    
     slide4.addText('Benefits', {
       x: 0.5,
-      y: 0.5,
+      y: 0.8,
       w: 9,
-      h: 1.5,
+      h: 1,
       fontSize: styles.fontSize.title,
       bold: true,
       align: 'left',
       color: styles.titleColor
-    })
-
-    // Add accent line
-    slide4.addShape(pptx.ShapeType.rect, {
-      x: 0.5,
-      y: 1.8,
-      w: 2.0,
-      h: 0.1,
-      fill: { color: styles.accentColor }
     });
 
-    const benefits = project?.ai_content?.slides_content?.benefits || [
-      'Improved operational efficiency',
-      'Enhanced employee engagement',
-      'Reduced resistance to change',
-      'Better stakeholder alignment'
-    ]
+    const benefitCards = project?.ai_content?.slides_content?.benefits_slide?.benefit_cards || [
+      { title: 'Improved operational efficiency', bullet_list: ['Streamlined processes', 'Faster response times'] },
+      { title: 'Enhanced employee engagement', bullet_list: ['Better communication', 'Increased satisfaction'] }
+    ];
 
-    benefits.forEach((benefit: string, index: number) => {
-      slide4.addText(`• ${benefit}`, {
-        x: 0.5,
-        y: 2.5 + (index * 0.8),
-        w: 9,
-        h: 0.7,
-        fontSize: styles.fontSize.bullet,
-        align: 'left',
-        color: styles.textColor,
-        wrap: true
-      })
-    })
+    // Create benefit cards in a 3x2 grid
+    const positions = [
+      { x: 0.5, y: 2.0 }, { x: 3.7, y: 2.0 }, { x: 6.9, y: 2.0 },
+      { x: 0.5, y: 3.7 }, { x: 3.7, y: 3.7 }, { x: 6.9, y: 3.7 }
+    ];
+
+    benefitCards.slice(0, 6).forEach((benefit: any, index: number) => {
+      const pos = positions[index];
+      
+      // Benefit card background with border
+      slide4.addShape('rect', {
+        x: pos.x,
+        y: pos.y,
+        w: 2.8,
+        h: 1.5,
+        fill: { color: 'FFFFFF' },
+        line: { color: 'C5D9F1', width: 2 }
+      });
+      
+      // Blue header for benefit card
+      slide4.addShape('rect', {
+        x: pos.x,
+        y: pos.y,
+        w: 2.8,
+        h: 0.4,
+        fill: { color: '1B5F8C' }
+      });
+      
+      // Benefit title
+      slide4.addText(benefit.title || `Benefit ${index + 1}`, {
+        x: pos.x + 0.1,
+        y: pos.y + 0.05,
+        w: 2.6,
+        h: 0.3,
+        fontSize: 12,
+        bold: true,
+        color: 'FFFFFF',
+        align: 'center'
+      });
+      
+      // Bullet points (if available)
+      if (benefit.bullet_list && benefit.bullet_list.length > 0) {
+        benefit.bullet_list.slice(0, 2).forEach((bullet: string, bulletIndex: number) => {
+          slide4.addText(`• ${bullet}`, {
+            x: pos.x + 0.1,
+            y: pos.y + 0.6 + (bulletIndex * 0.3),
+            w: 2.6,
+            h: 0.25,
+            fontSize: 10,
+            color: '374151',
+            align: 'left'
+          });
+        });
+      }
+    });
 
     // Slide 5: Key Stakeholders
     const slide5 = pptx.addSlide()
-    
+
     if (template === 2 || template === 3) {
       slide5.background = { color: styles.backgroundColor };
     }
-    
-    // Add template-specific header
-    addTemplateHeader(slide5, template, styles);
-    
-    slide5.addText('Key Stakeholders', {
+
+    slide5.addText('Stakeholders', {
       x: 0.5,
-      y: 0.5,
+      y: 0.8,
       w: 9,
-      h: 1.5,
+      h: 1,
       fontSize: styles.fontSize.title,
       bold: true,
       align: 'left',
       color: styles.titleColor
-    })
-
-    // Add accent line
-    slide5.addShape(pptx.ShapeType.rect, {
-      x: 0.5,
-      y: 1.8,
-      w: 2.0,
-      h: 0.1,
-      fill: { color: styles.accentColor }
     });
 
-    const stakeholders = project?.ai_content?.slides_content?.key_stakeholders || [
-      'Executive Leadership',
-      'Project Team',
-      'End Users',
-      'IT Department',
-      'Human Resources'
-    ]
+    // Table header
+    slide5.addShape('rect', {
+      x: 0.5,
+      y: 2.0,
+      w: 9,
+      h: 0.5,
+      fill: { color: '4A90E2' }
+    });
 
-    stakeholders.forEach((stakeholder: string, index: number) => {
-      slide5.addText(`• ${stakeholder}`, {
+    // Table headers
+    slide5.addText('Stakeholder Name', {
+      x: 0.7,
+      y: 2.1,
+      w: 2.8,
+      h: 0.3,
+      fontSize: 14,
+      bold: true,
+      color: 'FFFFFF',
+      align: 'left'
+    });
+
+    slide5.addText('Title', {
+      x: 3.7,
+      y: 2.1,
+      w: 2.8,
+      h: 0.3,
+      fontSize: 14,
+      bold: true,
+      color: 'FFFFFF',
+      align: 'left'
+    });
+
+    slide5.addText('Project Role', {
+      x: 6.7,
+      y: 2.1,
+      w: 2.6,
+      h: 0.3,
+      fontSize: 14,
+      bold: true,
+      color: 'FFFFFF',
+      align: 'left'
+    });
+
+    // Table rows
+    const stakeholdersData = project?.ai_content?.slides_content?.key_stakeholders_slide?.stakeholder_table || [
+      { title: 'Project Manager', project_role: 'Lead project execution' }
+    ];
+
+    stakeholdersData.slice(0, 4).forEach((stakeholder: any, index: number) => {
+      const yPos = 2.5 + (index * 0.6);
+      
+      // Alternating row colors
+      const bgColor = index % 2 === 0 ? 'E6F3FF' : 'FFFFFF';
+      
+      slide5.addShape('rect', {
         x: 0.5,
-        y: 2.5 + (index * 0.8),
+        y: yPos,
         w: 9,
-        h: 0.7,
-        fontSize: styles.fontSize.bullet,
+        h: 0.5,
+        fill: { color: bgColor }
+      });
+
+      // Extract name from title (assuming format like "Name (Title)")
+      const titleParts = stakeholder.title?.match(/^(.+?)\s*\((.+?)\)$/) || [null, stakeholder.title || '', ''];
+      const stakeholderName = titleParts[1] || stakeholder.title || `Stakeholder ${index + 1}`;
+      const stakeholderTitle = titleParts[2] || 'Role';
+
+      slide5.addText(stakeholderName, {
+        x: 0.7,
+        y: yPos + 0.1,
+        w: 2.8,
+        h: 0.3,
+        fontSize: 12,
+        color: '374151',
+        align: 'left'
+      });
+
+      slide5.addText(stakeholderTitle, {
+        x: 3.7,
+        y: yPos + 0.1,
+        w: 2.8,
+        h: 0.3,
+        fontSize: 12,
+        color: '374151',
+        align: 'left'
+      });
+
+      slide5.addText(stakeholder.project_role || 'Project participant', {
+        x: 6.7,
+        y: yPos + 0.1,
+        w: 2.6,
+        h: 0.3,
+        fontSize: 11,
+        color: '374151',
         align: 'left',
-        color: styles.textColor,
         wrap: true
-      })
-    })
+      });
+    });
 
     // Slide 6: High-Level Change Management Strategy
     const slide6 = pptx.addSlide()
-    
+
     if (template === 2 || template === 3) {
       slide6.background = { color: styles.backgroundColor };
     }
-    
-    // Add template-specific header
-    addTemplateHeader(slide6, template, styles);
-    
+
     slide6.addText('High-Level Change Management Strategy', {
       x: 0.5,
-      y: 0.5,
+      y: 0.8,
       w: 9,
-      h: 1.5,
+      h: 1,
       fontSize: styles.fontSize.heading,
       bold: true,
       align: 'left',
       color: styles.titleColor
-    })
-
-    // Add accent line
-    slide6.addShape(pptx.ShapeType.rect, {
-      x: 0.5,
-      y: 1.8,
-      w: 2.0,
-      h: 0.1,
-      fill: { color: styles.accentColor }
     });
 
-    const strategy = project?.ai_content?.slides_content?.change_management_strategy ||
-      'Our comprehensive change management strategy focuses on stakeholder engagement, communication, training, and continuous support to ensure successful transformation.'
+    // Create 4-column layout for strategy components
+    const strategyData = project?.ai_content?.slides_content?.high_level_change_management_strategy_slide;
+    
+    const columns = [
+      {
+        title: 'Stakeholder Alignment & Engagement',
+        content: strategyData?.stakeholder_alignment_and_engagement || { title: 'Aligning Stakeholders', actions: ['Identify key stakeholders', 'Develop engagement strategies'] },
+        color: '1B5F8C',
+        x: 0.5
+      },
+      {
+        title: 'Define the Why & WIIFM',
+        content: strategyData?.define_the_why_and_wiifm || { title: 'Communicate Benefits', actions: ['Define clear purpose', 'Highlight benefits'] },
+        color: '4A90E2',
+        x: 2.8
+      },
+      {
+        title: 'Change Management Plan',
+        content: strategyData?.change_management_plan || { title: 'Execution Plan', actions: ['Define milestones', 'Allocate resources'] },
+        color: '1B5F8C',
+        x: 5.1
+      },
+      {
+        title: '"People" Measurement',
+        content: strategyData?.people_measurement || { title: 'Evaluate Impact', actions: ['Set up KPIs', 'Regular check-ins'] },
+        color: '89CDF1',
+        x: 7.4
+      }
+    ];
 
-    slide6.addText(strategy, {
-      x: 0.5,
-      y: 2.5,
-      w: 9,
-      h: 4.5,
-      fontSize: styles.fontSize.body,
-      align: 'left',
-      color: styles.textColor,
-      wrap: true,
-      lineSpacing: 20
-    })
+    columns.forEach((column, index) => {
+      // Column header
+      slide6.addShape('rect', {
+        x: column.x,
+        y: 2.0,
+        w: 2.1,
+        h: 0.5,
+        fill: { color: column.color }
+      });
+
+      slide6.addText(column.title, {
+        x: column.x + 0.1,
+        y: 2.1,
+        w: 1.9,
+        h: 0.3,
+        fontSize: 11,
+        bold: true,
+        color: 'FFFFFF',
+        align: 'center',
+        wrap: true
+      });
+
+      // Column content area
+      slide6.addShape('rect', {
+        x: column.x,
+        y: 2.5,
+        w: 2.1,
+        h: 2.5,
+        fill: { color: column.color, transparency: 80 }
+      });
+
+      // Content text
+      const actions = column.content.actions || [];
+      const contentText = actions.slice(0, 4).map((action: string) => `• ${action}`).join('\n');
+
+      slide6.addText(contentText, {
+        x: column.x + 0.1,
+        y: 2.7,
+        w: 1.9,
+        h: 2.1,
+        fontSize: 9,
+        color: '1F2937',
+        align: 'left',
+        wrap: true,
+        lineSpacing: 14
+      });
+    });
 
     // Generate the PPTX data as a buffer
     const pptxData = await pptx.write({ outputType: 'nodebuffer' }) as ArrayBuffer;
 
     // Create filename with template name
     const templateName = `Template_${template}`;
-    const baseName = project?.name 
+    const baseName = project?.name
       ? `${project.name.replace(/[^a-zA-Z0-9]/g, '_')}_Change_Management_Strategy_${templateName}.pptx`
       : `Change_Management_Strategy_${templateName}.pptx`;
 
