@@ -161,7 +161,7 @@ export async function POST(request: NextRequest) {
 
     slide2.addText('Agenda', {
       x: 0.5,
-      y: 0.8,
+      y: 0.17,
       w: 9,
       h: 1,
       fontSize: styles.fontSize.title,
@@ -178,7 +178,7 @@ export async function POST(request: NextRequest) {
     ];
 
     agendaItems.forEach((item, index) => {
-      const yPos = 2.2 + (index * 0.7);
+      const yPos = 1.07 + (index * 0.7);
       
       // Red number
       slide2.addText(item.number, {
@@ -213,7 +213,7 @@ export async function POST(request: NextRequest) {
     
     slide3.addText('Executive Summary', {
       x: 0.5,
-      y: 0.8,
+      y: 0.17,
       w: 9,
       h: 1,
       fontSize: styles.fontSize.title,
@@ -254,7 +254,7 @@ export async function POST(request: NextRequest) {
       }
     ];
 
-    let currentY = 2.0;
+    let currentY = 1.07;
     const rowHeight = 0.8;
 
     tableRows.forEach((row, index) => {
@@ -316,7 +316,7 @@ export async function POST(request: NextRequest) {
     
     slide4.addText('Benefits', {
       x: 0.5,
-      y: 0.8,
+      y: 0.17,
       w: 9,
       h: 1,
       fontSize: styles.fontSize.title,
@@ -332,8 +332,8 @@ export async function POST(request: NextRequest) {
 
     // Create benefit cards in a 3x2 grid
     const positions = [
-      { x: 0.5, y: 2.0 }, { x: 3.7, y: 2.0 }, { x: 6.9, y: 2.0 },
-      { x: 0.5, y: 3.7 }, { x: 3.7, y: 3.7 }, { x: 6.9, y: 3.7 }
+      { x: 0.5, y: 1.07 }, { x: 3.7, y: 1.07 }, { x: 6.9, y: 1.07 },
+      { x: 0.5, y: 2.77 }, { x: 3.7, y: 2.77 }, { x: 6.9, y: 2.77 }
     ];
 
     benefitCards.slice(0, 6).forEach((benefit: any, index: number) => {
@@ -395,7 +395,7 @@ export async function POST(request: NextRequest) {
 
     slide5.addText('Stakeholders', {
       x: 0.5,
-      y: 0.8,
+      y: 0.17,
       w: 9,
       h: 1,
       fontSize: styles.fontSize.title,
@@ -407,7 +407,7 @@ export async function POST(request: NextRequest) {
     // Table header
     slide5.addShape('rect', {
       x: 0.5,
-      y: 2.0,
+      y: 1.07,
       w: 9,
       h: 0.5,
       fill: { color: '4A90E2' }
@@ -416,7 +416,7 @@ export async function POST(request: NextRequest) {
     // Table headers
     slide5.addText('Stakeholder Name', {
       x: 0.7,
-      y: 2.1,
+      y: 1.17,
       w: 2.8,
       h: 0.3,
       fontSize: 14,
@@ -427,7 +427,7 @@ export async function POST(request: NextRequest) {
 
     slide5.addText('Title', {
       x: 3.7,
-      y: 2.1,
+      y: 1.17,
       w: 2.8,
       h: 0.3,
       fontSize: 14,
@@ -438,7 +438,7 @@ export async function POST(request: NextRequest) {
 
     slide5.addText('Project Role', {
       x: 6.7,
-      y: 2.1,
+      y: 1.17,
       w: 2.6,
       h: 0.3,
       fontSize: 14,
@@ -452,17 +452,23 @@ export async function POST(request: NextRequest) {
       { title: 'Project Manager', project_role: 'Lead project execution' }
     ];
 
+    let currentRowY = 1.57;
+
     stakeholdersData.slice(0, 4).forEach((stakeholder: any, index: number) => {
-      const yPos = 2.5 + (index * 0.6);
+      // Calculate dynamic row height based on content length
+      const projectRole = stakeholder.project_role || 'Project participant';
+      const estimatedLines = Math.ceil(projectRole.length / 35); // Roughly 35 chars per line
+      const minRowHeight = 0.5;
+      const dynamicRowHeight = Math.max(minRowHeight, estimatedLines * 0.25 + 0.3);
       
       // Alternating row colors
       const bgColor = index % 2 === 0 ? 'E6F3FF' : 'FFFFFF';
       
       slide5.addShape('rect', {
         x: 0.5,
-        y: yPos,
+        y: currentRowY,
         w: 9,
-        h: 0.5,
+        h: dynamicRowHeight,
         fill: { color: bgColor }
       });
 
@@ -471,36 +477,46 @@ export async function POST(request: NextRequest) {
       const stakeholderName = titleParts[1] || stakeholder.title || `Stakeholder ${index + 1}`;
       const stakeholderTitle = titleParts[2] || 'Role';
 
+      // Calculate vertical center alignment for text
+      const textVerticalPadding = (dynamicRowHeight - 0.25) / 2;
+
       slide5.addText(stakeholderName, {
         x: 0.7,
-        y: yPos + 0.1,
+        y: currentRowY + textVerticalPadding,
         w: 2.8,
-        h: 0.3,
+        h: 0.25,
         fontSize: 12,
         color: '374151',
-        align: 'left'
+        align: 'left',
+        valign: 'middle'
       });
 
       slide5.addText(stakeholderTitle, {
         x: 3.7,
-        y: yPos + 0.1,
+        y: currentRowY + textVerticalPadding,
         w: 2.8,
-        h: 0.3,
+        h: 0.25,
         fontSize: 12,
         color: '374151',
-        align: 'left'
+        align: 'left',
+        valign: 'middle'
       });
 
-      slide5.addText(stakeholder.project_role || 'Project participant', {
+      slide5.addText(projectRole, {
         x: 6.7,
-        y: yPos + 0.1,
+        y: currentRowY + 0.1,
         w: 2.6,
-        h: 0.3,
+        h: dynamicRowHeight - 0.2,
         fontSize: 11,
         color: '374151',
         align: 'left',
-        wrap: true
+        wrap: true,
+        valign: 'top',
+        lineSpacing: 16
       });
+
+      // Update Y position for next row
+      currentRowY += dynamicRowHeight;
     });
 
     // Slide 6: High-Level Change Management Strategy
@@ -512,7 +528,7 @@ export async function POST(request: NextRequest) {
 
     slide6.addText('High-Level Change Management Strategy', {
       x: 0.5,
-      y: 0.8,
+      y: 0.17,
       w: 9,
       h: 1,
       fontSize: styles.fontSize.heading,
@@ -555,7 +571,7 @@ export async function POST(request: NextRequest) {
       // Column header
       slide6.addShape('rect', {
         x: column.x,
-        y: 2.0,
+        y: 1.07,
         w: 2.1,
         h: 0.5,
         fill: { color: column.color }
@@ -563,7 +579,7 @@ export async function POST(request: NextRequest) {
 
       slide6.addText(column.title, {
         x: column.x + 0.1,
-        y: 2.1,
+        y: 1.17,
         w: 1.9,
         h: 0.3,
         fontSize: 11,
@@ -576,9 +592,9 @@ export async function POST(request: NextRequest) {
       // Column content area
       slide6.addShape('rect', {
         x: column.x,
-        y: 2.5,
+        y: 1.57,
         w: 2.1,
-        h: 2.5,
+        h: 3.43,
         fill: { color: column.color, transparency: 80 }
       });
 
@@ -588,9 +604,9 @@ export async function POST(request: NextRequest) {
 
       slide6.addText(contentText, {
         x: column.x + 0.1,
-        y: 2.7,
+        y: 1.77,
         w: 1.9,
-        h: 2.1,
+        h: 3.03,
         fontSize: 9,
         color: '1F2937',
         align: 'left',
