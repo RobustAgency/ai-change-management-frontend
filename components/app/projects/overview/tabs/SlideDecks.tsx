@@ -77,7 +77,7 @@ const SlideDecks = ({ slideDecks, project }: SlideDecksProps) => {
                         {Array.from({ length: template.slideCount }, (_, slideIndex) => (
                             <div key={slideIndex} className="mb-8">
                                 {/* Slide Preview */}
-                                <div className="bg-white rounded-lg shadow-lg mx-auto" style={{ minWidth: '800px' }}>
+                                <div className="bg-white rounded-lg shadow-lg mx-auto" style={{ minWidth: '800px', aspectRatio: '16/9' }}>
                                     <div className="p-6 pt-4 h-full flex flex-col">
                                         {/* Title at top with small margin */}
                                         {slideIndex > 0 && (
