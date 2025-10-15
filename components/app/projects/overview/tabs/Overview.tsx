@@ -315,9 +315,9 @@ const Overview = ({ assetData }: OverviewProps) => {
                                         <User className="w-4 h-4 text-blue-600" />
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-sm font-medium text-gray-900 truncate">{stakeholder.name || 'N/A'}</p>
+                                        {/* <p className="text-sm font-medium text-gray-900 truncate">{stakeholder.name || 'N/A'}</p> */}
                                         <p className="text-xs text-gray-600 truncate">{stakeholder.department}</p>
-                                        <Badge variant="outlined" className="text-xs mt-1">{stakeholder.role_level}</Badge>
+                                        <Badge variant="outlined" className="rounded-sm text-xs mt-1">{stakeholder.role_level}</Badge>
                                     </div>
                                 </div>
                             ))}
