@@ -34,6 +34,7 @@ export const projectService = {
     if (data.summary) formData.append('summary', data.summary);
     if (data.expected_outcomes) formData.append('expected_outcomes', data.expected_outcomes);
     if (data.client_organization) formData.append('client_organization', data.client_organization);
+    if (data.template_id) formData.append('template_id', data.template_id.toString());
 
     if (data.stakeholders && data.stakeholders.length > 0) {
       data.stakeholders.forEach((stakeholder, index) => {
@@ -75,6 +76,7 @@ export const projectService = {
     if (data.summary) formData.append('summary', data.summary);
     if (data.expected_outcomes) formData.append('expected_outcomes', data.expected_outcomes);
     if (data.client_organization) formData.append('client_organization', data.client_organization);
+    if (data.template_id) formData.append('template_id', data.template_id.toString());
 
     // Add stakeholders as individual FormData fields
     if (data.stakeholders && data.stakeholders.length > 0) {

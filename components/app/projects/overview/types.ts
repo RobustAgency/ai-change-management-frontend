@@ -18,17 +18,34 @@ export interface Email {
     status: string
 }
 
+export interface RoleEmail {
+    role: string
+    subject: string
+    body: string
+}
+
 export interface VideoScript {
-    title: string
-    duration: string
-    status: string
-    wordCount: number
-    content: string
+    opening?: string
+    supporting_visuals?: string
+    executive_return?: string
+    supporting_visuals_two?: string
+    closing?: string
+    fade_out?: string
+}
+
+// Parsed video script content interface
+export interface ParsedVideoScript {
+    opening?: string
+    supporting_visuals?: string
+    executive_return?: string
+    supporting_visuals_two?: string
+    closing?: string
+    fade_out?: string
 }
 
 export interface FAQ {
-    q: string
-    a: string
+    question: string
+    answer: string
 }
 
 export interface FAQSet {
@@ -47,8 +64,9 @@ export interface AIContent {
         executive_summary: string
         change_management_strategy: string
     }
-    faqs: Record<string, unknown> | null
-    video_script: Record<string, unknown> | null
+    emails?: Record<string, { subject: string; body: string }>
+    faqs?: FAQ[]
+    video_script: string | null  // JSON string containing video script sections
     created_at: string
     updated_at: string
 }
@@ -63,6 +81,7 @@ export interface ProjectData {
     business_goals: string
     summary: string
     expected_outcomes: string
+    template_id: number
     stakeholders: Array<{
         name: string
         department: string
@@ -79,8 +98,9 @@ export interface ProjectData {
 export interface AssetData {
     slideDecks: SlideDeck[]
     emails: Email[]
+    roleEmails: RoleEmail[]
     videoScript: VideoScript
-    faqs: FAQSet[]
+    faqs: FAQ[]
     // Add project data
     project?: ProjectData
 }

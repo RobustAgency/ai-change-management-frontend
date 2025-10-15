@@ -19,7 +19,7 @@ interface ProjectFormContextType {
     setLoading: (loading: boolean) => void;
 
     // Form Actions
-    handleInputChange: (field: keyof ProjectFormData, value: string) => void;
+    handleInputChange: (field: keyof ProjectFormData, value: string | number) => void;
     handleTypeChange: (value: string) => void;
     handleCustomTypeChange: (value: string) => void;
     handleLogoChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -80,6 +80,7 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
         summary: '',
         expected_outcomes: '',
         client_organization: '',
+        template_id: 1,
         status: 'draft',
         stakeholders: [],
     });
@@ -169,7 +170,7 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
         return Object.keys(errors).length === 0;
     };
 
-    const handleInputChange = (field: keyof ProjectFormData, value: string) => {
+    const handleInputChange = (field: keyof ProjectFormData, value: string | number) => {
         setFormData(prev => ({
             ...prev,
             [field]: value,
