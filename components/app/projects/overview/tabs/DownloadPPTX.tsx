@@ -18,11 +18,9 @@ const generatePPTX = async (project?: ProjectData) => {
         let apiEndpoint = '/api/generate-pptx';
         if (selectedTemplate === 2) {
             apiEndpoint = '/api/generate-pptx-template2';
+        } else if (selectedTemplate === 3) {
+            apiEndpoint = '/api/generate-pptx-template3';
         }
-        // Add more templates as needed
-        // else if (selectedTemplate === 3) {
-        //     apiEndpoint = '/api/generate-pptx-template3';
-        // }
 
         // Call the appropriate API route to generate PPTX
         const response = await fetch(apiEndpoint, {

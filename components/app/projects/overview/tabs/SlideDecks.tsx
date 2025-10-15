@@ -5,6 +5,7 @@ import { SlideDeck, ProjectData } from '../types'
 import dynamic from 'next/dynamic'
 import Template1 from './templates/Template1'
 import Template2 from './templates/Template2'
+import Template3 from './templates/Template3'
 
 // Dynamically import DownloadPPTX to ensure it's only loaded on the client
 const DownloadPPTX = dynamic(() => import('./DownloadPPTX'), {
@@ -33,8 +34,7 @@ const getTemplate = (templateId: number, project?: ProjectData) => {
         case 2:
             return Template2({ project });
         case 3:
-            // Template3({ project }); // TODO: Implement Template 3
-            return Template1({ project }); // Fallback to Template 1 for now
+            return Template3({ project });
         default:
             return Template1({ project });
     }
