@@ -18,7 +18,7 @@ const getSlideTitle = (slideIndex: number) => {
     return slideNames[slideIndex] || `Slide ${slideIndex + 1}`;
 }
 
-const renderTitleSlide = (project?: ProjectData) => {
+const renderTitleSlide = () => {
     return (
         <div className="h-full flex">
             {/* Left side - white background with title */}
@@ -35,7 +35,7 @@ const renderTitleSlide = (project?: ProjectData) => {
     )
 }
 
-const renderAgendaSlide = (project?: ProjectData) => {
+const renderAgendaSlide = () => {
     const agendaItems = [
         { number: '01', text: 'Executive Summary' },
         { number: '02', text: 'Benefits' },
@@ -62,7 +62,15 @@ const renderAgendaSlide = (project?: ProjectData) => {
 }
 
 const renderExecutiveSummarySlide = (project?: ProjectData) => {
-    const execSummaryData = (project?.ai_content as any)?.slides_content?.executive_summary_slide;
+    type ExecSummaryData = {
+        project_overview?: string;
+        purpose_of_ocm_plan?: string;
+        aligned_with_org_mission_and_vision?: string[];
+        benefits?: string[];
+        strategic_objectives_of_ocm_plan?: string | string[];
+    };
+    
+    const execSummaryData = (project?.ai_content as { slides_content?: { executive_summary_slide?: ExecSummaryData } })?.slides_content?.executive_summary_slide;
 
     return (
         <div className="space-y-4 h-full">
@@ -92,12 +100,12 @@ const renderExecutiveSummarySlide = (project?: ProjectData) => {
                     {/* Aligned with Mission and Vision Row */}
                     <div className="flex border-b border-gray-300">
                         <div className="w-1/4 bg-gray-600 text-white p-3 font-semibold text-sm">
-                            Aligned with Client's Org Mission and Vision
+                            Aligned with Client&apos;s Org Mission and Vision
                         </div>
                         <div className="w-3/4 bg-gray-50 p-3 text-sm">
                             {Array.isArray(execSummaryData?.aligned_with_org_mission_and_vision) 
-                                ? execSummaryData.aligned_with_org_mission_and_vision.map((item: string, index: number) => (
-                                    <div key={index} className="mb-1">• {item}</div>
+                                ? execSummaryData.aligned_with_org_mission_and_vision.map((item: string, itemIndex: number) => (
+                                    <div key={itemIndex} className="mb-1">• {item}</div>
                                   ))
                                 : '• Bulleted list'
                             }
@@ -140,7 +148,7 @@ const renderExecutiveSummarySlide = (project?: ProjectData) => {
 }
 
 const renderBenefitsSlide = (project?: ProjectData) => {
-    const benefitCards = (project?.ai_content as any)?.slides_content?.benefits_slide?.benefit_cards || [
+    const benefitCards = (project?.ai_content as { slides_content?: { benefits_slide?: { benefit_cards?: { title?: string; bullet_list?: string[] }[] } } })?.slides_content?.benefits_slide?.benefit_cards || [
         { title: 'Improved operational efficiency', bullet_list: ['Streamlined processes', 'Faster response times'] },
         { title: 'Enhanced employee engagement', bullet_list: ['Better communication', 'Increased satisfaction'] }
     ];
@@ -149,7 +157,7 @@ const renderBenefitsSlide = (project?: ProjectData) => {
         <div className="space-y-4">
             {/* Benefits Grid - 3x2 layout */}
             <div className="grid grid-cols-3 gap-4">
-                {benefitCards.slice(0, 6).map((benefit: any, index: number) => (
+                {benefitCards.slice(0, 6).map((benefit: { title?: string; bullet_list?: string[] }, index: number) => (
                     <div key={index} className="border-2 border-blue-200 rounded-lg overflow-hidden">
                         {/* Blue header */}
                         <div className="bg-blue-800 text-white p-3 text-center">
@@ -177,7 +185,7 @@ const renderBenefitsSlide = (project?: ProjectData) => {
 }
 
 const renderStakeholdersSlide = (project?: ProjectData) => {
-    const stakeholdersData = (project?.ai_content as any)?.slides_content?.key_stakeholders_slide?.stakeholder_table || [
+    const stakeholdersData = (project?.ai_content as { slides_content?: { key_stakeholders_slide?: { stakeholder_table?: { title?: string; project_role?: string }[] } } })?.slides_content?.key_stakeholders_slide?.stakeholder_table || [
         { title: 'Project Manager', project_role: 'Lead project execution' }
     ];
 
@@ -199,7 +207,7 @@ const renderStakeholdersSlide = (project?: ProjectData) => {
                 </div>
                 
                 {/* Table Rows */}
-                {stakeholdersData.slice(0, 4).map((stakeholder: any, index: number) => {
+                {stakeholdersData.slice(0, 4).map((stakeholder: { title?: string; project_role?: string }, index: number) => {
                     // Extract name from title (assuming format like "Name, Title")
                     const titleParts = stakeholder.title?.match(/^(.+?),\s*(.+?)$/) || [null, stakeholder.title || '', ''];
                     const stakeholderName = titleParts[1] || stakeholder.title || `Stakeholder ${index + 1}`;
@@ -225,7 +233,19 @@ const renderStakeholdersSlide = (project?: ProjectData) => {
 }
 
 const renderStrategySlide = (project?: ProjectData) => {
-    const strategyData = (project?.ai_content as any)?.slides_content?.high_level_change_management_strategy_slide;
+    type StrategyContent = {
+        title?: string;
+        actions?: string[];
+    };
+    
+    type StrategyData = {
+        stakeholder_alignment_and_engagement?: StrategyContent;
+        define_the_why_and_wiifm?: StrategyContent;
+        change_management_plan?: StrategyContent;
+        people_measurement?: StrategyContent;
+    };
+    
+    const strategyData = (project?.ai_content as { slides_content?: { high_level_change_management_strategy_slide?: StrategyData } })?.slides_content?.high_level_change_management_strategy_slide;
     
     const columns = [
         {
@@ -287,9 +307,9 @@ const renderStrategySlide = (project?: ProjectData) => {
 const Template1 = ({ project }: Template1Props) => {
     const renderSlideContent = (slideIndex: number) => {
         if (slideIndex === 0) {
-            return renderTitleSlide(project)
+            return renderTitleSlide()
         } else if (slideIndex === 1) {
-            return renderAgendaSlide(project)
+            return renderAgendaSlide()
         } else if (slideIndex === 2) {
             return renderExecutiveSummarySlide(project)
         } else if (slideIndex === 3) {

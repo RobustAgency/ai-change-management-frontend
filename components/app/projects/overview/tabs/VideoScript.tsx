@@ -75,7 +75,7 @@ const VideoScript = ({ videoScript }: VideoScriptProps) => {
                 if (!content) return null
                 
                 // Clean and format the content
-                let cleanContent = content
+                const cleanContent = content
                     .replace(/\\n/g, '\n')  // Convert escaped newlines
                     .replace(/&amp;/g, '&')  // Convert HTML entities
                     .replace(/\s+—\s+/g, ' — ')  // Fix em dash spacing

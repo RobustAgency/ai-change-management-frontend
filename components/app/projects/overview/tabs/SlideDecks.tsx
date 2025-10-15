@@ -40,7 +40,7 @@ const getTemplate = (templateId: number, project?: ProjectData) => {
     }
 }
 
-const SlideDecks = ({ slideDecks, project }: SlideDecksProps) => {
+const SlideDecks = ({ project }: SlideDecksProps) => {
     // Get the template based on project template_id (default to 1)
     const templateId = project?.template_id || 1;
     const template = getTemplate(templateId, project);

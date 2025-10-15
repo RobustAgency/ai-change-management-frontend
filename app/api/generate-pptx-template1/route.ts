@@ -63,47 +63,6 @@ const getTemplateStyles = (template: number) => {
   }
 };
 
-// Function to add template-specific header styling
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const addTemplateHeader = (slide: any, template: number, styles: any) => {
-  if (template === 1) {
-    // Professional Blue - Simple header line
-    slide.addShape('rect', {
-      x: 0,
-      y: 0,
-      w: 10,
-      h: 0.3,
-      fill: { color: styles.accentColor }
-    });
-  } else if (template === 2) {
-    // Modern Red - Bold accent line
-    slide.addShape('rect', {
-      x: 0,
-      y: 0,
-      w: 10,
-      h: 0.2,
-      fill: { color: styles.accentColor }
-    });
-  } else if (template === 3) {
-    // Corporate Purple - Elegant corner design
-    slide.addShape('rect', {
-      x: 0,
-      y: 0,
-      w: 3,
-      h: 0.3,
-      fill: { color: styles.accentColor }
-    });
-    slide.addShape('rect', {
-      x: 7,
-      y: 0,
-      w: 3,
-      h: 0.3,
-      fill: { color: styles.secondaryAccent }
-    });
-  }
-};
-
-// This API route will work with Cloudflare Workers + Node.js compatibility
 export async function POST(request: NextRequest) {
   try {
     const { project, template = 1 } = await request.json();
@@ -257,7 +216,7 @@ export async function POST(request: NextRequest) {
     let currentY = 1.07;
     const rowHeight = 0.8;
 
-    tableRows.forEach((row, index) => {
+    tableRows.forEach((row) => {
       // Left column - Label
       slide3.addShape('rect', {
         x: 0.5,
@@ -336,8 +295,8 @@ export async function POST(request: NextRequest) {
       { x: 0.5, y: 2.77 }, { x: 3.7, y: 2.77 }, { x: 6.9, y: 2.77 }
     ];
 
-    benefitCards.slice(0, 6).forEach((benefit: any, index: number) => {
-      const pos = positions[index];
+    benefitCards.slice(0, 6).forEach((benefit: { title?: string; bullet_list?: string[] }, benefitIndex: number) => {
+      const pos = positions[benefitIndex];
 
       // Benefit card background with border
       slide4.addShape('rect', {
@@ -359,7 +318,7 @@ export async function POST(request: NextRequest) {
       });
 
       // Benefit title
-      slide4.addText(benefit.title || `Benefit ${index + 1}`, {
+      slide4.addText(benefit.title || `Benefit ${benefitIndex + 1}`, {
         x: pos.x + 0.1,
         y: pos.y + 0.05,
         w: 2.6,
@@ -443,7 +402,7 @@ export async function POST(request: NextRequest) {
 
     let currentRowY = 1.57;
 
-    stakeholdersData.slice(0, 4).forEach((stakeholder: any, index: number) => {
+    stakeholdersData.slice(0, 4).forEach((stakeholder: { title?: string; project_role?: string }, stakeholderIndex: number) => {
       // Calculate dynamic row height based on content length
       const projectRole = stakeholder.project_role || 'Project participant';
       const estimatedLines = Math.ceil(projectRole.length / 35); // Roughly 35 chars per line
@@ -451,7 +410,7 @@ export async function POST(request: NextRequest) {
       const dynamicRowHeight = Math.max(minRowHeight, estimatedLines * 0.25 + 0.3);
 
       // Alternating row colors
-      const bgColor = index % 2 === 0 ? 'E6F3FF' : 'FFFFFF';
+      const bgColor = stakeholderIndex % 2 === 0 ? 'E6F3FF' : 'FFFFFF';
 
       slide5.addShape('rect', {
         x: 0.5,
@@ -463,7 +422,7 @@ export async function POST(request: NextRequest) {
 
       // Extract name from title (assuming format like "Name (Title)")
       const titleParts = stakeholder.title?.match(/^(.+?)\s*\((.+?)\)$/) || [null, stakeholder.title || '', ''];
-      const stakeholderTitle = titleParts[1] || stakeholder.title || `Stakeholder ${index + 1}`;
+      const stakeholderTitle = titleParts[1] || stakeholder.title || `Stakeholder ${stakeholderIndex + 1}`;
       // Calculate vertical center alignment for text
       const textVerticalPadding = (dynamicRowHeight - 0.25) / 2;
 
@@ -543,7 +502,7 @@ export async function POST(request: NextRequest) {
       }
     ];
 
-    columns.forEach((column, index) => {
+    columns.forEach((column) => {
       // Column header
       slide6.addShape('rect', {
         x: column.x,

@@ -42,7 +42,7 @@ const getSlideTitle = (slideIndex: number) => {
 }
 
 // Template 3 - Clean Design (matches reference images)
-const renderTitleSlide = (project?: ProjectData) => {
+const renderTitleSlide = () => {
     return (
         <div className="h-full flex bg-white">
             {/* Left side - white background with title */}
@@ -59,7 +59,7 @@ const renderTitleSlide = (project?: ProjectData) => {
     )
 }
 
-const renderAgendaSlide = (project?: ProjectData) => {
+const renderAgendaSlide = () => {
     const agendaItems = [
         { number: '•', text: 'Executive Summary' },
         { number: '•', text: 'Benefits' },
@@ -210,10 +210,8 @@ const renderStakeholdersSlide = (project?: ProjectData) => {
 }
 
 const renderStrategySlide = (project?: ProjectData) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const strategyData = (project?.ai_content as any)?.slides_content?.change_management_strategy_slide;
+    const strategyData = (project?.ai_content as { slides_content?: { change_management_strategy_slide?: { heading?: string; proposed_ocm_approach?: unknown } } })?.slides_content?.change_management_strategy_slide;
     const heading = strategyData?.heading || 'Enable stakeholder understanding, readiness, and adoption by reinforcing the change through leadership alignment, manager engagement, and ongoing reinforcement.';
-    const proposedApproach = strategyData?.proposed_ocm_approach || {};
 
     // Default OCM data matching reference image
     const defaultApproach = [
@@ -279,9 +277,9 @@ const renderStrategySlide = (project?: ProjectData) => {
 const renderSlideContent = (slideIndex: number, project?: ProjectData) => {
     switch (slideIndex) {
         case 0:
-            return renderTitleSlide(project);
+            return renderTitleSlide();
         case 1:
-            return renderAgendaSlide(project);
+            return renderAgendaSlide();
         case 2:
             return renderExecutiveSummarySlide(project);
         case 3:
