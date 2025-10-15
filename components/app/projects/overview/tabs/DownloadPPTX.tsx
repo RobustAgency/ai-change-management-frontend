@@ -14,8 +14,18 @@ const generatePPTX = async (project?: ProjectData) => {
         // Use project's template_id, default to 1 if not available
         const selectedTemplate = project?.template_id || 1;
 
-        // Call the API route to generate PPTX with template selection
-        const response = await fetch('/api/generate-pptx', {
+        // Determine which API endpoint to use based on template
+        let apiEndpoint = '/api/generate-pptx';
+        if (selectedTemplate === 2) {
+            apiEndpoint = '/api/generate-pptx-template2';
+        }
+        // Add more templates as needed
+        // else if (selectedTemplate === 3) {
+        //     apiEndpoint = '/api/generate-pptx-template3';
+        // }
+
+        // Call the appropriate API route to generate PPTX
+        const response = await fetch(apiEndpoint, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
