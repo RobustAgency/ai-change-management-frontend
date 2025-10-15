@@ -5,12 +5,11 @@ import { useRouter } from "next/navigation"
 import ProjectOverviewTabs from "./ProjectOverviewTabs"
 import ContainerCard from "@/components/custom/ContainerCard"
 import AIContentGenerationModal from "@/components/custom/AIContentGenerationModal"
-import { AssetData, ProjectData, SlideDeck } from "./types"
+import { AssetData, ProjectData, SlideDeck, RoleEmail } from "./types"
 import { useProject } from "@/hooks/app/useProjects"
 import Spinner from "@/components/ui/spinner"
 import { useParams } from "next/navigation"
 
-// Helper function to transform AI content into slide decks
 const generateSlideDecksFromAI = (project: ProjectData): SlideDeck[] => {
     const slideDecks: SlideDeck[] = []
 
@@ -77,6 +76,24 @@ const generateSlideDecksFromAI = (project: ProjectData): SlideDeck[] => {
     return slideDecks
 }
 
+const generateRoleEmailsFromAI = (project: ProjectData): RoleEmail[] => {
+    const roleEmails: RoleEmail[] = []
+
+    if (project.ai_content?.emails) {
+        const emails = project.ai_content.emails as Record<string, { subject: string; body: string }>
+
+        Object.entries(emails).forEach(([role, emailData]) => {
+            roleEmails.push({
+                role,
+                subject: emailData.subject,
+                body: emailData.body,
+            })
+        })
+    }
+
+    return roleEmails
+}
+
 interface ProjectOverviewProps {
     projectId?: string
 }
@@ -88,7 +105,6 @@ export default function ProjectOverview({ projectId }: ProjectOverviewProps) {
     const { project, loading, error, generateContent, isGeneratingContent } = useProject(id)
 
     const handleEdit = (content: string) => {
-        // Handle edit functionality here
         console.log("Editing content:", content)
     }
 
@@ -150,7 +166,8 @@ export default function ProjectOverview({ projectId }: ProjectOverviewProps) {
     // Generate asset data from the project
     const assetData: AssetData = {
         slideDecks: generateSlideDecksFromAI(project as ProjectData),
-        emails: [], // TODO: Implement email generation from AI content
+        emails: [], // Legacy: keeping for backward compatibility
+        roleEmails: generateRoleEmailsFromAI(project as ProjectData),
         videoScript: {
             title: `${project?.name} Overview`,
             duration: "2-3 minutes",
@@ -158,7 +175,7 @@ export default function ProjectOverview({ projectId }: ProjectOverviewProps) {
             wordCount: 0,
             content: project?.ai_content?.video_script || "",
         },
-        faqs: [], // TODO: Implement FAQ generation from AI content
+        faqs: project?.ai_content?.faqs || [], // Pass FAQs directly from AI content
         project: project as ProjectData,
     }
 

@@ -1,7 +1,6 @@
 import React from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { FileText, Mail, Video, HelpCircle, Download, Eye, RefreshCw } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import { FileText, Mail, Video, HelpCircle } from "lucide-react"
 import { AssetData } from '../types'
 
 interface OverviewProps {
