@@ -302,7 +302,7 @@ export async function POST(request: NextRequest) {
         ];
 
         // Only show stakeholders that exist in the data
-        stakeholders.slice(0, 6).forEach((stakeholder: any, index: number) => {
+        stakeholders.slice(0, 6).forEach((stakeholder: { title?: string; project_role?: string }, index: number) => {
             const pos = stakeholderPositions[index];
             if (!pos || !stakeholder) return;
 
@@ -425,7 +425,7 @@ export async function POST(request: NextRequest) {
         ];
 
         // Create table
-        const tableData: any[] = [];
+        const tableData: { text: string; options: { bold?: boolean; fontSize: number; color: string; fill?: { color: string } } }[][] = [];
 
         // Header row
         tableData.push([

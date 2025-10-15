@@ -7,7 +7,6 @@ import {
     Video,
     HelpCircle,
     User,
-    Clock,
     Users,
     TrendingUp,
     Building,
@@ -39,7 +38,7 @@ const Overview = ({ assetData }: OverviewProps) => {
         let totalWords = 0;
 
         // Helper function to count words in nested objects
-        const countWordsInObject = (obj: any): number => {
+        const countWordsInObject = (obj: unknown): number => {
             let words = 0;
             if (typeof obj === 'string') {
                 words += obj.split(' ').length;
@@ -57,7 +56,7 @@ const Overview = ({ assetData }: OverviewProps) => {
 
         // Count words from emails
         if (project?.ai_content?.emails) {
-            Object.values(project.ai_content.emails).forEach((email: any) => {
+            Object.values(project.ai_content.emails).forEach((email: { body?: string }) => {
                 if (email.body) {
                     totalWords += email.body.split(' ').length;
                 }
@@ -71,7 +70,7 @@ const Overview = ({ assetData }: OverviewProps) => {
 
         // Count words from FAQs
         if (project?.ai_content?.faqs) {
-            project.ai_content.faqs.forEach((faq: any) => {
+            project.ai_content.faqs.forEach((faq: { question?: string; answer?: string }) => {
                 if (faq.question) totalWords += faq.question.split(' ').length;
                 if (faq.answer) totalWords += faq.answer.split(' ').length;
             });
@@ -309,7 +308,7 @@ const Overview = ({ assetData }: OverviewProps) => {
                     </CardHeader>
                     <CardContent>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {project.stakeholders.slice(0, 6).map((stakeholder: any, index: number) => (
+                            {project.stakeholders.slice(0, 6).map((stakeholder: { department?: string; role_level?: string }, index: number) => (
                                 <div key={index} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                                     <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
                                         <User className="w-4 h-4 text-blue-600" />

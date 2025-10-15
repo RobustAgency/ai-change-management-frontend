@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Star, Calendar, CreditCard, Sparkles, CheckCircle } from 'lucide-react'
+import { Star, Calendar, Sparkles, CheckCircle } from 'lucide-react'
 import { Progress } from '@/components/ui/progress'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'

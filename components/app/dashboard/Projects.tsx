@@ -14,7 +14,6 @@ import {
     Calendar,
     Edit,
     Trash2,
-    Download,
     Clock,
     Target,
 } from "lucide-react"
@@ -29,6 +28,7 @@ const Projects = () => {
 
     useEffect(() => {
         fetchProjects()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     // Debounce search to avoid too many API calls
@@ -42,6 +42,7 @@ const Projects = () => {
         }, 500) // 500ms delay
 
         return () => clearTimeout(timeoutId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchTerm])
 
     const handleDeleteProject = async (id: number) => {
@@ -102,11 +103,11 @@ const Projects = () => {
         }
     }
 
-    // Helper function to get client logo URL
-    const getClientLogoUrl = (media?: Project['media']) => {
-        const clientLogo = media?.find(m => m.collection_name === 'client_logos')
-        return clientLogo?.original_url || null
-    }
+    // Helper function to get client logo URL (currently unused but kept for future use)
+    // const getClientLogoUrl = (media?: Project['media']) => {
+    //     const clientLogo = media?.find(m => m.collection_name === 'client_logos')
+    //     return clientLogo?.original_url || null
+    // }
 
     if (loading) {
         return (
@@ -172,7 +173,6 @@ const Projects = () => {
                         {projectsData.map((project: Project) => {
                             const statusConfig = getStatusConfig(project.status)
                             const stakeholdersInfo = getStakeholdersInfo(project.stakeholders)
-                            const logoUrl = getClientLogoUrl(project.media)
                             return (
                                 <div
                                     key={project.id}

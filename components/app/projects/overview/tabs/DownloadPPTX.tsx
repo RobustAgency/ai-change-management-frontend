@@ -15,7 +15,7 @@ const generatePPTX = async (project?: ProjectData) => {
         const selectedTemplate = project?.template_id || 1;
 
         // Determine which API endpoint to use based on template
-        let apiEndpoint = '/api/generate-pptx';
+        let apiEndpoint = '/api/generate-pptx-template1';
         if (selectedTemplate === 2) {
             apiEndpoint = '/api/generate-pptx-template2';
         } else if (selectedTemplate === 3) {

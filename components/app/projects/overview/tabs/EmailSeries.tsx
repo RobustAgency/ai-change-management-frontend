@@ -9,7 +9,7 @@ interface EmailSeriesProps {
     onEdit?: (content: string) => void
 }
 
-const EmailSeries = ({ emails, roleEmails, onEdit }: EmailSeriesProps) => {
+const EmailSeries = ({ roleEmails }: EmailSeriesProps) => {
     const [activeRole, setActiveRole] = useState<string>(roleEmails[0]?.role || '')
 
     if (!roleEmails || roleEmails.length === 0) {

@@ -29,7 +29,7 @@ const PlanCard: React.FC<PlanCardProps> = ({
     currentPlanId,
 }) => {
     const { cancel, loading: isCancelling } = useCancelSubscription()
-    const { profile, fetchProfile } = useAuth()
+    const { fetchProfile } = useAuth()
     const isCurrentPlan = currentPlanId === plan.id
     const [showCancelModal, setShowCancelModal] = useState(false)
 

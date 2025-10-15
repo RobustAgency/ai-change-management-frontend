@@ -282,7 +282,7 @@ export async function POST(request: NextRequest) {
         ];
 
         // Only show stakeholders that exist in the data (no empty placeholders)
-        stakeholdersData.slice(0, 6).forEach((stakeholder: any, index: number) => {
+        stakeholdersData.slice(0, 6).forEach((stakeholder: { title?: string; project_role?: string; bullet_list?: string[] }, index: number) => {
             const pos = stakeholderPositions[index];
             if (!pos || !stakeholder) return;
 
