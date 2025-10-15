@@ -122,12 +122,12 @@ export async function POST(request: NextRequest) {
 
     // Slide 1: Change Management Strategy (Title slide)
     const slide1 = pptx.addSlide()
-    
+
     // Add background color for templates 2 and 3
     if (template === 2 || template === 3) {
       slide1.background = { color: styles.backgroundColor };
     }
-    
+
     // Create two-column layout: white left side, dark right side
     // Dark background section (right side)
     slide1.addShape('rect', {
@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
       h: 5.625,
       fill: { color: '2D3748' }
     });
-    
+
     // Main title on white background (left side)
     slide1.addText('Change\nManagement\nStrategy', {
       x: 0.5,
@@ -179,7 +179,7 @@ export async function POST(request: NextRequest) {
 
     agendaItems.forEach((item, index) => {
       const yPos = 1.07 + (index * 0.7);
-      
+
       // Red number
       slide2.addText(item.number, {
         x: 0.5,
@@ -191,7 +191,7 @@ export async function POST(request: NextRequest) {
         align: 'left',
         color: item.color
       });
-      
+
       // Agenda item text
       slide2.addText(item.text, {
         x: 1.8,
@@ -206,11 +206,11 @@ export async function POST(request: NextRequest) {
 
     // Slide 3: Executive Summary
     const slide3 = pptx.addSlide()
-    
+
     if (template === 2 || template === 3) {
       slide3.background = { color: styles.backgroundColor };
     }
-    
+
     slide3.addText('Executive Summary', {
       x: 0.5,
       y: 0.17,
@@ -236,7 +236,7 @@ export async function POST(request: NextRequest) {
       },
       {
         label: 'Aligned with Client\'s Org Mission and Vision',
-        content: Array.isArray(execSummaryData?.aligned_with_org_mission_and_vision) 
+        content: Array.isArray(execSummaryData?.aligned_with_org_mission_and_vision)
           ? execSummaryData.aligned_with_org_mission_and_vision.map((item: string) => `• ${item}`).join('\n')
           : '• Bulleted list'
       },
@@ -313,7 +313,7 @@ export async function POST(request: NextRequest) {
     if (template === 2 || template === 3) {
       slide4.background = { color: styles.backgroundColor };
     }
-    
+
     slide4.addText('Benefits', {
       x: 0.5,
       y: 0.17,
@@ -338,7 +338,7 @@ export async function POST(request: NextRequest) {
 
     benefitCards.slice(0, 6).forEach((benefit: any, index: number) => {
       const pos = positions[index];
-      
+
       // Benefit card background with border
       slide4.addShape('rect', {
         x: pos.x,
@@ -348,7 +348,7 @@ export async function POST(request: NextRequest) {
         fill: { color: 'FFFFFF' },
         line: { color: 'C5D9F1', width: 2 }
       });
-      
+
       // Blue header for benefit card
       slide4.addShape('rect', {
         x: pos.x,
@@ -357,7 +357,7 @@ export async function POST(request: NextRequest) {
         h: 0.4,
         fill: { color: '1B5F8C' }
       });
-      
+
       // Benefit title
       slide4.addText(benefit.title || `Benefit ${index + 1}`, {
         x: pos.x + 0.1,
@@ -369,7 +369,7 @@ export async function POST(request: NextRequest) {
         color: 'FFFFFF',
         align: 'center'
       });
-      
+
       // Bullet points (if available)
       if (benefit.bullet_list && benefit.bullet_list.length > 0) {
         benefit.bullet_list.slice(0, 2).forEach((bullet: string, bulletIndex: number) => {
@@ -414,19 +414,8 @@ export async function POST(request: NextRequest) {
     });
 
     // Table headers
-    slide5.addText('Stakeholder Name', {
-      x: 0.7,
-      y: 1.17,
-      w: 2.8,
-      h: 0.3,
-      fontSize: 14,
-      bold: true,
-      color: 'FFFFFF',
-      align: 'left'
-    });
-
     slide5.addText('Title', {
-      x: 3.7,
+      x: 0.7,
       y: 1.17,
       w: 2.8,
       h: 0.3,
@@ -460,10 +449,10 @@ export async function POST(request: NextRequest) {
       const estimatedLines = Math.ceil(projectRole.length / 35); // Roughly 35 chars per line
       const minRowHeight = 0.5;
       const dynamicRowHeight = Math.max(minRowHeight, estimatedLines * 0.25 + 0.3);
-      
+
       // Alternating row colors
       const bgColor = index % 2 === 0 ? 'E6F3FF' : 'FFFFFF';
-      
+
       slide5.addShape('rect', {
         x: 0.5,
         y: currentRowY,
@@ -474,25 +463,12 @@ export async function POST(request: NextRequest) {
 
       // Extract name from title (assuming format like "Name (Title)")
       const titleParts = stakeholder.title?.match(/^(.+?)\s*\((.+?)\)$/) || [null, stakeholder.title || '', ''];
-      const stakeholderName = titleParts[1] || stakeholder.title || `Stakeholder ${index + 1}`;
-      const stakeholderTitle = titleParts[2] || 'Role';
-
+      const stakeholderTitle = titleParts[1] || stakeholder.title || `Stakeholder ${index + 1}`;
       // Calculate vertical center alignment for text
       const textVerticalPadding = (dynamicRowHeight - 0.25) / 2;
 
-      slide5.addText(stakeholderName, {
-        x: 0.7,
-        y: currentRowY + textVerticalPadding,
-        w: 2.8,
-        h: 0.25,
-        fontSize: 12,
-        color: '374151',
-        align: 'left',
-        valign: 'middle'
-      });
-
       slide5.addText(stakeholderTitle, {
-        x: 3.7,
+        x: 0.7,
         y: currentRowY + textVerticalPadding,
         w: 2.8,
         h: 0.25,
@@ -539,7 +515,7 @@ export async function POST(request: NextRequest) {
 
     // Create 4-column layout for strategy components
     const strategyData = project?.ai_content?.slides_content?.high_level_change_management_strategy_slide;
-    
+
     const columns = [
       {
         title: 'Stakeholder Alignment & Engagement',
