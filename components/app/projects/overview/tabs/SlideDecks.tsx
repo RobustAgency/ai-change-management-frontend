@@ -55,7 +55,7 @@ const SlideDecks = ({ slideDecks, project }: SlideDecksProps) => {
                             Complete Presentation Package
                         </h3>
                         <p className="text-gray-600">
-                            Export all slides as a single PowerPoint presentation using Template {templateId}
+                            Export all slides as a single PowerPoint presentation
                         </p>
                     </div>
                     <DownloadPPTX project={project} />
@@ -66,7 +66,7 @@ const SlideDecks = ({ slideDecks, project }: SlideDecksProps) => {
             <div className="bg-white rounded-lg border">
                 <div className="p-6 border-b">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                        Slide Preview - Template {templateId}
+                        Slide Preview
                     </h3>
                 </div>
 
