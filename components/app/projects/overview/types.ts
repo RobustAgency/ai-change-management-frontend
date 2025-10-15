@@ -25,11 +25,22 @@ export interface RoleEmail {
 }
 
 export interface VideoScript {
-    title: string
-    duration: string
-    status: string
-    wordCount: number
-    content: string
+    opening?: string
+    supporting_visuals?: string
+    executive_return?: string
+    supporting_visuals_two?: string
+    closing?: string
+    fade_out?: string
+}
+
+// Parsed video script content interface
+export interface ParsedVideoScript {
+    opening?: string
+    supporting_visuals?: string
+    executive_return?: string
+    supporting_visuals_two?: string
+    closing?: string
+    fade_out?: string
 }
 
 export interface FAQ {
@@ -55,7 +66,7 @@ export interface AIContent {
     }
     emails?: Record<string, { subject: string; body: string }>
     faqs?: FAQ[]
-    video_script: Record<string, unknown> | null
+    video_script: string | null  // JSON string containing video script sections
     created_at: string
     updated_at: string
 }

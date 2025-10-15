@@ -168,13 +168,7 @@ export default function ProjectOverview({ projectId }: ProjectOverviewProps) {
         slideDecks: generateSlideDecksFromAI(project as ProjectData),
         emails: [], // Legacy: keeping for backward compatibility
         roleEmails: generateRoleEmailsFromAI(project as ProjectData),
-        videoScript: {
-            title: `${project?.name} Overview`,
-            duration: "2-3 minutes",
-            status: project?.ai_content?.video_script ? "ready" : "pending",
-            wordCount: 0,
-            content: project?.ai_content?.video_script || "",
-        },
+        videoScript: project?.ai_content?.video_script || null,
         faqs: project?.ai_content?.faqs || [], // Pass FAQs directly from AI content
         project: project as ProjectData,
     }

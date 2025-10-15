@@ -17,7 +17,7 @@ const ProjectOverviewTabs = ({ assetData, onEdit }: ProjectOverviewTabsProps) =>
         { value: "overview", label: "Overview", component: <Overview assetData={assetData} /> },
         { value: "slides", label: "Slide Decks", component: <SlideDecks slideDecks={assetData.slideDecks} project={assetData.project} /> },
         { value: "emails", label: "Email Series", component: <EmailSeries emails={assetData.emails} roleEmails={assetData.roleEmails} onEdit={onEdit} /> },
-        { value: "video", label: "Video Script", component: <VideoScript videoScript={assetData.videoScript} /> },
+        { value: "video", label: "Video Script", component: <VideoScript videoScript={assetData.project?.ai_content?.video_script || null} /> },
         { value: "faqs", label: "FAQs", component: <FAQs faqs={assetData.faqs} /> },
     ]
 
