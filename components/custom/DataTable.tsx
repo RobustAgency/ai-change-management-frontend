@@ -114,7 +114,7 @@ export function DataTable<TData, TValue>({
                             value={serverSide ? searchValue : (table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
                             onChange={handleSearchChange}
                             className="pl-10 max-w-sm"
-                            disabled={loading}
+                            // disabled={loading}
                         />
                     </div>
                 )}

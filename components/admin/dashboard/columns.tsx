@@ -17,7 +17,7 @@ const getStatusBadge = (status: TableUser["status"]) => {
     )
 }
 
-export const createColumns = (onRefresh?: () => void): ColumnDef<TableUser>[] => [
+export const createColumns = (onRefresh?: () => void, onDashboardRefresh?: () => void): ColumnDef<TableUser>[] => [
     {
         accessorKey: "full_name",
         header: "Username",
@@ -56,7 +56,7 @@ export const createColumns = (onRefresh?: () => void): ColumnDef<TableUser>[] =>
         header: "",
         cell: ({ row }) => {
             const user = row.original
-            return <ActionCell user={user} onRefresh={onRefresh} />
+            return <ActionCell user={user} onRefresh={onRefresh} onDashboardRefresh={onDashboardRefresh} />
         },
     },
 ]

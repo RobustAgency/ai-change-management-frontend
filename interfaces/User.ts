@@ -29,3 +29,10 @@ export interface UsersApiResponse {
     message: string
     error: boolean
 }
+
+export interface UserSearchResponse {
+    data: User[]
+    status: number
+    message: string
+    error: boolean
+}

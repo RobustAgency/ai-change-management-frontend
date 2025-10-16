@@ -12,9 +12,10 @@ import { toast } from "react-toastify"
 interface ActionCellProps {
     user: TableUser
     onRefresh?: () => void
+    onDashboardRefresh?: () => void
 }
 
-const ActionCell = ({ user, onRefresh }: ActionCellProps) => {
+const ActionCell = ({ user, onRefresh, onDashboardRefresh }: ActionCellProps) => {
     const [showDialog, setShowDialog] = useState(false)
     const [currentAction, setCurrentAction] = useState<"activate" | "deactivate" | null>(null)
     const [isLoading, setIsLoading] = useState(false)
@@ -41,6 +42,7 @@ const ActionCell = ({ user, onRefresh }: ActionCellProps) => {
                 toast.success(response.message || "User activated successfully")
                 handleClose()
                 onRefresh?.()
+                onDashboardRefresh?.() // Refresh dashboard stats
             }
         } catch {
             toast.error("Error activating user")
@@ -59,6 +61,7 @@ const ActionCell = ({ user, onRefresh }: ActionCellProps) => {
                 toast.success(response.message || "User deactivated successfully")
                 handleClose()
                 onRefresh?.()
+                onDashboardRefresh?.() // Refresh dashboard stats
             }
         } catch {
             toast.error("Error deactivating user")

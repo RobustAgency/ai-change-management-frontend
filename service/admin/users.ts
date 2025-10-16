@@ -12,6 +12,13 @@ export class UsersService {
         return response;
     }
 
+    async searchUsers(term: string): Promise<ApiResponse<User[]>> {
+        const queryString = apiUtils.createQueryString({ term });
+        const url = `${this.baseUrl}/search?${queryString}`;
+        const response = await api.get<User[]>(url);
+        return response;
+    }
+
     async activateUser(userId: string): Promise<ApiResponse<User>> {
         return await api.post<User>(`${this.baseUrl}/${userId}/activate`);
     }
