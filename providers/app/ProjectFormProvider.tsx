@@ -83,6 +83,7 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
         template_id: 1,
         status: 'draft',
         stakeholders: [],
+        is_editable: true,
     });
 
     const steps = [
@@ -132,6 +133,8 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
                 client_organization: project.client_organization || '',
                 status: project.status || 'draft',
                 stakeholders: project.stakeholders || [],
+                template_id: project.template_id || 1,
+                is_editable: project.is_editable ?? true,
             });
 
             // Check if type is a custom type (not in predefined options)
@@ -141,9 +144,22 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
                 setFormData(prev => ({ ...prev, type: 'other' }));
             }
 
-            // If there's an existing logo URL, set it as preview
-            if (typeof project.client_logo === 'string' && project.client_logo) {
-                setLogoPreview(project.client_logo);
+            // Handle logo preview from media array or client_logo field
+            let logoUrl: string | null = null;
+
+            if (project.media && project.media.length > 0) {
+                const firstMedia = project.media[0];
+                if (typeof firstMedia === 'string') {
+                    logoUrl = firstMedia;
+                } else {
+                    logoUrl = firstMedia.original_url || firstMedia.preview_url;
+                }
+            } else if (typeof project.client_logo === 'string' && project.client_logo) {
+                logoUrl = project.client_logo;
+            }
+
+            if (logoUrl) {
+                setLogoPreview(logoUrl);
             }
         }
     }, [project]);

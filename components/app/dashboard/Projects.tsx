@@ -193,7 +193,7 @@ const Projects = () => {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
-                                                {project.status !== "completed" && (
+                                                {project.is_editable && (
                                                     <Link href={`/projects/${project.id}`}>
                                                         <DropdownMenuItem>
                                                             <Edit className="w-4 h-4 mr-2" /> Edit Project
