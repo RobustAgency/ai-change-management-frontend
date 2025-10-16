@@ -1,4 +1,5 @@
 import { PaginatedResponse } from "./Pagination"
+import { Plan } from "./Plan"
 import { Project } from "./Project"
 
 export interface User {
@@ -16,6 +17,7 @@ export interface User {
     pm_last_four: string | null
     trial_ends_at: string | null
     plan_id: number | null
+    plan: Plan | null
     projects?: Project[]
 }
 

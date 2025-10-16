@@ -82,8 +82,8 @@ const UserDetails = ({ user }: UserDetailsProps) => {
                             </div>
                         </div>
                         <div>
-                            <label className="text-sm font-medium text-gray-500">Plan ID</label>
-                            <p className="text-gray-900 mt-1 break-words">{user.plan_id || 'No plan assigned'}</p>
+                            <label className="text-sm font-medium text-gray-500">Plan</label>
+                            <p className="text-gray-900 mt-1 break-words">{user?.plan?.name || 'No plan assigned'}</p>
                         </div>
                         <div>
                             <label className="text-sm font-medium text-gray-500">Email Verified</label>
