@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 export default function TermsOfService() {
     return (
         <div className="min-h-screen bg-gray-50 py-12">
@@ -14,7 +12,7 @@ export default function TermsOfService() {
                         <section className="mb-8">
                             <h2 className="text-2xl font-semibold text-gray-900 mb-4">1. Acceptance of Terms</h2>
                             <p className="text-gray-700 mb-4">
-                                By accessing and using ChangeAI ("Service"), you accept and agree to be bound by the terms and provision of this agreement.
+                                By accessing and using ChangeAI (&ldquo;Service&rdquo;), you accept and agree to be bound by the terms and provision of this agreement.
                                 If you do not agree to abide by the above, please do not use this service.
                             </p>
                         </section>
@@ -50,7 +48,7 @@ export default function TermsOfService() {
                                 <li>Violate any applicable laws or regulations</li>
                                 <li>Infringe upon the rights of others</li>
                                 <li>Upload or transmit harmful, offensive, or inappropriate content</li>
-                                <li>Attempt to gain unauthorized access to the Service or other users' accounts</li>
+                                <li>Attempt to gain unauthorized access to the Service or other users&apos; accounts</li>
                             </ul>
                         </section>
 
@@ -89,7 +87,7 @@ export default function TermsOfService() {
                         <section className="mb-8">
                             <h2 className="text-2xl font-semibold text-gray-900 mb-4">9. Disclaimer of Warranties</h2>
                             <p className="text-gray-700 mb-4">
-                                The Service is provided on an "AS IS" and "AS AVAILABLE" basis. We make no warranties, expressed or implied,
+                                The Service is provided on an &ldquo;AS IS&rdquo; and &ldquo;AS AVAILABLE&rdquo; basis. We make no warranties, expressed or implied,
                                 and hereby disclaim all other warranties including implied warranties of merchantability, fitness for a particular purpose,
                                 and non-infringement.
                             </p>
@@ -107,7 +105,7 @@ export default function TermsOfService() {
                             <h2 className="text-2xl font-semibold text-gray-900 mb-4">11. Changes to Terms</h2>
                             <p className="text-gray-700 mb-4">
                                 We reserve the right to modify these Terms at any time. We will notify users of any material changes by
-                                posting the new Terms on this page with an updated "Last updated" date.
+                                posting the new Terms on this page with an updated &ldquo;Last updated&rdquo; date.
                             </p>
                         </section>
 
