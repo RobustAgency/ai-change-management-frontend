@@ -93,7 +93,7 @@ export const useProject = (id?: string) => {
     const [error, setError] = useState<string | null>(null);
     const [isGeneratingContent, setIsGeneratingContent] = useState(false);
 
-    const fetchProject = async () => {
+    const fetchProject = useCallback(async () => {
         if (!id) return;
         try {
             setLoading(true);
@@ -106,9 +106,9 @@ export const useProject = (id?: string) => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [id]);
 
-    const generateContent = async (): Promise<boolean> => {
+    const generateContent = useCallback(async (): Promise<boolean> => {
         if (!id) return false;
         try {
             setIsGeneratingContent(true);
@@ -130,13 +130,13 @@ export const useProject = (id?: string) => {
         } finally {
             setIsGeneratingContent(false);
         }
-    };
+    }, [id]);
 
     useEffect(() => {
         if (id && id !== 'create') {
             fetchProject();
         }
-    }, [id]);
+    }, [id, fetchProject]);
 
     return {
         project,
