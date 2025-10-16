@@ -11,7 +11,6 @@ interface MetricsProps {
 }
 
 const Metrics = ({ dashboardData }: MetricsProps) => {
-    // Use passed dashboard data if available, otherwise use own hook
     const ownDashboardData = useDashboard()
     const { stats, loading, error } = dashboardData || ownDashboardData
 

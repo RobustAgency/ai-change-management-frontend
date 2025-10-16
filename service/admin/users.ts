@@ -27,6 +27,10 @@ export class UsersService {
         return await api.post<User>(`${this.baseUrl}/${userId}/deactivate`);
     }
 
+    async getUserById(userId: string): Promise<ApiResponse<User>> {
+        return await api.get<User>(`${this.baseUrl}/${userId}`);
+    }
+
 }
 
 export const usersService = new UsersService();

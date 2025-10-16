@@ -3,6 +3,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge"
 import ActionCell from "./ActionCell"
 import { TableUser } from "@/hooks/admin/useUsers"
+import Link from "next/link"
 
 const getStatusBadge = (status: TableUser["status"]) => {
     const colorMap = {
@@ -23,11 +24,15 @@ export const createColumns = (onRefresh?: () => void, onDashboardRefresh?: () =>
         header: "Username",
         cell: ({ row }) => {
             const fullName = row.getValue("full_name") as string
+            const userId = row.original.id
             return (
-                <div className="flex items-center gap-2">
+                <Link 
+                    href={`/admin/users/${userId}`}
+                    className="flex items-center gap-2 hover:text-blue-600 transition-colors"
+                >
                     <span className="size-8 bg-primary rounded-full flex items-center justify-center text-white">{fullName[0]}</span>
                     <span className="font-medium">{fullName}</span>
-                </div>
+                </Link>
             )
         }
     },

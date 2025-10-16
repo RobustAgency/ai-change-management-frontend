@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { usePlans, useSubscribeToPlan, useSwitchPlan } from '@/hooks/app/usePlans'
-import Spinner from '@/components/ui/spinner'
 import { X } from 'lucide-react'
 import PlanCard from '@/components/app/billing/PlanCard'
+import PlanCardSkeleton from '@/components/app/billing/PlanCardSkeleton'
 import { Plan } from '@/interfaces/Plan'
 import { useAuth } from '@/providers/AuthProvider'
 
@@ -33,9 +33,20 @@ const Plans = () => {
 
     if (plansLoading) {
         return (
-            <div className="flex items-center justify-center min-h-[400px]">
-                <Spinner size="lg" />
-            </div>
+            <React.Fragment>
+                <div className="text-center mb-8 sm:mb-12">
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 sm:mb-4">Choose Your Plan</h2>
+                    <p className="text-base sm:text-lg lg:text-xl text-gray-600">Upgrade or downgrade your subscription at any time</p>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+                    {[0, 1, 2].map((index) => (
+                        <PlanCardSkeleton
+                            key={index}
+                        />
+                    ))}
+                </div>
+            </React.Fragment>
         )
     }
 
