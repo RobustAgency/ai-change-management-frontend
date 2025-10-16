@@ -23,6 +23,8 @@ export default function AppShell({ children }: AppShellProps) {
             "/logout",
             "/error",
             "/onboarding",
+            "/terms",
+            "/privacy-policy"
         ];
         return authRoutes.some(
             (route) => pathname === route || pathname.startsWith(`${route}/`)
@@ -31,7 +33,7 @@ export default function AppShell({ children }: AppShellProps) {
 
     const isPublicRoute = useMemo(() => {
         const publicRoutes = [
-            "/",
+            "/"
         ];
         return publicRoutes.some(
             (route) => pathname === route || pathname.startsWith(`${route}/`)
