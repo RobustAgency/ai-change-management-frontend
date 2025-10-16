@@ -41,11 +41,11 @@ const Projects = () => {
     const [searchTerm, setSearchTerm] = useState("")
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
     const [projectToDelete, setProjectToDelete] = useState<Project | null>(null)
-    const { projects, loading, deleteLoading, error, fetchProjects, deleteProject } = useProjects()
+    const { projects, loading, deleteLoading, fetchProjects, deleteProject } = useProjects()
 
     useEffect(() => {
         fetchProjects()
-    }, [])
+    }, [fetchProjects])
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -56,7 +56,7 @@ const Projects = () => {
             }
         }, 500)
         return () => clearTimeout(timeout)
-    }, [searchTerm])
+    }, [searchTerm, fetchProjects])
 
     const handleDeleteProject = async (id: number) => {
         const success = await deleteProject(id.toString())

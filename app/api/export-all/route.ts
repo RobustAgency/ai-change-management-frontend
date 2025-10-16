@@ -1,8 +1,45 @@
 import { NextRequest, NextResponse } from 'next/server';
 import JSZip from 'jszip';
+import { Project } from '@/interfaces/Project';
+
+// Type definitions for AI content
+interface EmailData {
+  subject?: string;
+  body?: string;
+}
+
+interface EmailsData {
+  [role: string]: EmailData;
+}
+
+interface VideoScript {
+  opening?: string;
+  supporting_visuals?: string;
+  executive_return?: string;
+  supporting_visuals_two?: string;
+  closing?: string;
+  fade_out?: string;
+}
+
+interface FAQ {
+  question?: string;
+  answer?: string;
+}
+
+// Extended AI Content interface to include emails
+interface ExtendedAIContent {
+  emails?: EmailsData;
+  video_script?: VideoScript | string;
+  faqs?: FAQ[];
+}
+
+// Extended Project interface
+interface ProjectWithExtendedAI extends Omit<Project, 'ai_content'> {
+  ai_content?: ExtendedAIContent;
+}
 
 // Function to format emails as text
-const formatEmails = (emails: any): string => {
+const formatEmails = (emails: EmailsData | null | undefined): string => {
   if (!emails || typeof emails !== 'object') {
     return 'No emails available for this project.';
   }
@@ -10,7 +47,7 @@ const formatEmails = (emails: any): string => {
   let emailText = 'CHANGE MANAGEMENT PROJECT EMAILS\n';
   emailText += '='.repeat(50) + '\n\n';
 
-  Object.entries(emails).forEach(([role, emailData]: [string, any]) => {
+  Object.entries(emails).forEach(([role, emailData]: [string, EmailData]) => {
     emailText += `ROLE: ${role}\n`;
     emailText += '-'.repeat(30) + '\n';
     emailText += `SUBJECT: ${emailData.subject || 'No subject'}\n\n`;
@@ -22,7 +59,7 @@ const formatEmails = (emails: any): string => {
 };
 
 // Function to format video script as text
-const formatVideoScript = (videoScript: any): string => {
+const formatVideoScript = (videoScript: VideoScript | string | null | undefined): string => {
   if (!videoScript) {
     return 'No video script available for this project.';
   }
@@ -32,7 +69,7 @@ const formatVideoScript = (videoScript: any): string => {
 
   try {
     const script = typeof videoScript === 'string' ? JSON.parse(videoScript) : videoScript;
-    
+
     if (script.opening) {
       scriptText += 'OPENING:\n';
       scriptText += '-'.repeat(20) + '\n';
@@ -68,7 +105,7 @@ const formatVideoScript = (videoScript: any): string => {
       scriptText += '-'.repeat(20) + '\n';
       scriptText += `${script.fade_out}\n\n`;
     }
-  } catch (error) {
+  } catch {
     scriptText += `Raw video script content:\n${videoScript}\n`;
   }
 
@@ -76,7 +113,7 @@ const formatVideoScript = (videoScript: any): string => {
 };
 
 // Function to format FAQs as text
-const formatFAQs = (faqs: any[]): string => {
+const formatFAQs = (faqs: FAQ[] | null | undefined): string => {
   if (!faqs || !Array.isArray(faqs) || faqs.length === 0) {
     return 'No FAQs available for this project.';
   }
@@ -95,7 +132,7 @@ const formatFAQs = (faqs: any[]): string => {
 };
 
 // Function to generate PowerPoint using existing template routes
-const generatePowerPoint = async (project: any, template: number = 1): Promise<ArrayBuffer> => {
+const generatePowerPoint = async (project: ProjectWithExtendedAI, template: number = 1): Promise<ArrayBuffer> => {
   try {
     // Dynamically import the specific template route
     if (template === 2) {
@@ -103,7 +140,7 @@ const generatePowerPoint = async (project: any, template: number = 1): Promise<A
       const mockRequest = {
         json: async () => ({ project })
       } as NextRequest;
-      
+
       const response = await template2Post(mockRequest);
       if (response instanceof NextResponse) {
         return await response.arrayBuffer();
@@ -113,7 +150,7 @@ const generatePowerPoint = async (project: any, template: number = 1): Promise<A
       const mockRequest = {
         json: async () => ({ project })
       } as NextRequest;
-      
+
       const response = await template3Post(mockRequest);
       if (response instanceof NextResponse) {
         return await response.arrayBuffer();
@@ -124,7 +161,7 @@ const generatePowerPoint = async (project: any, template: number = 1): Promise<A
       const mockRequest = {
         json: async () => ({ project, template: 1 })
       } as NextRequest;
-      
+
       const response = await template1Post(mockRequest);
       if (response instanceof NextResponse) {
         return await response.arrayBuffer();
@@ -140,7 +177,7 @@ const generatePowerPoint = async (project: any, template: number = 1): Promise<A
 
 export async function POST(request: NextRequest) {
   try {
-    const { project } = await request.json();
+    const { project }: { project: ProjectWithExtendedAI } = await request.json();
 
     if (!project) {
       return NextResponse.json(

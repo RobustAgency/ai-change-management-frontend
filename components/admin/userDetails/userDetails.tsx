@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
-import { Mail, User, FileText, Eye, Calendar, Clock, Target, Building } from 'lucide-react'
+import { Mail, User, FileText, Eye, Calendar, Clock, Target } from 'lucide-react'
 import { formatDate } from '@/utils/formatDate'
 import type { User as UserType } from '@/interfaces/User'
 import type { Project } from '@/interfaces/Project'
