@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import ProjectOverviewTabs from "./ProjectOverviewTabs"
 import ContainerCard from "@/components/custom/ContainerCard"
 import AIContentGenerationModal from "@/components/custom/AIContentGenerationModal"
+import ExportAll from "./ExportAll"
 import { AssetData, ProjectData, SlideDeck, RoleEmail } from "./types"
 import { useProject } from "@/hooks/app/useProjects"
 import Spinner from "@/components/ui/spinner"
@@ -177,7 +178,9 @@ export default function ProjectOverview({ projectId }: ProjectOverviewProps) {
             <ContainerCard
                 title={project?.name || ""}
                 description="Your AI-generated communication assets are ready for review and export"
+                action={<ExportAll project={project as ProjectData} />}
             >
+
                 <ProjectOverviewTabs assetData={assetData} onEdit={handleEdit} />
             </ContainerCard>
         </div>
