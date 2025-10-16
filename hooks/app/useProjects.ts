@@ -6,6 +6,7 @@ import type { Project, ProjectFormData, ProjectFilters, ProjectsResponse } from 
 export const useProjects = () => {
     const [projects, setProjects] = useState<ProjectsResponse | null>(null);
     const [loading, setLoading] = useState(false);
+    const [deleteLoading, setDeleteLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     const fetchProjects = async (filters?: ProjectFilters) => {
@@ -40,18 +41,18 @@ export const useProjects = () => {
         }
     };
 
-    const updateProject = async (id: string, data: ProjectFormData): Promise<Project | null> => {
+    const updateProject = async (id: string, data: ProjectFormData): Promise<boolean> => {
         try {
             setLoading(true);
             setError(null);
-            const updatedProject = await projectService.updateProject(id, data);
+            await projectService.updateProject(id, data);
             toast.success('Project updated successfully');
-            return updatedProject;
+            return true;
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : 'Failed to update project';
             setError(errorMessage);
             toast.error(errorMessage);
-            return null;
+            return false;
         } finally {
             setLoading(false);
         }
@@ -59,7 +60,7 @@ export const useProjects = () => {
 
     const deleteProject = async (id: string): Promise<boolean> => {
         try {
-            setLoading(true);
+            setDeleteLoading(true);
             setError(null);
             await projectService.deleteProject(id);
             toast.success('Project deleted successfully');
@@ -70,13 +71,14 @@ export const useProjects = () => {
             toast.error(errorMessage);
             return false;
         } finally {
-            setLoading(false);
+            setDeleteLoading(false);
         }
     };
 
     return {
         projects,
         loading,
+        deleteLoading,
         error,
         fetchProjects,
         createProject,

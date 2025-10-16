@@ -10,6 +10,18 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'ai.robustapps.dev',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'change-mgmt.robustapps.net',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };

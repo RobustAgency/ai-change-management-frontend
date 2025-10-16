@@ -3,6 +3,7 @@ import * as React from "react"
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable, getPaginationRowModel, getSortedRowModel, SortingState, getFilteredRowModel, ColumnFiltersState } from "@tanstack/react-table"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
+import { Skeleton } from "@/components/ui/skeleton"
 import Pagniation from "./Pagniation"
 import { CardDescription, CardTitle } from "../ui/card"
 import { Search, Sparkle } from "lucide-react"
@@ -26,6 +27,8 @@ interface DataTableProps<TData, TValue> {
     cellPadding?: string | number
     loading?: boolean
     serverSide?: boolean
+    onRowClick?: (row: TData) => void
+    rowClickable?: boolean
 }
 
 export function DataTable<TData, TValue>({
@@ -42,6 +45,8 @@ export function DataTable<TData, TValue>({
     cellPadding = '0.75rem',
     loading = false,
     serverSide = false,
+    onRowClick,
+    rowClickable = false,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -96,6 +101,27 @@ export function DataTable<TData, TValue>({
     const totalPages = serverSide ? (pagination?.totalPages || 0) : table.getPageCount()
     const Icon = icon || Sparkle
 
+    const renderSkeletonRows = () => {
+        const skeletonRowCount = 5
+        return Array.from({ length: skeletonRowCount }).map((_, rowIndex) => (
+            <TableRow key={`skeleton-${rowIndex}`}>
+                {columns.map((_, colIndex) => {
+                    const widths = ['w-16', 'w-24', 'w-32', 'w-20', 'w-28', 'w-36', 'w-40']
+                    const randomWidth = widths[colIndex % widths.length]
+
+                    return (
+                        <TableCell
+                            key={`skeleton-cell-${rowIndex}-${colIndex}`}
+                            style={{ paddingTop: cellPadding, paddingBottom: cellPadding }}
+                        >
+                            <Skeleton className={`h-4 ${randomWidth}`} />
+                        </TableCell>
+                    )
+                })}
+            </TableRow>
+        ))
+    }
+
     return (
         <div>
             <div className="flex items-center justify-between mb-4 ">
@@ -114,7 +140,7 @@ export function DataTable<TData, TValue>({
                             value={serverSide ? searchValue : (table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
                             onChange={handleSearchChange}
                             className="pl-10 max-w-sm"
-                            disabled={loading}
+                        // disabled={loading}
                         />
                     </div>
                 )}
@@ -141,22 +167,18 @@ export function DataTable<TData, TValue>({
                     </TableHeader>
                     <TableBody>
                         {loading ? (
-                            <TableRow>
-                                <TableCell
-                                    colSpan={columns.length}
-                                    className="h-24 text-center"
-                                >
-                                    <div className="flex items-center justify-center">
-                                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-border border-t-primary mr-2" />
-                                        Loading...
-                                    </div>
-                                </TableCell>
-                            </TableRow>
+                            renderSkeletonRows()
                         ) : table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
+                                    className={rowClickable ? "cursor-pointer hover:bg-muted/50" : ""}
+                                    onClick={() => {
+                                        if (rowClickable && onRowClick) {
+                                            onRowClick(row.original)
+                                        }
+                                    }}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}

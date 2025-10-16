@@ -1,6 +1,7 @@
 export interface Project {
   id?: number;
   name: string;
+  is_editable: boolean;
   launch_date: string;
   type?: string;
   sponsor_name?: string;
@@ -16,7 +17,7 @@ export interface Project {
   user_id?: number;
   created_at?: string;
   updated_at?: string;
-  media?: MediaFile[];
+  media?: MediaFile[] | string[];
   ai_content?: AIContent;
 }
 

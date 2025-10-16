@@ -8,7 +8,7 @@ import { useAuth } from '@/providers/AuthProvider'
 import { usePlans, useUpcomingInvoice } from '@/hooks/app/usePlans'
 import { formatCurrency } from '@/utils/formatCurrency'
 import { formatDate } from '@/utils/formatDate'
-import Spinner from '@/components/ui/spinner'
+import OverviewSkeleton from '@/components/app/billing/OverviewSkeleton'
 
 interface OverviewProps {
     className?: string;
@@ -25,11 +25,7 @@ const Overview: React.FC<OverviewProps> = () => {
     const loading = plansLoading || upcomingLoading
 
     if (loading) {
-        return (
-            <div className="flex items-center justify-center min-h-[400px]">
-                <Spinner size="lg" />
-            </div>
-        )
+        return <OverviewSkeleton />
     }
 
     if (!currentPlan) {

@@ -58,7 +58,7 @@ const BasicInformation: React.FC = () => {
                 files: [file]
             }
         } as unknown as React.ChangeEvent<HTMLInputElement>;
-        
+
         handleLogoChange(syntheticEvent);
     };
 
@@ -66,7 +66,7 @@ const BasicInformation: React.FC = () => {
         e.preventDefault();
         e.stopPropagation();
         e.currentTarget.classList.remove('border-indigo-400', 'bg-indigo-50');
-        
+
         const files = e.dataTransfer.files;
         if (files.length > 0) {
             const file = files[0];
@@ -100,12 +100,12 @@ const BasicInformation: React.FC = () => {
         }
         previewUrlRef.current = null;
         setLocalPreview(null);
-        
+
         // Reset file input
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
         }
-        
+
         // Call parent handler
         removeLogo();
     };
@@ -195,9 +195,7 @@ const BasicInformation: React.FC = () => {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="draft">Draft</SelectItem>
-                            <SelectItem value="active">Active</SelectItem>
                             <SelectItem value="completed">Completed</SelectItem>
-                            <SelectItem value="cancelled">Cancelled</SelectItem>
                         </SelectContent>
                     </Select>
                     {validationErrors.status && (
@@ -239,7 +237,7 @@ const BasicInformation: React.FC = () => {
                 <div className="relative">
                     {displayImage ? (
                         <div className="min-w-md w-max relative group">
-                            <div 
+                            <div
                                 className="w-full max-w-md h-32 border-2 border-gray-300 rounded-lg flex items-center justify-center bg-gray-50 cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition-all"
                                 onDragOver={handleDragOver}
                                 onDragLeave={handleDragLeave}
@@ -265,7 +263,7 @@ const BasicInformation: React.FC = () => {
                             </Button>
                         </div>
                     ) : (
-                        <div 
+                        <div
                             className="w-full max-w-md h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center bg-gray-50 cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition-all"
                             onDragOver={handleDragOver}
                             onDragLeave={handleDragLeave}

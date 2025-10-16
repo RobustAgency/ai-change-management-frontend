@@ -1,6 +1,5 @@
 "use client"
-import React from 'react'
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -19,126 +18,89 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { useProjects } from "@/hooks/app/useProjects"
-import Spinner from "@/components/ui/spinner"
+import ConfirmationDialog from "@/components/custom/ConfirmationDialog"
 import type { Project } from "@/interfaces/Project"
+
+// ✅ Tailwind Skeleton Loader Component
+const SkeletonList = ({ count = 3 }: { count?: number }) => (
+    <div className="space-y-4">
+        {Array.from({ length: count }).map((_, i) => (
+            <div key={i} className="animate-pulse border rounded-lg p-6 bg-gray-50">
+                <div className="h-4 bg-gray-200 rounded w-1/3 mb-4"></div>
+                <div className="h-3 bg-gray-200 rounded w-1/4 mb-3"></div>
+                <div className="flex gap-2">
+                    <div className="h-3 bg-gray-200 rounded w-1/6"></div>
+                    <div className="h-3 bg-gray-200 rounded w-1/6"></div>
+                </div>
+            </div>
+        ))}
+    </div>
+)
 
 const Projects = () => {
     const [searchTerm, setSearchTerm] = useState("")
-    const { projects, loading, error, fetchProjects, deleteProject } = useProjects()
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+    const [projectToDelete, setProjectToDelete] = useState<Project | null>(null)
+    const { projects, loading, deleteLoading, error, fetchProjects, deleteProject } = useProjects()
 
     useEffect(() => {
         fetchProjects()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    // Debounce search to avoid too many API calls
     useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            if (searchTerm) {
+        const timeout = setTimeout(() => {
+            if (searchTerm.trim()) {
                 fetchProjects({ term: searchTerm })
             } else {
                 fetchProjects()
             }
-        }, 500) // 500ms delay
-
-        return () => clearTimeout(timeoutId)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, 500)
+        return () => clearTimeout(timeout)
     }, [searchTerm])
 
     const handleDeleteProject = async (id: number) => {
-        if (window.confirm('Are you sure you want to delete this project?')) {
-            const success = await deleteProject(id.toString())
-            if (success) {
-                fetchProjects() // Refresh the list
-            }
+        const success = await deleteProject(id.toString())
+        if (success) {
+            fetchProjects()
+            setIsDeleteDialogOpen(false)
+            setProjectToDelete(null)
+        }
+    }
+
+    const openDeleteDialog = (project: Project) => {
+        setProjectToDelete(project)
+        setIsDeleteDialogOpen(true)
+    }
+
+    const closeDeleteDialog = () => {
+        if (!deleteLoading) {
+            setIsDeleteDialogOpen(false)
+            setProjectToDelete(null)
         }
     }
 
     const getStatusConfig = (status: string) => {
         switch (status) {
             case "completed":
-                return {
-                    color: "bg-green-100 text-green-800 border-green-200",
-                    label: "Completed",
-                    dot: "bg-green-500",
-                }
+                return { color: "bg-green-100 text-green-800 border-green-200", label: "Completed", dot: "bg-green-500" }
             case "in-progress":
-                return {
-                    color: "bg-indigo-100 text-indigo-800 border-indigo-200",
-                    label: "In Progress",
-                    dot: "bg-indigo-500",
-                }
             case "active":
-                return {
-                    color: "bg-indigo-100 text-indigo-800 border-indigo-200",
-                    label: "Active",
-                    dot: "bg-indigo-500",
-                }
+                return { color: "bg-indigo-100 text-indigo-800 border-indigo-200", label: "In Progress", dot: "bg-indigo-500" }
             case "draft":
-                return {
-                    color: "bg-gray-100 text-gray-800 border-gray-200",
-                    label: "Draft",
-                    dot: "bg-gray-500",
-                }
+                return { color: "bg-gray-100 text-gray-800 border-gray-200", label: "Draft", dot: "bg-gray-500" }
             default:
-                return {
-                    color: "bg-gray-100 text-gray-800 border-gray-200",
-                    label: status,
-                    dot: "bg-gray-500",
-                }
+                return { color: "bg-gray-100 text-gray-800 border-gray-200", label: status, dot: "bg-gray-500" }
         }
     }
 
-    // Get the projects array from the API response
-    const projectsData = projects?.data || []
-
-    // Helper function to get stakeholder count and display text
     const getStakeholdersInfo = (stakeholders?: Project['stakeholders']) => {
         if (!stakeholders || stakeholders.length === 0) {
-            return { count: 0, text: "No stakeholders" }
+            return { text: "No stakeholders" }
         }
-        return {
-            count: stakeholders.length,
-            text: `${stakeholders.length} stakeholder${stakeholders.length !== 1 ? "s" : ""}`
-        }
+        return { text: `${stakeholders.length} stakeholder${stakeholders.length > 1 ? "s" : ""}` }
     }
 
-    // Helper function to get client logo URL (currently unused but kept for future use)
-    // const getClientLogoUrl = (media?: Project['media']) => {
-    //     const clientLogo = media?.find(m => m.collection_name === 'client_logos')
-    //     return clientLogo?.original_url || null
-    // }
-
-    if (loading) {
-        return (
-            <Card className="border-0 shadow-sm bg-white">
-                <CardContent className="py-12">
-                    <div className="flex items-center justify-center">
-                        <Spinner size="lg" />
-                    </div>
-                </CardContent>
-            </Card>
-        )
-    }
-
-    if (error) {
-        return (
-            <Card className="border-0 shadow-sm bg-white">
-                <CardContent className="py-12">
-                    <div className="text-center text-red-600">
-                        <p>Error loading projects: {error}</p>
-                        <Button
-                            onClick={() => fetchProjects()}
-                            className="mt-4"
-                            variant="outline"
-                        >
-                            Try Again
-                        </Button>
-                    </div>
-                </CardContent>
-            </Card>
-        )
-    }
+    const projectsData = projects?.data || []
 
     return (
         <Card className="border-0 shadow-sm bg-white">
@@ -160,53 +122,67 @@ const Projects = () => {
                         </div>
                         <Link href="/projects/create">
                             <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
-                                <Plus className="w-4 h-4 mr-2" />
-                                New Project
+                                <Plus className="w-4 h-4 mr-2" /> New Project
                             </Button>
                         </Link>
                     </div>
                 </div>
             </CardHeader>
+
             <CardContent>
-                {projectsData.length > 0 ? (
+                {loading ? (
+                    <SkeletonList count={3} />
+                ) : projectsData.length === 0 ? (
+                    <div className="text-center py-12">
+                        <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <FileText className="w-8 h-8 text-gray-400" />
+                        </div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-2">No projects found</h3>
+                        <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                            {searchTerm ? "Try different keywords." : "Create your first project to get started."}
+                        </p>
+                        {!searchTerm && (
+                            <Link href="/projects/create">
+                                <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                                    <Plus className="w-4 h-4 mr-2" /> Create Project
+                                </Button>
+                            </Link>
+                        )}
+                    </div>
+                ) : (
                     <div className="space-y-4">
                         {projectsData.map((project: Project) => {
-                            const statusConfig = getStatusConfig(project.status)
-                            const stakeholdersInfo = getStakeholdersInfo(project.stakeholders)
+                            const status = getStatusConfig(project.status)
+                            const stakeholders = getStakeholdersInfo(project.stakeholders)
                             return (
-                                <div
-                                    key={project.id}
-                                    className="border rounded-lg p-6 hover:shadow-md transition-shadow bg-gray-50"
-                                >
+                                <div key={project.id} className="border rounded-lg p-6 hover:shadow-md bg-gray-50">
                                     <div className="flex items-start justify-between mb-4">
-                                        <div className="flex-1">
+                                        <div>
                                             <div className="flex items-center gap-3 mb-2">
                                                 <h3 className="text-lg font-semibold text-gray-900">{project.name}</h3>
-                                                <Badge className={`${statusConfig.color} border text-xs font-medium`}>
-                                                    <div className={`w-2 h-2 rounded-full ${statusConfig.dot} mr-2`}></div>
-                                                    {statusConfig.label}
+                                                <Badge className={`${status.color} border text-xs font-medium`}>
+                                                    <span className={`w-2 h-2 rounded-full ${status.dot} mr-2`}></span>
+                                                    {status.label}
                                                 </Badge>
                                             </div>
                                             <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
                                                 <div className="flex items-center gap-1">
-                                                    <Calendar className="w-4 h-4" />
-                                                    Created {new Date(project.created_at || '').toLocaleDateString()}
+                                                    <Calendar className="w-4 h-4" /> Created{" "}
+                                                    {project.created_at ? new Date(project.created_at).toLocaleDateString() : 'N/A'}
                                                 </div>
                                                 <div className="flex items-center gap-1">
-                                                    <Clock className="w-4 h-4" />
-                                                    Modified {new Date(project.updated_at || '').toLocaleDateString()}
+                                                    <Clock className="w-4 h-4" /> Modified{" "}
+                                                    {project.updated_at ? new Date(project.updated_at).toLocaleDateString() : 'N/A'}
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-6">
                                                 <div className="flex items-center gap-2">
-                                                    <Target className="w-4 h-4 text-gray-500" />
-                                                    <span className="text-sm text-gray-600">
-                                                        {stakeholdersInfo.text}
-                                                    </span>
+                                                    <Target className="w-4 h-4 text-gray-500" />{" "}
+                                                    <span>{stakeholders.text}</span>
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    <FileText className="w-4 h-4 text-gray-500" />
-                                                    <span className="text-sm text-gray-600">Launch: {new Date(project.launch_date).toLocaleDateString()}</span>
+                                                    <FileText className="w-4 h-4 text-gray-500" />{" "}
+                                                    <span>Launch: {new Date(project.launch_date).toLocaleDateString()}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -217,76 +193,58 @@ const Projects = () => {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
-                                                <Link href={`/projects/${project.id}`}>
-                                                    <DropdownMenuItem>
-                                                        <Edit className="w-4 h-4 mr-2" />
-                                                        Edit Project
-                                                    </DropdownMenuItem>
-                                                </Link>
-                                                {/* <DropdownMenuItem>
-                                                    <Download className="w-4 h-4 mr-2" />
-                                                    Export All Assets
-                                                </DropdownMenuItem> */}
+                                                {project.is_editable && (
+                                                    <Link href={`/projects/${project.id}`}>
+                                                        <DropdownMenuItem>
+                                                            <Edit className="w-4 h-4 mr-2" /> Edit Project
+                                                        </DropdownMenuItem>
+                                                    </Link>
+                                                )}
                                                 <DropdownMenuItem
-                                                    className="text-red-600"
-                                                    onClick={() => handleDeleteProject(project.id!)}
+                                                    onClick={() => openDeleteDialog(project)}
+                                                    className="cursor-pointer"
                                                 >
-                                                    <Trash2 className="w-4 h-4 mr-2" />
-                                                    Delete Project
+                                                    <Trash2 className="w-4 h-4 mr-2 text-red-600" />{" "}
+                                                    <span className="text-red-600">Delete Project</span>
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </div>
 
-                                    <div className="flex items-center justify-between">
+                                    <div className="flex justify-between">
                                         <div className="flex flex-wrap gap-2">
-                                            {project.stakeholders?.map((stakeholder, index) => (
-                                                <Badge key={index} className="text-xs bg-white">
-                                                    {stakeholder.name || stakeholder.department || `Stakeholder ${index + 1}`}
+                                            {project.stakeholders?.map((stake, i) => (
+                                                <Badge key={i} className="text-xs bg-white">
+                                                    {stake.name || stake.department || `Stakeholder ${i + 1}`}
                                                 </Badge>
                                             ))}
                                         </div>
-                                        <div className="flex gap-2">
-                                            {/* <Link href={`/projects/${project.id}/edit`}>
-                                                <Button variant="outline" size="sm">
-                                                    <Edit className="w-4 h-4 mr-2" />
-                                                    Edit
-                                                </Button>
-                                            </Link> */}
-                                            <Link href={`/projects/overview/${project.id}`}>
-                                                <Button size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white">
-                                                    <FileText className="w-4 h-4 mr-2" />
-                                                    View Assets
-                                                </Button>
-                                            </Link>
-                                        </div>
+                                        <Link href={`/projects/overview/${project.id}`}>
+                                            <Button size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                                                <FileText className="w-4 h-4 mr-2" />
+                                                View Assets
+                                            </Button>
+                                        </Link>
                                     </div>
                                 </div>
                             )
                         })}
                     </div>
-                ) : (
-                    <div className="text-center py-12">
-                        <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                            <FileText className="w-8 h-8 text-gray-400" />
-                        </div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2">No projects found</h3>
-                        <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                            {searchTerm
-                                ? "Try adjusting your search terms to find what you're looking for."
-                                : "Create your first project to start generating professional change communication assets."}
-                        </p>
-                        {!searchTerm && (
-                            <Link href="/projects/create">
-                                <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
-                                    <Plus className="w-4 h-4 mr-2" />
-                                    Create Your First Project
-                                </Button>
-                            </Link>
-                        )}
-                    </div>
                 )}
             </CardContent>
+
+            <ConfirmationDialog
+                isOpen={isDeleteDialogOpen}
+                onClose={closeDeleteDialog}
+                onConfirm={() => projectToDelete && handleDeleteProject(projectToDelete.id!)}
+                title="Delete Project"
+                description={`Are you sure you want to delete "${projectToDelete?.name}"? This action cannot be undone.`}
+                confirmText="Delete Project"
+                cancelText="Cancel"
+                type="danger"
+                isLoading={deleteLoading}
+                loadingText="Deleting..."
+            />
         </Card>
     )
 }

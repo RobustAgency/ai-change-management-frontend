@@ -1,25 +1,39 @@
 'use client'
 
 import React, { useMemo } from 'react'
+import { useRouter } from 'next/navigation'
 import { DataTable } from '@/components/custom/DataTable'
 import { createColumns } from './columns'
 import TableCard from '@/components/custom/TableCard'
 import { Button } from '@/components/ui/button'
 import { RefreshCw, AlertCircle, Users } from 'lucide-react'
-import { useUsers } from '@/hooks/admin/useUsers'
+import { useUsers, TableUser } from '@/hooks/admin/useUsers'
 
-const UsersTable = () => {
+interface UsersTableProps {
+    onDashboardRefresh?: () => void
+}
+
+const UsersTable = ({ onDashboardRefresh }: UsersTableProps) => {
+    const router = useRouter()
     const {
         users,
         loading,
         error,
         pagination,
+        filters,
         handleSearch,
         handlePageChange,
         handleRefresh
     } = useUsers()
 
-    const columns = useMemo(() => createColumns(handleRefresh), [handleRefresh])
+    const columns = useMemo(() => createColumns(handleRefresh, onDashboardRefresh), [handleRefresh, onDashboardRefresh])
+
+    const handleRowClick = (user: TableUser) => {
+        router.push(`/admin/users/${user.id}`)
+    }
+
+    const isSearching = filters.search && filters.search.trim() !== ''
+    const currentPagination = isSearching ? { ...pagination, totalPages: 1 } : pagination
 
     if (error) {
         return (
@@ -45,13 +59,15 @@ const UsersTable = () => {
                 columns={columns}
                 data={users}
                 searchKey="full_name"
-                searchPlaceholder="Search users by name..."
-                pagination={pagination}
-                onPageChange={handlePageChange}
+                searchPlaceholder="Search users"
+                pagination={currentPagination}
+                onPageChange={isSearching ? undefined : handlePageChange}
                 onSearch={handleSearch}
                 cellPadding={'15px'}
                 loading={loading}
-                serverSide={false}
+                serverSide={true}
+                rowClickable={true}
+                onRowClick={handleRowClick}
             />
         </TableCard>
     )

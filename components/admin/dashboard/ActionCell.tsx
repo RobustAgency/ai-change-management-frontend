@@ -3,21 +3,28 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { MoreVertical } from "lucide-react"
+import { MoreVertical, Eye } from "lucide-react"
 import { TableUser } from "@/hooks/admin/useUsers"
 import ConfirmationDialog from "@/components/custom/ConfirmationDialog"
 import { usersService } from "@/service/admin/users"
 import { toast } from "react-toastify"
+import { useRouter } from "next/navigation"
 
 interface ActionCellProps {
     user: TableUser
     onRefresh?: () => void
+    onDashboardRefresh?: () => void
 }
 
-const ActionCell = ({ user, onRefresh }: ActionCellProps) => {
+const ActionCell = ({ user, onRefresh, onDashboardRefresh }: ActionCellProps) => {
+    const router = useRouter()
     const [showDialog, setShowDialog] = useState(false)
     const [currentAction, setCurrentAction] = useState<"activate" | "deactivate" | null>(null)
     const [isLoading, setIsLoading] = useState(false)
+
+    const handleViewDetails = () => {
+        router.push(`/admin/users/${user.id}`)
+    }
 
     const handleActionClick = (action: "activate" | "deactivate") => {
         setCurrentAction(action)
@@ -41,6 +48,7 @@ const ActionCell = ({ user, onRefresh }: ActionCellProps) => {
                 toast.success(response.message || "User activated successfully")
                 handleClose()
                 onRefresh?.()
+                onDashboardRefresh?.() // Refresh dashboard stats
             }
         } catch {
             toast.error("Error activating user")
@@ -59,6 +67,7 @@ const ActionCell = ({ user, onRefresh }: ActionCellProps) => {
                 toast.success(response.message || "User deactivated successfully")
                 handleClose()
                 onRefresh?.()
+                onDashboardRefresh?.() // Refresh dashboard stats
             }
         } catch {
             toast.error("Error deactivating user")
@@ -108,11 +117,23 @@ const ActionCell = ({ user, onRefresh }: ActionCellProps) => {
         <>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="h-8 w-8 p-0">
+                    <Button 
+                        variant="ghost" 
+                        className="h-8 w-8 p-0"
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         <MoreVertical className="h-4 w-4" />
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
+                    <DropdownMenuItem
+                        onClick={handleViewDetails}
+                        className="cursor-pointer"
+                    >
+                        <Eye className="h-4 w-4 mr-2" />
+                        View Details
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem
                         onClick={() => handleActionClick("activate")}
                         disabled={isActive}

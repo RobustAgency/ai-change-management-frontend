@@ -1,7 +1,6 @@
 import React from 'react'
-import UsersTable from '@/components/admin/dashboard/UsersTable'
 import ContainerCard from '@/components/custom/ContainerCard';
-import Metrics from '@/components/admin/dashboard/Metrics';
+import AdminDashboardClient from '@/components/admin/dashboard/AdminDashboardClient';
 
 export const dynamic = 'force-dynamic'
 
@@ -9,8 +8,7 @@ const AdminDashboardPage = () => {
     return (
         <React.Fragment>
             <ContainerCard title="Admin Dashboard" description="Manage users, monitor platform usage, and oversee subscriptions.">
-                <Metrics />
-                <UsersTable />
+                <AdminDashboardClient />
             </ContainerCard>
         </React.Fragment>
     )

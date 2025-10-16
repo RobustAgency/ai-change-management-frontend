@@ -15,29 +15,29 @@ const ProjectDetails: React.FC = () => {
         {
             id: 1,
             name: 'Professional Blue',
-            description: 'Clean and professional design with blue accents. Perfect for corporate presentations.',
+            description: 'Clean and professional design with blue accents. Features structured tables and corporate layout.',
             color: '#3B82F6',
             bgColor: '#EFF6FF',
             icon: <FileText className="w-6 h-6" />,
-            features: ['Clean typography', 'Professional layout', 'Blue color scheme']
+            features: ['Structured tables', 'Blue headers', 'Corporate layout']
         },
         {
             id: 2,
-            name: 'Modern Red',
-            description: 'Bold and dynamic design with red accents. Perfect for impactful business presentations.',
-            color: '#DC2626',
-            bgColor: '#FEF2F2',
+            name: 'Modern Teal',
+            description: 'Bold and dynamic design with dark teal accents. Perfect for impactful business presentations.',
+            color: '#08475E',
+            bgColor: '#F0FDFA',
             icon: <Sparkles className="w-6 h-6" />,
-            features: ['Bold design', 'Dynamic layout', 'Red accent scheme']
+            features: ['Dashed borders', 'Teal theme', 'Dynamic cards']
         },
         {
             id: 3,
-            name: 'Corporate Purple',
-            description: 'Elegant corporate design with purple accents. Great for executive presentations.',
-            color: '#8B5CF6',
-            bgColor: '#FAF5FF',
+            name: 'Clean Gray',
+            description: 'Minimalist design with gray accents. Simple, elegant, and easy to read.',
+            color: '#374151',
+            bgColor: '#F9FAFB',
             icon: <Palette className="w-6 h-6" />,
-            features: ['Executive style', 'Elegant design', 'Purple theme']
+            features: ['Clean design', 'Arrow shapes', 'Minimal style']
         }
     ];
 
