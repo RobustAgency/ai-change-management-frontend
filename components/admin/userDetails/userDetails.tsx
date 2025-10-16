@@ -85,18 +85,6 @@ const UserDetails = ({ user }: UserDetailsProps) => {
                             <label className="text-sm font-medium text-gray-500">Plan</label>
                             <p className="text-gray-900 mt-1 break-words">{user?.plan?.name || 'No plan assigned'}</p>
                         </div>
-                        <div>
-                            <label className="text-sm font-medium text-gray-500">Email Verified</label>
-                            <div className="mt-1">
-                                <Badge
-                                    variant="light"
-                                    color={user.email_verified_at ? "success" : "warning"}
-                                    className="w-fit"
-                                >
-                                    {user.email_verified_at ? "Verified" : "Not Verified"}
-                                </Badge>
-                            </div>
-                        </div>
                     </div>
                 </CardContent>
             </Card>
