@@ -25,7 +25,7 @@ function SubmitButton() {
         <Button className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold" type="submit" disabled={pending}>
             {pending ? (
                 <>
-                    <Loader2 className="animate-spin"  />
+                    <Loader2 className="animate-spin" />
                 </>
             ) : (
                 <>
@@ -58,7 +58,7 @@ export function SignUpForm() {
     }, [state]);
 
     return (
-        <>
+        <div className="max-w-md mx-auto">
             <Card className="shadow-xl border">
                 <CardHeader className="text-center">
                     <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-2">
@@ -134,7 +134,7 @@ export function SignUpForm() {
                                     Terms of Service
                                 </Link>{" "}
                                 and{" "}
-                                <Link href="/privacy" className="text-indigo-600 hover:text-indigo-700">
+                                <Link href="/privacy-policy" className="text-indigo-600 hover:text-indigo-700">
                                     Privacy Policy
                                 </Link>
                             </label>
@@ -164,6 +164,6 @@ export function SignUpForm() {
                     </Link>
                 </p>
             </div>
-        </>
+        </div>
     );
 }

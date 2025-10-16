@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'react-toastify';
 import { projectService } from '@/service/app/projects';
 import type { Project, ProjectFormData, ProjectFilters, ProjectsResponse } from '@/interfaces/Project';
@@ -9,7 +9,7 @@ export const useProjects = () => {
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const fetchProjects = async (filters?: ProjectFilters) => {
+    const fetchProjects = useCallback(async (filters?: ProjectFilters) => {
         try {
             setLoading(true);
             setError(null);
@@ -22,9 +22,9 @@ export const useProjects = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
-    const createProject = async (data: ProjectFormData): Promise<boolean> => {
+    const createProject = useCallback(async (data: ProjectFormData): Promise<boolean> => {
         try {
             setLoading(true);
             setError(null);
@@ -39,9 +39,9 @@ export const useProjects = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
-    const updateProject = async (id: string, data: ProjectFormData): Promise<boolean> => {
+    const updateProject = useCallback(async (id: string, data: ProjectFormData): Promise<boolean> => {
         try {
             setLoading(true);
             setError(null);
@@ -56,9 +56,9 @@ export const useProjects = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
-    const deleteProject = async (id: string): Promise<boolean> => {
+    const deleteProject = useCallback(async (id: string): Promise<boolean> => {
         try {
             setDeleteLoading(true);
             setError(null);
@@ -73,7 +73,7 @@ export const useProjects = () => {
         } finally {
             setDeleteLoading(false);
         }
-    };
+    }, []);
 
     return {
         projects,
@@ -93,7 +93,7 @@ export const useProject = (id?: string) => {
     const [error, setError] = useState<string | null>(null);
     const [isGeneratingContent, setIsGeneratingContent] = useState(false);
 
-    const fetchProject = async () => {
+    const fetchProject = useCallback(async () => {
         if (!id) return;
         try {
             setLoading(true);
@@ -106,9 +106,9 @@ export const useProject = (id?: string) => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [id]);
 
-    const generateContent = async (): Promise<boolean> => {
+    const generateContent = useCallback(async (): Promise<boolean> => {
         if (!id) return false;
         try {
             setIsGeneratingContent(true);
@@ -130,13 +130,13 @@ export const useProject = (id?: string) => {
         } finally {
             setIsGeneratingContent(false);
         }
-    };
+    }, [id]);
 
     useEffect(() => {
         if (id && id !== 'create') {
             fetchProject();
         }
-    }, [id]);
+    }, [id, fetchProject]);
 
     return {
         project,

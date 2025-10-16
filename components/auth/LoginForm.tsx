@@ -64,7 +64,7 @@ export function LoginForm() {
     }, [state]);
 
     return (
-        <>
+        <div className="mx-auto max-w-md">
             <Card className="shadow-xl border">
                 <CardHeader className="text-center">
                     <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-2">
@@ -156,6 +156,6 @@ export function LoginForm() {
                     </Link>
                 </p>
             </div>
-        </>
+        </div>
     );
 }
