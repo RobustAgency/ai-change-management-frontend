@@ -86,6 +86,8 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
         is_editable: true,
     });
 
+    console.log("formData", formData)
+
     const steps = [
         {
             id: 1,
@@ -124,7 +126,7 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
             setFormData({
                 name: project.name || '',
                 launch_date: project.launch_date ? project.launch_date.split('T')[0] : '',
-                type: project.type || '',
+                type: project.type?.toLowerCase() || '',
                 sponsor_name: project.sponsor_name || '',
                 sponsor_title: project.sponsor_title || '',
                 business_goals: project.business_goals || '',
@@ -139,7 +141,7 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
 
             // Check if type is a custom type (not in predefined options)
             const predefinedTypes = ['system', 'process', 'structure', 'strategy', 'culture', 'org design'];
-            if (project.type && !predefinedTypes.includes(project.type)) {
+            if (project.type && !predefinedTypes.includes(project.type.toLowerCase())) {
                 setCustomType(project.type);
                 setFormData(prev => ({ ...prev, type: 'other' }));
             }
