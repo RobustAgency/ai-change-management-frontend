@@ -1,18 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Overview from './Overview'
 import Plans from './Plans'
 import InvoiceHistory from './InvoiceHistory'
 
 const tabs = [
-    { value: "overview", label: "Overview", component: <Overview /> },
-    { value: "plans", label: "Plans", component: <Plans /> },
-    { value: "invoice-history", label: "Invoices", component: <InvoiceHistory /> },
+    { value: "overview", label: "Overview" },
+    { value: "plans", label: "Plans" },
+    { value: "invoice-history", label: "Invoices" },
 ]
 
 const BillingTabs = () => {
+    const [activeTab, setActiveTab] = useState("overview")
+
+    const handleTabChange = (value: string) => {
+        setActiveTab(value)
+    }
+
     return (
-        <Tabs defaultValue="overview">
+        <Tabs value={activeTab} onValueChange={handleTabChange}>
             <TabsList className="grid w-full grid-cols-3 max-w-sm sm:max-w-md lg:max-w-lg bg-white border p-1 h-10 sm:h-12">
                 {tabs.map(({ value, label }) => (
                     <TabsTrigger
@@ -24,11 +30,15 @@ const BillingTabs = () => {
                     </TabsTrigger>
                 ))}
             </TabsList>
-            {tabs.map(({ value, component }) => (
-                <TabsContent key={value} value={value} className="space-y-4 sm:space-y-6 lg:space-y-8 mt-4 sm:mt-6 lg:mt-8">
-                    {component}
-                </TabsContent>
-            ))}
+            <TabsContent value="overview" className="space-y-4 sm:space-y-6 lg:space-y-8 mt-4 sm:mt-6 lg:mt-8">
+                <Overview onSwitchToPlans={() => handleTabChange("plans")} />
+            </TabsContent>
+            <TabsContent value="plans" className="space-y-4 sm:space-y-6 lg:space-y-8 mt-4 sm:mt-6 lg:mt-8">
+                <Plans />
+            </TabsContent>
+            <TabsContent value="invoice-history" className="space-y-4 sm:space-y-6 lg:space-y-8 mt-4 sm:mt-6 lg:mt-8">
+                <InvoiceHistory />
+            </TabsContent>
         </Tabs>
     )
 }

@@ -39,8 +39,8 @@ const OverviewSkeleton: React.FC = () => {
             </Card>
 
             {/* Usage Stats Skeleton */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-                {[1, 2, 3, 4].map((index) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {[1, 2, 3].map((index) => (
                     <Card key={index} className="border-0 shadow-sm bg-white">
                         <CardContent className="p-4 sm:p-6">
                             <div className="flex items-center justify-between">

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { PlansService } from '@/service/app/plans'
 import { apiUtils } from '@/lib/api'
 import { toast } from 'react-toastify'
-import type { Plan, Invoice, UpcomingInvoice } from '@/interfaces/Plan'
+import type { Plan, Invoice, UpcomingInvoice, CurrentSubscription } from '@/interfaces/Plan'
 
 export const usePlans = () => {
     const [plans, setPlans] = useState<Plan[]>([])
@@ -92,6 +92,36 @@ export const useUpcomingInvoice = () => {
     }, [fetchUpcomingInvoice])
 
     return { upcomingInvoice, loading, error, refetch: fetchUpcomingInvoice }
+}
+
+export const useCurrentSubscription = () => {
+    const [currentSubscription, setCurrentSubscription] = useState<CurrentSubscription | null>(null)
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
+
+    const fetchCurrentSubscription = useCallback(async () => {
+        try {
+            setLoading(true)
+            setError(null)
+            const response = await PlansService.getCurrentSubscription()
+            if (!response.error) {
+                setCurrentSubscription(response.data)
+            } else {
+                setError(response.message)
+            }
+        } catch (err) {
+            const errorMessage = apiUtils.handleError(err, 'Failed to fetch current subscription')
+            setError(errorMessage)
+        } finally {
+            setLoading(false)
+        }
+    }, [])
+
+    useEffect(() => {
+        fetchCurrentSubscription()
+    }, [fetchCurrentSubscription])
+
+    return { currentSubscription, loading, error, refetch: fetchCurrentSubscription }
 }
 
 export const useSubscribeToPlan = () => {

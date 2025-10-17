@@ -2,7 +2,8 @@ import { api } from '@/lib/api'
 import type {
     Plan,
     Invoice,
-    UpcomingInvoice
+    UpcomingInvoice,
+    CurrentSubscription
 } from '@/interfaces/Plan'
 
 export class PlansService {
@@ -46,5 +47,12 @@ export class PlansService {
      */
     static async getUpcomingInvoice() {
         return api.get<UpcomingInvoice>('/plans/upcoming-invoice')
+    }
+
+    /**
+     * Get current subscription details
+     */
+    static async getCurrentSubscription() {
+        return api.get<CurrentSubscription>('/plans/current-subscription')
     }
 }
