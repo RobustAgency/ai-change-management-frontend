@@ -6,7 +6,7 @@ import React, { useEffect } from 'react'
 const ProfileInfo = () => {
     const { profile, fetchProfile } = useAuth()
     const avatarUrl = profile?.avatar_url
-    const displayName = profile?.name || profile?.full_name || "User"
+    const displayName = profile?.full_name || profile?.name || "User"
 
     useEffect(() => {
         if (!profile) {
