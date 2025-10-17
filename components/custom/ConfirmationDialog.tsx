@@ -78,21 +78,29 @@ const ConfirmationDialog = ({
         }
     }
 
-    const handleConfirm = () => {
+    const handleConfirm = (e?: React.MouseEvent) => {
+        e?.stopPropagation()
         if (!isLoading) {
             onConfirm()
         }
     }
 
-    const handleClose = () => {
+    const handleClose = (e?: React.MouseEvent) => {
+        e?.stopPropagation()
         if (!isLoading) {
             onClose()
         }
     }
 
+    const handleDialogOpenChange = (open: boolean) => {
+        if (!open && !isLoading) {
+            onClose()
+        }
+    }
+
     return (
-        <Dialog open={isOpen} onOpenChange={handleClose}>
-            <DialogContent className="sm:max-w-[425px]">
+        <Dialog open={isOpen} onOpenChange={handleDialogOpenChange}>
+            <DialogContent className="sm:max-w-[425px]" onClick={(e) => e.stopPropagation()}>
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
                         {getIcon()}

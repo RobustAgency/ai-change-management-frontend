@@ -99,7 +99,6 @@ export function DataTable<TData, TValue>({
 
     const currentPage = serverSide ? (pagination?.page || 1) : table.getState().pagination.pageIndex + 1
     const totalPages = serverSide ? (pagination?.totalPages || 0) : table.getPageCount()
-    const Icon = icon || Sparkle
 
     const renderSkeletonRows = () => {
         const skeletonRowCount = 5
@@ -127,7 +126,7 @@ export function DataTable<TData, TValue>({
             <div className="flex items-center justify-between mb-4 ">
                 <div>
                     <CardTitle className="text-xl flex items-center gap-2">
-                        <Icon className="w-5 h-5" />
+                        {icon && React.createElement(icon, { className: "w-5 h-5" })}
                         {title}
                     </CardTitle>
                     <CardDescription>{description}</CardDescription>
@@ -174,9 +173,14 @@ export function DataTable<TData, TValue>({
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
                                     className={rowClickable ? "cursor-pointer hover:bg-muted/50" : ""}
-                                    onClick={() => {
+                                    onClick={(e) => {
                                         if (rowClickable && onRowClick) {
-                                            onRowClick(row.original)
+                                            const target = e.target as HTMLElement
+                                            const isInteractiveElement = target.closest('button, [role="menuitem"], [role="dialog"], [data-radix-popper-content-wrapper], a, input, select, textarea, [data-state]')
+
+                                            if (!isInteractiveElement) {
+                                                onRowClick(row.original)
+                                            }
                                         }
                                     }}
                                 >

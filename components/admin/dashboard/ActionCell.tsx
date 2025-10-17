@@ -127,7 +127,10 @@ const ActionCell = ({ user, onRefresh, onDashboardRefresh }: ActionCellProps) =>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                     <DropdownMenuItem
-                        onClick={handleViewDetails}
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            handleViewDetails()
+                        }}
                         className="cursor-pointer"
                     >
                         <Eye className="h-4 w-4 mr-2" />
@@ -135,7 +138,10 @@ const ActionCell = ({ user, onRefresh, onDashboardRefresh }: ActionCellProps) =>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
-                        onClick={() => handleActionClick("activate")}
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            handleActionClick("activate")
+                        }}
                         disabled={isActive}
                         className={`${!isActive && 'cursor-pointer'}`}
                     >
@@ -143,7 +149,10 @@ const ActionCell = ({ user, onRefresh, onDashboardRefresh }: ActionCellProps) =>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
-                        onClick={() => handleActionClick("deactivate")}
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            handleActionClick("deactivate")
+                        }}
                         disabled={isInactive}
                         className={`${!isInactive && 'cursor-pointer'}`}
                     >
