@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import Spinner from "@/components/ui/spinner"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import {
     Plus,
@@ -115,7 +114,6 @@ const Projects = () => {
     const getAssetButtonConfig = (project: Project) => {
         const { content_generation_status, status } = project
 
-        // When content_generation_status is pending
         if (content_generation_status === 'pending') {
             if (status === 'draft') {
                 return {
@@ -132,7 +130,6 @@ const Projects = () => {
             }
         }
 
-        // When content_generation_status is in_progress
         if (content_generation_status === 'in_progress') {
             return {
                 text: "Generating",
@@ -142,7 +139,6 @@ const Projects = () => {
             }
         }
 
-        // When content_generation_status is completed
         if (content_generation_status === 'completed') {
             return {
                 text: "View Assets",
@@ -151,7 +147,6 @@ const Projects = () => {
             }
         }
 
-        // When content_generation_status is failed, treat like pending
         if (content_generation_status === 'failed') {
             if (status === 'draft') {
                 return {
@@ -168,7 +163,6 @@ const Projects = () => {
             }
         }
 
-        // Default case
         return {
             text: "View Assets",
             href: `/projects/overview/${project.id}`,
@@ -313,7 +307,7 @@ const Projects = () => {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
-                                                {project.status == "draft" && (
+                                                {((project.content_generation_status == "pending") && (project.status == "draft" || project.status == "approved")) && (
                                                     <Link href={`/projects/${project.id}`}>
                                                         <DropdownMenuItem>
                                                             <Edit className="w-4 h-4 mr-2" /> Edit Project
