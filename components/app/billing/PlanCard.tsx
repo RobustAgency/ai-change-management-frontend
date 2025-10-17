@@ -142,7 +142,7 @@ const PlanCard: React.FC<PlanCardProps> = ({
                 cancelText="Keep Subscription"
                 type="danger"
                 isLoading={isCancelling}
-                loadingText="Cancelling..."
+                loadingText="Cancelling"
             />
         </>
     )
