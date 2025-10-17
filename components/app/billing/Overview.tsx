@@ -86,7 +86,7 @@ const Overview: React.FC<OverviewProps> = ({ onSwitchToPlans }) => {
                     </div>
 
                     <div className="flex justify-end">
-                        <Button 
+                        <Button
                             onClick={onSwitchToPlans}
                             className="h-10 sm:h-12 text-sm sm:text-base bg-indigo-600 hover:bg-indigo-700 text-white font-semibold"
                         >
@@ -118,7 +118,7 @@ const Overview: React.FC<OverviewProps> = ({ onSwitchToPlans }) => {
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-xs sm:text-sm font-medium text-gray-600 mb-1">Assets Generated</p>
-                                <p className="text-2xl sm:text-3xl font-bold text-gray-900">12</p>
+                                <p className="text-2xl sm:text-3xl font-bold text-gray-900">{currentSubscription.project_usage.current}</p>
                                 <p className="text-xs sm:text-sm text-gray-600">This month</p>
                             </div>
                             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-50 rounded-xl flex items-center justify-center">
