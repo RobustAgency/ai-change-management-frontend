@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation"
 import ProjectOverviewTabs from "./ProjectOverviewTabs"
 import ContainerCard from "@/components/custom/ContainerCard"
-import AIContentGenerationModal from "@/components/custom/AIContentGenerationModal"
 import ExportAll from "./ExportAll"
 import { AssetData, ProjectData, SlideDeck, RoleEmail } from "./types"
 import { useProject } from "@/hooks/app/useProjects"
@@ -102,19 +101,10 @@ export default function ProjectOverview({ projectId }: ProjectOverviewProps) {
     const params = useParams()
     const router = useRouter()
     const id = projectId || (params?.id as string)
-    const { project, loading, error, generateContent, isGeneratingContent } = useProject(id)
+    const { project, loading, error } = useProject(id)
 
     const handleEdit = (content: string) => {
         console.log("Editing content:", content)
-    }
-
-    const handleGenerateContent = async (): Promise<boolean> => {
-        const success = await generateContent()
-        return success
-    }
-
-    const handleCancelGeneration = () => {
-        router.push('/dashboard')
     }
 
     if (loading) {
@@ -136,30 +126,28 @@ export default function ProjectOverview({ projectId }: ProjectOverviewProps) {
         )
     }
 
-    // Show AI Content Generation Modal if ai_content is null
+    // Redirect to dashboard if ai_content is not available
     if (project && !project.ai_content) {
         return (
-            <>
-                <div className="bg-gray-50 min-h-screen">
-                    <ContainerCard
-                        title={project.name}
-                        description="Project details loaded - ready to generate AI content"
-                    >
-                        <div className="text-center py-12">
-                            <p className="text-gray-600">
-                                Preparing to generate AI-powered change management content...
-                            </p>
-                        </div>
-                    </ContainerCard>
-                </div>
-                <AIContentGenerationModal
-                    isOpen={true}
-                    onGenerate={handleGenerateContent}
-                    onCancel={handleCancelGeneration}
-                    isLoading={isGeneratingContent}
-                    projectName={project.name}
-                />
-            </>
+            <div className="bg-gray-50 min-h-screen">
+                <ContainerCard
+                    title={project.name}
+                    description="AI content is not available for this project"
+                >
+                    <div className="text-center py-12">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-2">Content Not Generated</h3>
+                        <p className="text-gray-600 mb-6">
+                            AI content has not been generated for this project yet. Please go back to the dashboard to generate content.
+                        </p>
+                        <button
+                            onClick={() => router.push('/dashboard')}
+                            className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md"
+                        >
+                            Back to Dashboard
+                        </button>
+                    </div>
+                </ContainerCard>
+            </div>
         )
     }
 

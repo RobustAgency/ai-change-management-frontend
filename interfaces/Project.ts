@@ -3,6 +3,7 @@ export interface Project {
   name: string;
   is_editable: boolean;
   launch_date: string;
+  content_generation_status?: 'pending' | 'in_progress' | 'completed' | 'failed';
   type?: string;
   sponsor_name?: string;
   sponsor_title?: string;
@@ -11,7 +12,7 @@ export interface Project {
   expected_outcomes?: string;
   client_organization?: string;
   template_id?: number;
-  status: 'draft' | 'active' | 'completed' | 'cancelled' | 'in-progress';
+  status: 'draft' | 'approved' | 'completed';
   stakeholders?: Stakeholder[];
   client_logo?: File | string;
   user_id?: number;

@@ -18,7 +18,7 @@ const DownloadPPTX = dynamic(() => import('./DownloadPPTX'), {
             disabled
         >
             <Download className="w-4 h-4" />
-            Loading...
+            <div className="loader"></div>
         </Button>
     )
 })

@@ -195,7 +195,7 @@ const BasicInformation: React.FC = () => {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="draft">Draft</SelectItem>
-                            <SelectItem value="completed">Completed</SelectItem>
+                            <SelectItem value="approved">Approved</SelectItem>
                         </SelectContent>
                     </Select>
                     {validationErrors.status && (

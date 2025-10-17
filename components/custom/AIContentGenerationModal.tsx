@@ -1,13 +1,16 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { AlertTriangle, CheckCircle } from "lucide-react"
+import { projectService } from "@/service/app/projects"
+import { toast } from "react-toastify"
 
 interface AIContentGenerationModalProps {
     isOpen: boolean
-    onGenerate: () => Promise<boolean>
+    projectId?: number
+    onGenerate?: () => Promise<boolean>
     onCancel: () => void
     isLoading?: boolean
     projectName?: string
@@ -15,20 +18,64 @@ interface AIContentGenerationModalProps {
 
 const AIContentGenerationModal = ({
     isOpen,
+    projectId,
     onGenerate,
     onCancel,
     isLoading = false,
     projectName = "this project"
 }: AIContentGenerationModalProps) => {
     const [isGenerating, setIsGenerating] = useState(false)
+    const [generating, setGenerating] = useState(false)
+
+    // Reset states when modal opens/closes
+    const handleCancel = () => {
+        setIsGenerating(false)
+        setGenerating(false)
+        onCancel()
+    }
+
+    // Reset states when modal is closed
+    useEffect(() => {
+        if (!isOpen) {
+            setIsGenerating(false)
+            setGenerating(false)
+        }
+    }, [isOpen])
 
     const handleGenerate = async () => {
-        const success = await onGenerate()
-        if (success) {
-            setIsGenerating(true)
-            setTimeout(() => {
-                onCancel()
-            }, 5000)
+        try {
+            setGenerating(true)
+            let success = false
+
+            // If onGenerate prop is provided, use it (for backward compatibility)
+            if (onGenerate) {
+                success = await onGenerate()
+            }
+            // Otherwise, use the built-in API call with projectId
+            else if (projectId) {
+                const response = await projectService.generateContent(projectId.toString())
+                success = response && response.error === false
+                if (!success) {
+                    const errorMessage = response?.message || 'Failed to generate content'
+                    toast.error(errorMessage)
+                }
+            } else {
+                toast.error('No project ID provided for content generation')
+                return
+            }
+
+            if (success) {
+                setIsGenerating(true)
+                toast.success('Content generation started successfully!')
+                setTimeout(() => {
+                    handleCancel()
+                }, 3000)
+            }
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to generate content'
+            toast.error(errorMessage)
+        } finally {
+            setGenerating(false)
         }
     }
 
@@ -79,18 +126,18 @@ const AIContentGenerationModal = ({
                 <DialogFooter className="gap-3">
                     <Button
                         variant="outline"
-                        onClick={onCancel}
-                        disabled={isLoading || isGenerating}
+                        onClick={handleCancel}
+                        disabled={isLoading || generating || isGenerating}
                         className="flex-1"
                     >
-                        {isGenerating ? "Redirecting..." : "Cancel"}
+                        Cancel
                     </Button>
                     <Button
                         onClick={handleGenerate}
-                        disabled={isLoading || isGenerating}
+                        disabled={isLoading || generating || isGenerating}
                         className="flex-1 bg-indigo-600 hover:bg-indigo-700"
                     >
-                        {isLoading ? (
+                        {isLoading || generating ? (
                             <>
                                 Generating...
                             </>
