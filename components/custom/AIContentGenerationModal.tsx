@@ -36,7 +36,7 @@ const AIContentGenerationModal = ({
         <Dialog open={isOpen} onOpenChange={() => { }} modal={true}>
             <DialogContent
                 className="sm:max-w-[500px] border-0 shadow-xl"
-                // Prevent closing by clicking outside or pressing escape
+                showCloseButton={false}
                 onPointerDownOutside={(e) => e.preventDefault()}
                 onEscapeKeyDown={(e) => e.preventDefault()}
             >

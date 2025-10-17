@@ -194,7 +194,7 @@ const renderStakeholdersSlide = (project?: ProjectData) => {
                                         clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 50%, calc(100% - 20px) 100%, 0 100%)'
                                     }}>
                                     <div className="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center flex-shrink-0">
-                                        <span className="font-bold text-xl">{index + 1}</span>
+                                        <span className="font-bold text-xl">{index + 4}</span>
                                     </div>
                                     <h4 className={`text-base font-semibold ${index === 0 ? 'text-white' : 'text-gray-800'}`}>
                                         {stakeholder.title}

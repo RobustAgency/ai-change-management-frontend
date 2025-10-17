@@ -8,13 +8,13 @@ interface Template1Props {
 const getSlideTitle = (slideIndex: number) => {
     const slideNames = [
         'Change Management Strategy',
-        'Agenda', 
+        'Agenda',
         'Executive Summary',
         'Benefits',
         'Stakeholders',
         'High-Level Change Management Strategy'
     ];
-    
+
     return slideNames[slideIndex] || `Slide ${slideIndex + 1}`;
 }
 
@@ -69,7 +69,7 @@ const renderExecutiveSummarySlide = (project?: ProjectData) => {
         benefits?: string[];
         strategic_objectives_of_ocm_plan?: string | string[];
     };
-    
+
     const execSummaryData = (project?.ai_content as { slides_content?: { executive_summary_slide?: ExecSummaryData } })?.slides_content?.executive_summary_slide;
 
     return (
@@ -86,7 +86,7 @@ const renderExecutiveSummarySlide = (project?: ProjectData) => {
                             {execSummaryData?.project_overview || 'This project represents a strategic initiative to transform our organization through effective change management practices.'}
                         </div>
                     </div>
-                    
+
                     {/* Purpose of OCM Plan Row */}
                     <div className="flex border-b border-gray-300">
                         <div className="w-1/4 bg-gray-600 text-white p-3 font-semibold text-sm">
@@ -96,22 +96,22 @@ const renderExecutiveSummarySlide = (project?: ProjectData) => {
                             {execSummaryData?.purpose_of_ocm_plan || 'This Organizational Change Management (OCM) Plan outlines a comprehensive, inclusive, and mission-aligned approach to support the successful adoption of the Project Name.'}
                         </div>
                     </div>
-                    
+
                     {/* Aligned with Mission and Vision Row */}
                     <div className="flex border-b border-gray-300">
                         <div className="w-1/4 bg-gray-600 text-white p-3 font-semibold text-sm">
                             Aligned with Client&apos;s Org Mission and Vision
                         </div>
                         <div className="w-3/4 bg-gray-50 p-3 text-sm">
-                            {Array.isArray(execSummaryData?.aligned_with_org_mission_and_vision) 
+                            {Array.isArray(execSummaryData?.aligned_with_org_mission_and_vision)
                                 ? execSummaryData.aligned_with_org_mission_and_vision.map((item: string, itemIndex: number) => (
                                     <div key={itemIndex} className="mb-1">• {item}</div>
-                                  ))
+                                ))
                                 : '• Bulleted list'
                             }
                         </div>
                     </div>
-                    
+
                     {/* Benefits Row */}
                     <div className="flex border-b border-gray-300">
                         <div className="w-1/4 bg-gray-600 text-white p-3 font-semibold text-sm">
@@ -121,12 +121,12 @@ const renderExecutiveSummarySlide = (project?: ProjectData) => {
                             {Array.isArray(execSummaryData?.benefits)
                                 ? execSummaryData.benefits.map((item: string, index: number) => (
                                     <div key={index} className="mb-1">• {item}</div>
-                                  ))
+                                ))
                                 : '• Bulleted list'
                             }
                         </div>
                     </div>
-                    
+
                     {/* Strategic Objectives Row */}
                     <div className="flex">
                         <div className="w-1/4 bg-gray-600 text-white p-3 font-semibold text-sm">
@@ -136,7 +136,7 @@ const renderExecutiveSummarySlide = (project?: ProjectData) => {
                             {Array.isArray(execSummaryData?.strategic_objectives_of_ocm_plan)
                                 ? execSummaryData.strategic_objectives_of_ocm_plan.map((item: string, index: number) => (
                                     <div key={index} className="mb-1">• {item}</div>
-                                  ))
+                                ))
                                 : execSummaryData?.strategic_objectives_of_ocm_plan || 'Strategic objectives content'
                             }
                         </div>
@@ -196,30 +196,24 @@ const renderStakeholdersSlide = (project?: ProjectData) => {
                 {/* Table Header */}
                 <div className="bg-blue-500 text-white grid grid-cols-3 gap-0">
                     <div className="p-3 font-semibold border-r border-blue-400">
-                        Stakeholder Name
-                    </div>
-                    <div className="p-3 font-semibold border-r border-blue-400">
                         Title
                     </div>
                     <div className="p-3 font-semibold">
                         Project Role
                     </div>
                 </div>
-                
+
                 {/* Table Rows */}
                 {stakeholdersData.slice(0, 4).map((stakeholder: { title?: string; project_role?: string }, index: number) => {
                     // Extract name from title (assuming format like "Name, Title")
                     const titleParts = stakeholder.title?.match(/^(.+?),\s*(.+?)$/) || [null, stakeholder.title || '', ''];
                     const stakeholderName = titleParts[1] || stakeholder.title || `Stakeholder ${index + 1}`;
                     const stakeholderTitle = titleParts[2] || 'Role';
-                    
+
                     return (
                         <div key={index} className={`grid grid-cols-3 gap-0 border-b border-gray-300 ${index % 2 === 0 ? 'bg-blue-50' : 'bg-white'}`}>
                             <div className="p-3 border-r border-gray-300 text-sm">
                                 {stakeholderName}
-                            </div>
-                            <div className="p-3 border-r border-gray-300 text-sm">
-                                {stakeholderTitle}
                             </div>
                             <div className="p-3 text-sm">
                                 {stakeholder.project_role || 'Project participant'}
@@ -237,16 +231,16 @@ const renderStrategySlide = (project?: ProjectData) => {
         title?: string;
         actions?: string[];
     };
-    
+
     type StrategyData = {
         stakeholder_alignment_and_engagement?: StrategyContent;
         define_the_why_and_wiifm?: StrategyContent;
         change_management_plan?: StrategyContent;
         people_measurement?: StrategyContent;
     };
-    
+
     const strategyData = (project?.ai_content as { slides_content?: { high_level_change_management_strategy_slide?: StrategyData } })?.slides_content?.high_level_change_management_strategy_slide;
-    
+
     const columns = [
         {
             title: 'Stakeholder Alignment & Engagement',
@@ -286,7 +280,7 @@ const renderStrategySlide = (project?: ProjectData) => {
                                 {column.title}
                             </h4>
                         </div>
-                        
+
                         {/* Column content */}
                         <div className={`${column.contentColor} p-3 h-48`}>
                             <div className="space-y-2">

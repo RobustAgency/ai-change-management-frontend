@@ -330,7 +330,7 @@ export async function POST(request: NextRequest) {
             });
 
             // Number in circle
-            const displayNumber = (index % 3) + 1; // Numbers 1-3 for each column
+            const displayNumber = index < 3 ? (index + 1) : (index - 3 + 4); // Left column: 1-3, Right column: 4-6
             slide5.addText(displayNumber.toString(), {
                 x: pos.x + 0.15,
                 y: pos.y + 0.125,
@@ -339,7 +339,7 @@ export async function POST(request: NextRequest) {
                 fontSize: 18,
                 bold: true,
                 color: 'FFFFFF',
-                align: 'center', 
+                align: 'center',
                 valign: 'middle'
             });
 
