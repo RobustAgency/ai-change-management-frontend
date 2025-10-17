@@ -186,7 +186,7 @@ const BasicInformation: React.FC = () => {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="status" className="text-base font-semibold text-gray-700">
+                    <Label htmlFor="status" className="text-base text-gray-700 font-semibold">
                         Status *
                     </Label>
                     <Select value={formData.status} onValueChange={(value) => handleInputChange('status', value)}>
