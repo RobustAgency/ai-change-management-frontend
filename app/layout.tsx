@@ -40,6 +40,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   }
   return (
     <html lang="en">
+      <link rel="icon" href="/short-logo.svg" sizes="any" />
       <body className={`${inter.className} bg-gray-50`} suppressHydrationWarning={true}>
         <AuthProvider initialUser={user} initialProfile={initialProfile}>
           <AppShell>{children}</AppShell>
