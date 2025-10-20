@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+"use client"
+import React, { useEffect, useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Overview from './Overview'
 import Plans from './Plans'
 import InvoiceHistory from './InvoiceHistory'
+import { useSearchParams, useRouter } from 'next/navigation'
 
 const tabs = [
     { value: "overview", label: "Overview" },
@@ -11,10 +13,23 @@ const tabs = [
 ]
 
 const BillingTabs = () => {
+    const searchParams = useSearchParams()
+    const router = useRouter()
     const [activeTab, setActiveTab] = useState("overview")
+
+    useEffect(() => {
+        const tabParam = searchParams?.get('tab')
+        if (tabParam) {
+            setActiveTab(tabParam)
+        }
+    }, [searchParams])
 
     const handleTabChange = (value: string) => {
         setActiveTab(value)
+        const params = new URLSearchParams(Array.from(searchParams.entries()))
+        params.set('tab', value)
+        const query = params.toString()
+        router.replace(`${window.location.pathname}${query ? `?${query}` : ''}`)
     }
 
     return (

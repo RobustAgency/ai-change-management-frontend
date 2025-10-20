@@ -3,6 +3,7 @@ import { LayoutGrid, Settings as SettingsIcon, LogOut, CreditCard } from "lucide
 import { useAuth } from "@/providers/AuthProvider";
 import { Sparkles } from 'lucide-react'
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 const adminRoutes = [
     { href: "/admin/dashboard", label: "Dashboard", icon: LayoutGrid },
@@ -32,14 +33,9 @@ export function Sidebar({
         <div className="bg-gray-50 flex h-full flex-col overflow-hidden">
             <div
                 aria-details="logo"
-                className="flex items-center justify-between md:hidden">
+                className="p-2 flex items-center justify-between md:hidden">
                 <Link href="/">
-                    <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                            <Sparkles className="w-5 h-5 text-white" />
-                        </div>
-                        <span className="text-xl font-bold text-gray-900">ChangeAI</span>
-                    </div>
+                    <Image width={165} height={100} src="/logo.png" alt="Logo" />
                 </Link>
             </div>
 

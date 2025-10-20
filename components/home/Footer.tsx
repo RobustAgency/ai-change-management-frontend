@@ -1,4 +1,5 @@
-import { Github, Linkedin, Sparkles, Twitter } from 'lucide-react'
+import { Github, Linkedin, Twitter } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
@@ -9,12 +10,7 @@ const Footer = () => {
                 <div className="grid md:grid-cols-4 gap-8">
                     {/* Company Info */}
                     <div className="space-y-4">
-                        <div className="flex items-center space-x-3">
-                            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                                <Sparkles className="w-5 h-5 text-white" />
-                            </div>
-                            <span className="text-xl font-bold">ChangeAI</span>
-                        </div>
+                        <Image width={165} height={100} src="/logo.png" alt="Logo" className="brightness-0 invert-100" />
                         <p className="text-gray-400 leading-relaxed">
                             Transform your change communication with AI-powered asset generation. Professional results in minutes,
                             not weeks.
