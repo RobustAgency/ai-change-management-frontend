@@ -78,7 +78,7 @@ const Metrics = () => {
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm font-medium text-gray-600 mb-1">Content Generated</p>
-                            <p className="text-3xl font-bold text-gray-900">{stats.content_generated}</p>
+                            <p className="text-3xl font-bold text-gray-900">{stats.content_generated * 4}</p>
                         </div>
                         <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
                             <FileCheck className="w-6 h-6 text-green-600" />
