@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Learn how AI Change Management protects your privacy and handles your personal data. Read our comprehensive privacy policy for transparency and compliance information.',
+  description: 'Learn how Innovative Dialogs protects your privacy and handles your personal data. Read our comprehensive privacy policy for transparency and compliance information.',
   robots: {
     index: true,
     follow: true,

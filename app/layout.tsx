@@ -10,8 +10,8 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | AI Change Management',
-    default: 'AI Change Management Platform'
+    template: '%s | Innovative Dialogs',
+    default: 'Innovative Dialogs'
   },
   description: 'Transform your business with our AI-powered change management platform. Streamline organizational transitions, enhance communication, and drive successful change initiatives.',
   keywords: ['AI', 'change management', 'organizational transformation', 'business process', 'automation'],
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://ai-change-management.com',
-    title: 'AI Change Management Platform',
+    title: 'Innovative Dialogs',
     description: 'Transform your business with our AI-powered change management platform. Streamline organizational transitions and drive successful change initiatives.',
-    siteName: 'AI Change Management',
+    siteName: 'Innovative Dialogs',
   },
   robots: {
     index: true,

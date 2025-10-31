@@ -19,7 +19,7 @@ const UsersDetailsPage = () => {
 
     useDocumentTitle(
         `User Details${user?.name ? ` - ${user.name}` : ''}`,
-        'View and manage detailed user information in the AI Change Management admin panel.'
+        'View and manage detailed user information in the Innovative Dialogs admin panel.'
     );
 
     if (loading) {

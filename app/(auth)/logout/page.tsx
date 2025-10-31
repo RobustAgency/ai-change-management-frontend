@@ -6,7 +6,7 @@ import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 export const dynamic = 'force-dynamic'
 
 const LogoutPage = () => {
-    useDocumentTitle('Logout', 'Signing you out of your AI Change Management account...');
+    useDocumentTitle('Logout', 'Signing you out of your Innovative Dialogs account...');
 
     const logout = async () => {
         const result = await signout();

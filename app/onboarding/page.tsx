@@ -19,7 +19,7 @@ function OnboardingContent() {
 export default function Onboarding() {
     useDocumentTitle(
         'Onboarding',
-        'Complete your AI Change Management account setup and get started with our platform.'
+        'Complete your Innovative Dialogs account setup and get started with our platform.'
     );
 
     return (

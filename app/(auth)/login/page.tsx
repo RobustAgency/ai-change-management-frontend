@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Login',
-  description: 'Sign in to your AI Change Management account to access your dashboard, projects, and management tools.',
+  description: 'Sign in to your Innovative Dialogs account to access your dashboard, projects, and management tools.',
   robots: {
     index: false,
     follow: false,

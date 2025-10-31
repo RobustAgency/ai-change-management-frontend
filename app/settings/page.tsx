@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Settings',
-  description: 'Manage your AI Change Management account settings, update your profile information, change your password, and customize your preferences.',
+  description: 'Manage your Innovative Dialogs account settings, update your profile information, change your password, and customize your preferences.',
   robots: {
     index: false,
     follow: false,

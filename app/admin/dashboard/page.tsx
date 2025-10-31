@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Admin Dashboard',
-  description: 'AI Change Management admin dashboard. Manage users, monitor platform usage, oversee subscriptions, and access administrative tools.',
+  description: 'Innovative Dialogs admin dashboard. Manage users, monitor platform usage, oversee subscriptions, and access administrative tools.',
   robots: {
     index: false,
     follow: false,

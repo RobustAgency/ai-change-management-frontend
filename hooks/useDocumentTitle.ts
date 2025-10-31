@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 export const useDocumentTitle = (title: string, description?: string) => {
     useEffect(() => {
         // Update document title
-        const baseTitle = 'AI Change Management';
+        const baseTitle = 'Innovative Dialogs';
         document.title = `${title} | ${baseTitle}`;
 
         // Update meta description if provided

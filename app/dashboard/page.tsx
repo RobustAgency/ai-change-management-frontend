@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic'
 const DashboardPage = () => {
     useDocumentTitle(
         'Dashboard',
-        'Your AI Change Management dashboard. View project metrics, recent activity, and manage your change management initiatives.'
+        'Your Innovative Dialogs dashboard. View project metrics, recent activity, and manage your change management initiatives.'
     );
 
     return (
