@@ -94,15 +94,35 @@ const PlanCard: React.FC<PlanCardProps> = ({
                     <ul className="space-y-4 mb-6">
                         <li className="flex items-center gap-3">
                             <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                            <span className="text-gray-700">Up to {plan.limit} items</span>
+                            <span className="text-gray-700">{plan.limit} projects</span>
                         </li>
                         <li className="flex items-center gap-3">
                             <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                            <span className="text-gray-700">{plan.billing_cycle} billing</span>
+                            <span className="text-gray-700">Customizable presentation templates</span>
                         </li>
                         <li className="flex items-center gap-3">
                             <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                            <span className="text-gray-700">Priority support</span>
+                            <span className="text-gray-700">Slide deck generation</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                            <span className="text-gray-700">Email series automation</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                            <span className="text-gray-700">Video script generation</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                            <span className="text-gray-700">Audience-specific messaging</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                            <span className="text-gray-700">Export to PPTX & DOCX</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                            <span className="text-gray-700">Standard support</span>
                         </li>
                     </ul>
 
@@ -122,10 +142,10 @@ const PlanCard: React.FC<PlanCardProps> = ({
                         ) : (
                             <CreditCard className="h-4 w-4 mr-2" />
                         )}
-                        {isCurrentPlan 
-                            ? 'Cancel Plan' 
-                            : hasActiveSubscription 
-                                ? 'Switch to Plan' 
+                        {isCurrentPlan
+                            ? 'Cancel Plan'
+                            : hasActiveSubscription
+                                ? 'Switch to Plan'
                                 : 'Subscribe'
                         }
                     </Button>

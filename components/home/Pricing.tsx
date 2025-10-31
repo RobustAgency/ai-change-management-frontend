@@ -13,7 +13,7 @@ const plansData: Omit<Plan, 'stripe_price_id'>[] = [
         name: 'Basic',
         description: 'Basic plan with essential features',
         limit: 5,
-        price: 10.0,
+        price: 29.99,
         billing_cycle: 'monthly',
         currency: 'usd',
         active: true,
@@ -25,7 +25,7 @@ const plansData: Omit<Plan, 'stripe_price_id'>[] = [
         name: 'Standard',
         description: 'Standard plan with additional features',
         limit: 10,
-        price: 20.0,
+        price: 59.99,
         billing_cycle: 'monthly',
         currency: 'usd',
         active: true,
@@ -37,7 +37,7 @@ const plansData: Omit<Plan, 'stripe_price_id'>[] = [
         name: 'Premium',
         description: 'Premium plan with all features',
         limit: 15,
-        price: 30.0,
+        price: 99.99,
         billing_cycle: 'monthly',
         currency: 'usd',
         active: true,
@@ -86,18 +86,38 @@ const Pricing = () => {
                                 <p className="text-gray-600 mt-2">{plan.description}</p>
                             </CardHeader>
                             <CardContent>
-                                <ul className="space-y-4 mb-6">
+                                <ul className="space-y-4 mb-6 text-sm">
                                     <li className="flex items-center gap-3">
                                         <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                        <span className="text-gray-700">Up to {plan.limit} items</span>
+                                        <span className="text-gray-700">{plan.limit} projects</span>
                                     </li>
                                     <li className="flex items-center gap-3">
                                         <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                        <span className="text-gray-700">{plan.billing_cycle} billing</span>
+                                        <span className="text-gray-700">Customizable presentation templates</span>
                                     </li>
                                     <li className="flex items-center gap-3">
                                         <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                                        <span className="text-gray-700">Priority support</span>
+                                        <span className="text-gray-700">Slide deck generation</span>
+                                    </li>
+                                    <li className="flex items-center gap-3">
+                                        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                                        <span className="text-gray-700">Email series automation</span>
+                                    </li>
+                                    <li className="flex items-center gap-3">
+                                        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                                        <span className="text-gray-700">Video script generation</span>
+                                    </li>
+                                    <li className="flex items-center gap-3">
+                                        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                                        <span className="text-gray-700">Audience-specific messaging</span>
+                                    </li>
+                                    <li className="flex items-center gap-3">
+                                        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                                        <span className="text-gray-700">Export to PPTX & DOCX</span>
+                                    </li>
+                                    <li className="flex items-center gap-3">
+                                        <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                                        <span className="text-gray-700">Standard support</span>
                                     </li>
                                 </ul>
                                 <Link href={'/billing?tab=plans'}>

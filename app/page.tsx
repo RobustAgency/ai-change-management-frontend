@@ -6,6 +6,7 @@ import Features from '@/components/home/Features'
 import Pricing from '@/components/home/Pricing'
 import HowItWorks from '@/components/home/HowItWorks'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
+import EnterpriseSection from '@/components/home/EnterpriseSection'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,9 +19,10 @@ export default function Home() {
   return (
     <React.Fragment>
       <Hero />
-      <HowItWorks/>
+      <HowItWorks />
       <Features />
       <Pricing />
+      <EnterpriseSection />
       <Footer />
     </React.Fragment>
   );

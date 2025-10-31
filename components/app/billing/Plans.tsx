@@ -3,6 +3,7 @@ import { usePlans, useSubscribeToPlan, useSwitchPlan } from '@/hooks/app/usePlan
 import { X } from 'lucide-react'
 import PlanCard from '@/components/app/billing/PlanCard'
 import PlanCardSkeleton from '@/components/app/billing/PlanCardSkeleton'
+import EnterpriseSection from '@/components/home/EnterpriseSection'
 import { Plan } from '@/interfaces/Plan'
 import { useAuth } from '@/providers/AuthProvider'
 
