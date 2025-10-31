@@ -4,8 +4,45 @@ import { AuthProvider } from "@/providers/AuthProvider";
 import { createClient } from "@/lib/supabase/server";
 import AppShell from "@/layouts/AppShell";
 import ToastProvider from "@/providers/ToastProvider";
+import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: {
+    template: '%s | AI Change Management',
+    default: 'AI Change Management Platform'
+  },
+  description: 'Transform your business with our AI-powered change management platform. Streamline organizational transitions, enhance communication, and drive successful change initiatives.',
+  keywords: ['AI', 'change management', 'organizational transformation', 'business process', 'automation'],
+  authors: [{ name: 'Robust Agency' }],
+  creator: 'Robust Agency',
+  publisher: 'Robust Agency',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://ai-change-management.com',
+    title: 'AI Change Management Platform',
+    description: 'Transform your business with our AI-powered change management platform. Streamline organizational transitions and drive successful change initiatives.',
+    siteName: 'AI Change Management',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+}
 
 const inter = Inter({
   subsets: ['latin'],

@@ -7,6 +7,7 @@ import ProjectForm from '@/components/app/projects/ProjectForm';
 import Spinner from '@/components/ui/spinner';
 import type { ProjectFormData } from '@/interfaces/Project';
 import { Button } from '@/components/ui/button';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 
 const ProjectPage = () => {
     const params = useParams();
@@ -16,6 +17,13 @@ const ProjectPage = () => {
 
     const { createProject, updateProject } = useProjects();
     const { project, loading: projectLoading, error } = useProject(isCreating ? undefined : projectId);
+
+    useDocumentTitle(
+        isCreating ? 'Create Project' : `Edit Project${project?.name ? ` - ${project.name}` : ''}`,
+        isCreating 
+            ? 'Create a new change management project to track and manage your organizational transformation initiatives.'
+            : 'Edit your change management project details, timeline, and objectives.'
+    );
 
     const handleSubmit = async (data: ProjectFormData) => {
         if (isCreating) {

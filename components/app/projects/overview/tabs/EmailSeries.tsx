@@ -55,9 +55,9 @@ const EmailSeries = ({ roleEmails }: EmailSeriesProps) => {
                                             : 'text-gray-700 border-b-4 lg:border-b-0 border-transparent'
                                             } ${roleEmails.indexOf(email) !== roleEmails.length - 1 ? 'lg:border-b lg:border-gray-200' : ''}`}
                                     >
-                                        <div className="flex items-center gap-3 whitespace-nowrap">
-                                            <Mail className="w-4 h-4" />
-                                            <span className="font-medium">{email.role}</span>
+                                        <div className="flex items-center gap-2">
+                                            <Mail className="w-4 h-4 shrink-0" />
+                                            <span className="font-medium line-clamp-1">{email.role}</span>
                                         </div>
                                     </button>
                                 ))}

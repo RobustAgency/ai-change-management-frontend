@@ -1,6 +1,16 @@
 import { UpdatePasswordForm } from "@/components/auth/UpdatePasswordForm"
+import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: 'Update Password',
+  description: 'Update your AI Change Management account password. Choose a strong, secure password to protect your account.',
+  robots: {
+    index: false,
+    follow: false,
+  },
+}
 
 export default function UpdatePasswordPage() {
     return (

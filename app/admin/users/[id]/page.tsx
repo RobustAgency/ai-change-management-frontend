@@ -8,6 +8,7 @@ import { useUserDetails } from '@/hooks/admin/useUserDetails'
 import { ArrowLeft, AlertCircle, RefreshCw } from 'lucide-react'
 import UserDetails from '@/components/admin/userDetails/userDetails'
 import UserDetailsPageSkeleton from '@/components/admin/userDetails/UserDetailsPageSkeleton'
+import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 
 const UsersDetailsPage = () => {
     const params = useParams()
@@ -15,6 +16,11 @@ const UsersDetailsPage = () => {
     const userId = params?.id as string
 
     const { user, loading, error, refetch } = useUserDetails(userId)
+
+    useDocumentTitle(
+        `User Details${user?.name ? ` - ${user.name}` : ''}`,
+        'View and manage detailed user information in the AI Change Management admin panel.'
+    );
 
     if (loading) {
         return <UserDetailsPageSkeleton />

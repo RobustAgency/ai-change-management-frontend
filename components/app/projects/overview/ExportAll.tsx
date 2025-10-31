@@ -72,7 +72,7 @@ const ExportAll = ({ project }: ExportAllProps) => {
             disabled={isGenerating}
         >
             <Download className="w-4 h-4 mr-2" />
-            {isGenerating ? 'Generating' : 'Export All'}
+            {isGenerating ? 'Generating...' : 'Export All'}
         </Button>
     )
 }

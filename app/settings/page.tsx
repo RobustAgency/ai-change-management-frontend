@@ -2,8 +2,18 @@ import React from 'react'
 import ProfileForm from '@/components/settings/ProfileForm'
 import ChangePasswordForm from '@/components/settings/ChangePasswordForm'
 import ProfilePhoto from '@/components/settings/ProfilePhoto'
+import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: 'Settings',
+  description: 'Manage your AI Change Management account settings, update your profile information, change your password, and customize your preferences.',
+  robots: {
+    index: false,
+    follow: false,
+  },
+}
 
 const SettingsPage = () => {
     return (
