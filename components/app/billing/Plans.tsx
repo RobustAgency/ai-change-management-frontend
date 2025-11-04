@@ -84,6 +84,7 @@ const Plans = () => {
                     />
                 ))}
             </div>
+            <EnterpriseSection />
         </React.Fragment>
     )
 }
