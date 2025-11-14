@@ -65,7 +65,7 @@ export default function TermsOfService() {
                         <section className="mb-8">
                             <h2 className="text-2xl font-semibold text-gray-900 mb-4">5. Intellectual Property</h2>
                             <p className="text-gray-700 mb-4">
-                                The Service and its original content, features, and functionality are owned by ChangeAI and are protected by
+                                The Service and its original content, features, and functionality are owned by Life Vision, LLC – Innovative Dialogs® - ChangeAI and are protected by
                                 international copyright, trademark, patent, trade secret, and other intellectual property laws.
                             </p>
                         </section>
@@ -106,7 +106,7 @@ export default function TermsOfService() {
                         <section className="mb-8">
                             <h2 className="text-2xl font-semibold text-gray-900 mb-4">10. Limitation of Liability</h2>
                             <p className="text-gray-700 mb-4">
-                                In no event shall ChangeAI be liable for any indirect, incidental, special, or consequential damages,
+                                In no event shall Life Vision, LLC – Innovative Dialogs® - ChangeAI be liable for any indirect, incidental, special, or consequential damages,
                                 including loss of profits, data, or use, incurred by you or any third party.
                             </p>
                         </section>
@@ -120,9 +120,16 @@ export default function TermsOfService() {
                         </section>
 
                         <section className="mb-8">
-                            <h2 className="text-2xl font-semibold text-gray-900 mb-4">12. Contact Information</h2>
+                            <h2 className="text-2xl font-semibold text-gray-900 mb-4">12. Governing Law</h2>
                             <p className="text-gray-700 mb-4">
-                                If you have any questions about these Terms of Service, please contact us at legal@changeai.com.
+                                These terms are governed by the laws of the State of Colorado, USA, and the Federal laws of the United States of America.
+                            </p>
+                        </section>
+
+                        <section className="mb-8">
+                            <h2 className="text-2xl font-semibold text-gray-900 mb-4">13. Contact Information</h2>
+                            <p className="text-gray-700 mb-4">
+                                If you have any questions about these Terms of Service, please contact us at Mirinda.scott@innovative-dialogs.com.
                             </p>
                         </section>
                     </div>
