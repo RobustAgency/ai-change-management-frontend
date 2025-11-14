@@ -33,7 +33,8 @@ export default function AppShell({ children }: AppShellProps) {
 
     const isPublicRoute = useMemo(() => {
         const publicRoutes = [
-            "/"
+            "/",
+            "/about-us"
         ];
         return publicRoutes.some(
             (route) => pathname === route || pathname.startsWith(`${route}/`)

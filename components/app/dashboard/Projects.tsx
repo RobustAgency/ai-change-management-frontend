@@ -180,7 +180,7 @@ const Projects = () => {
                         <CardTitle className="text-2xl font-bold text-gray-900">Your Projects</CardTitle>
                         <CardDescription>Manage and track your change communication projects</CardDescription>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-wrap items-center gap-4">
                         <div className="relative">
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                             <Input
@@ -272,14 +272,14 @@ const Projects = () => {
                                 <div className={`border rounded-lg p-6 hover:shadow-md bg-gray-50 ${cardBehavior.clickable ? 'cursor-pointer' : ''}`}>
                                     <div className="flex items-start justify-between mb-4">
                                         <div>
-                                            <div className="flex items-center gap-3 mb-2">
+                                            <div className="flex flex-wrap  items-center gap-3 mb-2">
                                                 <h3 className="text-lg font-semibold text-gray-900">{project.name}</h3>
                                                 <Badge className={`${status.color} border text-xs font-medium`}>
                                                     <span className={`w-2 h-2 rounded-full ${status.dot} mr-2`}></span>
                                                     {status.label}
                                                 </Badge>
                                             </div>
-                                            <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
+                                            <div className="flex flex-wrap items-center gap-2 md:gap-4 text-sm text-gray-600 mb-3">
                                                 <div className="flex items-center gap-1">
                                                     <Calendar className="w-4 h-4" /> Created{" "}
                                                     {project.created_at ? new Date(project.created_at).toLocaleDateString() : 'N/A'}
@@ -289,7 +289,7 @@ const Projects = () => {
                                                     {project.updated_at ? new Date(project.updated_at).toLocaleDateString() : 'N/A'}
                                                 </div>
                                             </div>
-                                            <div className="flex items-center gap-6">
+                                            <div className="flex flex-wrap items-center gap-2 md:gap-6">
                                                 <div className="flex items-center gap-2">
                                                     <Target className="w-4 h-4 text-gray-500" />
                                                     <span>{stakeholdersText}</span>
@@ -328,7 +328,7 @@ const Projects = () => {
                                         </DropdownMenu>
                                     </div>
 
-                                    <div className="flex justify-between">
+                                    <div className="flex flex-wrap gap-2 justify-between">
                                         <div className="flex flex-wrap gap-2">
                                             {project.stakeholders?.map((stake, i) => (
                                                 <Badge key={i} className="text-xs bg-white">

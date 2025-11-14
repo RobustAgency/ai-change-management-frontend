@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service',
-  description: 'Read the terms of service for Innovative Dialogs platform. Understand your rights and responsibilities when using our change management tools and services.',
-  robots: {
-    index: true,
-    follow: true,
-  },
+    title: 'Terms of Service',
+    description: 'Read the terms of service for Innovative Dialogs platform. Understand your rights and responsibilities when using our change management tools and services.',
+    robots: {
+        index: true,
+        follow: true,
+    },
 }
 
 export default function TermsOfService() {
@@ -16,36 +16,35 @@ export default function TermsOfService() {
                 <div className="bg-white rounded-lg shadow-sm border p-8">
                     <div className="mb-8">
                         <h1 className="text-3xl font-bold text-gray-900 mb-4">Terms of Service</h1>
-                        <p className="text-gray-600">Last updated: {new Date().toLocaleDateString()}</p>
+                        <p className="text-gray-600">Last updated: 11/1/2025</p>
                     </div>
 
                     <div className="prose max-w-none">
                         <section className="mb-8">
                             <h2 className="text-2xl font-semibold text-gray-900 mb-4">1. Acceptance of Terms</h2>
                             <p className="text-gray-700 mb-4">
-                                By accessing and using ChangeAI (&ldquo;Service&rdquo;), you accept and agree to be bound by the terms and provision of this agreement.
-                                If you do not agree to abide by the above, please do not use this service.
+                                By accessing and using Innovative-Dialogs® - ChangeAI (&ldquo;Service&rdquo; or &ldquo;Change-AI&rdquo;), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
                             </p>
                         </section>
 
                         <section className="mb-8">
                             <h2 className="text-2xl font-semibold text-gray-900 mb-4">2. Description of Service</h2>
                             <p className="text-gray-700 mb-4">
-                                ChangeAI is a platform that helps organizations generate professional communication assets using artificial intelligence.
-                                Our service includes tools for creating presentations, documents, and other communication materials.
+                                ChangeAI is a platform that helps organizations generate professional communication assets using artificial intelligence. Our service includes tools for creating presentations, documents, and other communication materials.
                             </p>
                         </section>
 
                         <section className="mb-8">
                             <h2 className="text-2xl font-semibold text-gray-900 mb-4">3. User Accounts</h2>
                             <p className="text-gray-700 mb-4">
-                                To access certain features of the Service, you must register for an account. You are responsible for maintaining
-                                the confidentiality of your account credentials and for all activities that occur under your account.
+                                To access certain features of the Service, you must register for an account. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.
                             </p>
                             <ul className="list-disc pl-6 text-gray-700 mb-4">
                                 <li>You must provide accurate and complete registration information</li>
                                 <li>You are responsible for maintaining the security of your account</li>
                                 <li>You must notify us immediately of any unauthorized use of your account</li>
+                                <li>You agree not to share your login credentials with any other party</li>
+                                <li>You agree you will not allow any other parties to use your account without paying for their service</li>
                             </ul>
                         </section>
 

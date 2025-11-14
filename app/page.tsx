@@ -17,7 +17,6 @@ export default function Home() {
       <Features />
       <Pricing />
       <EnterpriseSection />
-      <Footer />
     </React.Fragment>
   );
 }
