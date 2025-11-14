@@ -11,11 +11,11 @@ const AboutUsPage = () => {
 
                     <div className="prose prose-lg max-w-none text-gray-700 space-y-6">
                         <p className="text-xl leading-relaxed">
-                            In today's fast-moving organizations, communicators and change leads are under pressure to help leaders share their vision, and keep employees informed, engaged, and aligned  all while managing multiple channels, tight timelines, and constant feedback loops. Traditional tools weren't built for the complexity of modern change communication, leaving teams struggling to illustrate impact and maintain consistency across audiences.
+                            In today&apos;s fast-moving organizations, communicators and change leads are under pressure to help leaders share their vision, and keep employees informed, engaged, and aligned  all while managing multiple channels, tight timelines, and constant feedback loops. Traditional tools weren&apos;t built for the complexity of modern change communication, leaving teams struggling to illustrate impact and maintain consistency across audiences.
                         </p>
 
                         <p className="text-lg leading-relaxed">
-                            Innovative Dialogs'® SaaS platform is designed specifically for communicators and OCM professionals, giving them a centralized hub to deliver change communications with confidence. From message mapping and stakeholder segmentation via presentations and email, to FAQs, timelines, and video script creation for your kickoff, our tool streamlines every step of the process enabling smarter decisions and faster adoption.
+                            Innovative Dialogs&apos;® SaaS platform is designed specifically for communicators and OCM professionals, giving them a centralized hub to deliver change communications with confidence. From message mapping and stakeholder segmentation via presentations and email, to FAQs, timelines, and video script creation for your kickoff, our tool streamlines every step of the process enabling smarter decisions and faster adoption.
                         </p>
 
                         <p className="text-lg leading-relaxed">
