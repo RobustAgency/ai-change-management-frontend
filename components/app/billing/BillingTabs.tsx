@@ -1,18 +1,39 @@
-import React from 'react'
+"use client"
+import React, { useEffect, useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Overview from './Overview'
 import Plans from './Plans'
 import InvoiceHistory from './InvoiceHistory'
+import { useSearchParams, useRouter } from 'next/navigation'
 
 const tabs = [
-    { value: "overview", label: "Overview", component: <Overview /> },
-    { value: "plans", label: "Plans", component: <Plans /> },
-    { value: "invoice-history", label: "Invoices", component: <InvoiceHistory /> },
+    { value: "overview", label: "Overview" },
+    { value: "plans", label: "Plans" },
+    { value: "invoice-history", label: "Invoices" },
 ]
 
 const BillingTabs = () => {
+    const searchParams = useSearchParams()
+    const router = useRouter()
+    const [activeTab, setActiveTab] = useState("overview")
+
+    useEffect(() => {
+        const tabParam = searchParams?.get('tab')
+        if (tabParam) {
+            setActiveTab(tabParam)
+        }
+    }, [searchParams])
+
+    const handleTabChange = (value: string) => {
+        setActiveTab(value)
+        const params = new URLSearchParams(Array.from(searchParams.entries()))
+        params.set('tab', value)
+        const query = params.toString()
+        router.replace(`${window.location.pathname}${query ? `?${query}` : ''}`)
+    }
+
     return (
-        <Tabs defaultValue="overview">
+        <Tabs value={activeTab} onValueChange={handleTabChange}>
             <TabsList className="grid w-full grid-cols-3 max-w-sm sm:max-w-md lg:max-w-lg bg-white border p-1 h-10 sm:h-12">
                 {tabs.map(({ value, label }) => (
                     <TabsTrigger
@@ -24,11 +45,15 @@ const BillingTabs = () => {
                     </TabsTrigger>
                 ))}
             </TabsList>
-            {tabs.map(({ value, component }) => (
-                <TabsContent key={value} value={value} className="space-y-4 sm:space-y-6 lg:space-y-8 mt-4 sm:mt-6 lg:mt-8">
-                    {component}
-                </TabsContent>
-            ))}
+            <TabsContent value="overview" className="space-y-4 sm:space-y-6 lg:space-y-8 mt-4 sm:mt-6 lg:mt-8">
+                <Overview onSwitchToPlans={() => handleTabChange("plans")} />
+            </TabsContent>
+            <TabsContent value="plans" className="space-y-4 sm:space-y-6 lg:space-y-8 mt-4 sm:mt-6 lg:mt-8">
+                <Plans />
+            </TabsContent>
+            <TabsContent value="invoice-history" className="space-y-4 sm:space-y-6 lg:space-y-8 mt-4 sm:mt-6 lg:mt-8">
+                <InvoiceHistory />
+            </TabsContent>
         </Tabs>
     )
 }

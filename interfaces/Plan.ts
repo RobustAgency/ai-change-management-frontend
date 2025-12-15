@@ -28,11 +28,25 @@ export interface UpcomingInvoice {
     download_url: string | null
 }
 
+export interface CurrentSubscription {
+    plan_name: string
+    price: number
+    currency: string
+    billing_cycle: 'monthly' | 'yearly'
+    status: 'Active' | 'Cancelled' | 'Past Due' | 'Incomplete'
+    next_billing_date: string | null
+    project_usage: {
+        current: number
+        limit: number
+    }
+    usage_resets_at: string | null
+}
+
 export interface SubscriptionResponse {
     error: boolean
     message: string
     data: {
-        redirect_url?: string
+        checkout_url?: string
     } | null
 }
 

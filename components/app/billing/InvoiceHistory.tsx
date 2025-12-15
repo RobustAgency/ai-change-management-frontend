@@ -21,7 +21,7 @@ const History = () => {
                 <CardContent>
                     {loading ? (
                         <div className="flex items-center justify-center py-8">
-                            <Spinner size="sm" />
+                            <Spinner size="lg" />
                         </div>
                     ) : error ? (
                         <div className="text-center py-8">

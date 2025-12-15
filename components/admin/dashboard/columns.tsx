@@ -3,12 +3,12 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge"
 import ActionCell from "./ActionCell"
 import { TableUser } from "@/hooks/admin/useUsers"
+import Link from "next/link"
 
 const getStatusBadge = (status: TableUser["status"]) => {
     const colorMap = {
-        approved: "success" as const,
-        rejected: "error" as const,
-        pending: "warning" as const,
+        active: "success" as const,
+        inactive: "error" as const,
     }
 
     return (
@@ -18,17 +18,21 @@ const getStatusBadge = (status: TableUser["status"]) => {
     )
 }
 
-export const createColumns = (onRefresh?: () => void): ColumnDef<TableUser>[] => [
+export const createColumns = (onRefresh?: () => void, onDashboardRefresh?: () => void): ColumnDef<TableUser>[] => [
     {
         accessorKey: "full_name",
         header: "Username",
         cell: ({ row }) => {
             const fullName = row.getValue("full_name") as string
+            const userId = row.original.id
             return (
-                <div className="flex items-center gap-2">
+                <Link 
+                    href={`/admin/users/${userId}`}
+                    className="flex items-center gap-2 hover:text-blue-600 transition-colors"
+                >
                     <span className="size-8 bg-primary rounded-full flex items-center justify-center text-white">{fullName[0]}</span>
                     <span className="font-medium">{fullName}</span>
-                </div>
+                </Link>
             )
         }
     },
@@ -57,7 +61,7 @@ export const createColumns = (onRefresh?: () => void): ColumnDef<TableUser>[] =>
         header: "",
         cell: ({ row }) => {
             const user = row.original
-            return <ActionCell user={user} onRefresh={onRefresh} />
+            return <ActionCell user={user} onRefresh={onRefresh} onDashboardRefresh={onDashboardRefresh} />
         },
     },
 ]

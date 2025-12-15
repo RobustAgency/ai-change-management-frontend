@@ -1,4 +1,6 @@
 import { PaginatedResponse } from "./Pagination"
+import { Plan } from "./Plan"
+import { Project } from "./Project"
 
 export interface User {
     id: number
@@ -6,7 +8,7 @@ export interface User {
     name: string
     email: string
     email_verified_at: string | null
-    is_approved: boolean
+    is_active: boolean
     role: string
     created_at: string
     updated_at: string
@@ -14,16 +16,32 @@ export interface User {
     pm_type: string | null
     pm_last_four: string | null
     trial_ends_at: string | null
+    plan_id: number | null
+    plan: Plan | null
+    projects?: Project[]
 }
 
 export interface UserFilters extends Record<string, unknown> {
     search?: string;
-    status?: 'pending' | 'approved' | 'rejected';
+    status?: 'active' | 'inactive';
     page?: number;
 }
 
 export interface UsersApiResponse {
     data: PaginatedResponse<User>
+    status: number
+    message: string
+    error: boolean
+}
+export interface UserApiResponse {
+    data: User
+    status: number
+    message: string
+    error: boolean
+}
+
+export interface UserSearchResponse {
+    data: User[]
     status: number
     message: string
     error: boolean

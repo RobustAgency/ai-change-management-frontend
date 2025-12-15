@@ -34,6 +34,7 @@ const ProjectFormContent: React.FC<{ onSubmit: (data: ProjectFormData) => Promis
         handlePrevious,
         project,
         loading,
+        setLoading,
         clientLogo,
     } = useProjectForm();
 
@@ -45,15 +46,25 @@ const ProjectFormContent: React.FC<{ onSubmit: (data: ProjectFormData) => Promis
             return;
         }
 
-        const submitData: ProjectFormData = {
-            ...formData,
-            type: formData.type === 'other' ? customType : formData.type,
-            client_logo: clientLogo || undefined,
-        };
+        // Set loading state immediately
+        setLoading(true);
 
-        const result = await onSubmit(submitData);
-        if (result) {
-            router.push('/dashboard');
+        try {
+            const submitData: ProjectFormData = {
+                ...formData,
+                type: formData.type === 'other' ? customType : formData.type,
+                client_logo: clientLogo || undefined,
+            };
+
+            const result = await onSubmit(submitData);
+            if (result) {
+                router.push('/dashboard');
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+        } finally {
+            // Reset loading state
+            setLoading(false);
         }
     };
 
@@ -92,7 +103,7 @@ const ProjectFormContent: React.FC<{ onSubmit: (data: ProjectFormData) => Promis
                 <NavigationButtons
                     currentStep={currentStep}
                     totalSteps={steps.length}
-                    loading={loading || false}
+                    loading={loading}
                     project={project}
                     onPrevious={handlePrevious}
                     onNext={handleNext}

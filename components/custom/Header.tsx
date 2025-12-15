@@ -4,6 +4,7 @@ import { ChevronLeft } from 'lucide-react'
 import { DrawerTrigger } from '../ui/drawer'
 import ProfileInfo from './ProfileInfo'
 import { Sparkles } from 'lucide-react'
+import Image from 'next/image'
 
 type HeaderProps = {
     desktopCollapsed: boolean
@@ -25,12 +26,7 @@ const Header = ({ desktopCollapsed, setDesktopCollapsed }: HeaderProps) => {
                 <div className="w-full flex items-center justify-start md:justify-between gap-0 md:gap-2">
                     {!desktopCollapsed && (
                         <div aria-details="logo" className='hidden md:block'>
-                            <div className="flex items-center space-x-3">
-                                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                                    <Sparkles className="w-5 h-5 text-white" />
-                                </div>
-                                <span className="text-xl font-bold text-gray-900">ChangeAI</span>
-                            </div>
+                            <Image width={150} height={110} src="/logo.png" alt="Logo" />
                         </div>
                     )}
                     <DrawerTrigger className="md:hidden" asChild>

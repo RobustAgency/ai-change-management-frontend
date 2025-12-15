@@ -19,6 +19,7 @@ import { Label } from "@/components/ui/label"
 import { login } from "@/lib/auth-actions"
 
 import SignInWithGoogleButton from "@/components/auth/SignInWithGoogleButton"
+import Image from "next/image"
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -64,11 +65,11 @@ export function LoginForm() {
     }, [state]);
 
     return (
-        <>
+        <div className="mx-auto max-w-md">
             <Card className="shadow-xl border">
                 <CardHeader className="text-center">
-                    <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-2">
-                        <Sparkles className="w-8 h-8 text-white" />
+                    <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-2 px-3 pt-1">
+                        <Image width={50} height={50} src="/short-logo.png" alt="Logo" className='invert-100 brightness-0' />
                     </div>
                     <CardTitle className="text-2xl font-bold text-gray-900">Welcome back</CardTitle>
                     <CardDescription className="text-gray-600">
@@ -135,16 +136,16 @@ export function LoginForm() {
                         <SubmitButton />
                     </form>
 
-                    <div className="relative">
+                    {/* <div className="relative">
                         <div className="absolute inset-0 flex items-center">
                             <div className="w-full border-t border-gray-300" />
                         </div>
                         <div className="relative flex justify-center text-sm">
                             <span className="px-2 bg-white text-gray-500">Or continue with</span>
                         </div>
-                    </div>
+                    </div> */}
 
-                    <SignInWithGoogleButton />
+                    {/* <SignInWithGoogleButton /> */}
                 </CardContent>
             </Card>
 
@@ -156,6 +157,6 @@ export function LoginForm() {
                     </Link>
                 </p>
             </div>
-        </>
+        </div>
     );
 }

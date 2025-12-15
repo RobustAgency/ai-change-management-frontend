@@ -30,9 +30,9 @@ const ProgressHeader: React.FC<ProgressHeaderProps> = ({
 }) => {
     return (
         <div className="mb-12">
-            <div className="text-center mb-8">
+            <div className="text-left mb-8">
                 <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                    {project ? 'Edit Project' : 'Create New Project'}
+                    {project ? 'Edit Project' : 'Create New Project'} {project ? `: ${project.name}` : ''}
                 </h1>
                 <p className="text-xl text-gray-600">
                     {project
@@ -72,7 +72,7 @@ const ProgressHeader: React.FC<ProgressHeaderProps> = ({
                                 <Icon className="w-5 h-5" />
                             </div>
                             <span
-                                className={`text-sm text-center font-medium max-w-20 ${isActive ? "text-indigo-600" : isCompleted ? "text-green-600" : "text-gray-400"
+                                className={`text-sm text-center font-medium ${isActive ? "text-indigo-600" : isCompleted ? "text-green-600" : "text-gray-400"
                                     }`}
                             >
                                 {step.title}

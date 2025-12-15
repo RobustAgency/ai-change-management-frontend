@@ -127,12 +127,9 @@ const Review: React.FC = () => {
                                     <CheckCircle className="w-5 h-5 text-white" />
                                 </div>
                                 <div className="flex-1">
-                                    <p className="font-semibold text-gray-900">{stakeholder.name || 'Unnamed Stakeholder'}</p>
+                                    <p className="font-semibold text-gray-900">{stakeholder.role_level || "Stakeholder"}</p>
                                     <p className="text-sm text-gray-600">
-                                        {stakeholder.department && stakeholder.role_level 
-                                            ? `${stakeholder.department} - ${stakeholder.role_level}`
-                                            : stakeholder.department || stakeholder.role_level || 'No details provided'
-                                        }
+                                        {stakeholder.department ? stakeholder.department : 'No details provided'}
                                     </p>
                                 </div>
                             </div>
@@ -153,7 +150,7 @@ const Review: React.FC = () => {
                             {project ? 'Update Project' : 'Create Project'}
                         </p>
                         <p className="text-indigo-700 mb-4">
-                            {project 
+                            {project
                                 ? 'Your project updates are ready to be saved. Click "Update Project" to apply the changes.'
                                 : 'Your project information is complete and ready to be created. Click "Create Project" to save your new project.'
                             }

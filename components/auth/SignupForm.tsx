@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { toast } from "react-toastify";
-import { Loader2, Sparkles, Eye, EyeOff } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signup } from "@/lib/auth-actions";
-import SignInWithGoogleButton from "./SignInWithGoogleButton";
+import Image from "next/image";
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -25,7 +25,7 @@ function SubmitButton() {
         <Button className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold" type="submit" disabled={pending}>
             {pending ? (
                 <>
-                    <Loader2 className="animate-spin"  />
+                    <Loader2 className="animate-spin" />
                 </>
             ) : (
                 <>
@@ -58,11 +58,11 @@ export function SignUpForm() {
     }, [state]);
 
     return (
-        <>
+        <div className="max-w-md mx-auto">
             <Card className="shadow-xl border">
                 <CardHeader className="text-center">
-                    <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-2">
-                        <Sparkles className="w-8 h-8 text-white" />
+                    <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-2 px-3 pt-1">
+                        <Image width={50} height={50} src="/short-logo.png" alt="Logo" className='invert-100 brightness-0' />
                     </div>
                     <CardTitle className="text-2xl font-bold text-gray-900">Create your account</CardTitle>
                     <CardDescription className="text-gray-600">
@@ -134,7 +134,7 @@ export function SignUpForm() {
                                     Terms of Service
                                 </Link>{" "}
                                 and{" "}
-                                <Link href="/privacy" className="text-indigo-600 hover:text-indigo-700">
+                                <Link href="/privacy-policy" className="text-indigo-600 hover:text-indigo-700">
                                     Privacy Policy
                                 </Link>
                             </label>
@@ -143,16 +143,16 @@ export function SignUpForm() {
                         <SubmitButton />
                     </form>
 
-                    <div className="relative">
+                    {/* <div className="relative">
                         <div className="absolute inset-0 flex items-center">
                             <div className="w-full border-t border-gray-300" />
                         </div>
                         <div className="relative flex justify-center text-sm">
                             <span className="px-2 bg-white text-gray-500">Or continue with</span>
                         </div>
-                    </div>
+                    </div> */}
 
-                    <SignInWithGoogleButton />
+                    {/* <SignInWithGoogleButton /> */}
                 </CardContent>
             </Card>
 
@@ -164,6 +164,6 @@ export function SignUpForm() {
                     </Link>
                 </p>
             </div>
-        </>
+        </div>
     );
 }

@@ -1,19 +1,30 @@
 'use client'
+import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import EmptyState from '@/components/onboarding/EmptyState'
 import UnApprovedAccount from '@/components/onboarding/UnApprovedAccount'
-import AddPaymentMethod from '@/components/onboarding/AddPaymentMethod'
+import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 
-// The static pages and components are created but the validation in the middleware or AppShell is still under development
-
-export const runtime = "edge";
+export const dynamic = 'force-dynamic'
 
 const COMPONENTS: Record<string, React.ReactNode> = {
     'unapproved-account': <UnApprovedAccount />,
-    'add-payment-method': <AddPaymentMethod />,
+}
+
+function OnboardingContent() {
+    const mode = useSearchParams().get('mode') || ''
+    return COMPONENTS[mode] || <EmptyState />
 }
 
 export default function Onboarding() {
-    const mode = useSearchParams().get('mode') || ''
-    return COMPONENTS[mode] || <EmptyState />
+    useDocumentTitle(
+        'Onboarding',
+        'Complete your Innovative Dialogs account setup and get started with our platform.'
+    );
+
+    return (
+        <Suspense fallback={<EmptyState />}>
+            <OnboardingContent />
+        </Suspense>
+    )
 }

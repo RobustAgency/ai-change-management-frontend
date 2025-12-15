@@ -20,19 +20,19 @@ interface ConfirmationDialogProps {
     loadingText?: string
 }
 
-const ConfirmationDialog = ({ 
-    isOpen, 
-    onClose, 
-    onConfirm, 
-    title, 
-    description, 
+const ConfirmationDialog = ({
+    isOpen,
+    onClose,
+    onConfirm,
+    title,
+    description,
     confirmText = "Confirm",
     cancelText = "Cancel",
     type = "danger",
     isLoading = false,
-    loadingText = "Loading..."
+    loadingText = "Loading"
 }: ConfirmationDialogProps) => {
-    
+
     const getIcon = () => {
         switch (type) {
             case "danger":
@@ -78,21 +78,29 @@ const ConfirmationDialog = ({
         }
     }
 
-    const handleConfirm = () => {
+    const handleConfirm = (e?: React.MouseEvent) => {
+        e?.stopPropagation()
         if (!isLoading) {
             onConfirm()
         }
     }
 
-    const handleClose = () => {
+    const handleClose = (e?: React.MouseEvent) => {
+        e?.stopPropagation()
         if (!isLoading) {
             onClose()
         }
     }
 
+    const handleDialogOpenChange = (open: boolean) => {
+        if (!open && !isLoading) {
+            onClose()
+        }
+    }
+
     return (
-        <Dialog open={isOpen} onOpenChange={handleClose}>
-            <DialogContent className="sm:max-w-[425px]">
+        <Dialog open={isOpen} onOpenChange={handleDialogOpenChange}>
+            <DialogContent className="sm:max-w-[425px]" onClick={(e) => e.stopPropagation()}>
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
                         {getIcon()}
@@ -118,8 +126,8 @@ const ConfirmationDialog = ({
                     >
                         {isLoading ? (
                             <>
-                                <Spinner size="sm" className="mr-2" />
                                 {loadingText}
+                                <div className="loader"></div>
                             </>
                         ) : (
                             confirmText

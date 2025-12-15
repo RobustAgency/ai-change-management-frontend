@@ -15,6 +15,8 @@ interface PlanCardProps {
     isLoading: boolean
     isSelected: boolean
     index: number
+    hasActiveSubscription?: boolean
+    currentPlanId?: number | null
 }
 
 const PlanCard: React.FC<PlanCardProps> = ({
@@ -23,10 +25,12 @@ const PlanCard: React.FC<PlanCardProps> = ({
     isLoading,
     isSelected,
     index,
+    hasActiveSubscription = false,
+    currentPlanId,
 }) => {
     const { cancel, loading: isCancelling } = useCancelSubscription()
-    const { profile, fetchProfile } = useAuth()
-    const isCurrentPlan = profile?.plan_id === plan.id
+    const { fetchProfile } = useAuth()
+    const isCurrentPlan = currentPlanId === plan.id
     const [showCancelModal, setShowCancelModal] = useState(false)
 
     const isPopular = plan.name.toLowerCase().includes('pro') || plan.name.toLowerCase().includes('premium')
@@ -37,7 +41,7 @@ const PlanCard: React.FC<PlanCardProps> = ({
             <Sparkles key="sparkles" className="w-8 h-8 text-primary" />,
             <Zap key="zap" className="w-8 h-8 text-primary" />
         ]
-        
+
         return icons[index] || <Star className="w-8 h-8 text-primary" />
     }
 
@@ -90,15 +94,35 @@ const PlanCard: React.FC<PlanCardProps> = ({
                     <ul className="space-y-4 mb-6">
                         <li className="flex items-center gap-3">
                             <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                            <span className="text-gray-700">Up to {plan.limit} items</span>
+                            <span className="text-gray-700">{plan.limit} projects</span>
                         </li>
                         <li className="flex items-center gap-3">
                             <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                            <span className="text-gray-700">{plan.billing_cycle} billing</span>
+                            <span className="text-gray-700">Customizable presentation templates</span>
                         </li>
                         <li className="flex items-center gap-3">
                             <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                            <span className="text-gray-700">Priority support</span>
+                            <span className="text-gray-700">Slide deck generation</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                            <span className="text-gray-700">Email series automation</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                            <span className="text-gray-700">Video script generation</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                            <span className="text-gray-700">Audience-specific messaging</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                            <span className="text-gray-700">Export to PPTX & DOCX</span>
+                        </li>
+                        <li className="flex items-center gap-3">
+                            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                            <span className="text-gray-700">Standard support</span>
                         </li>
                     </ul>
 
@@ -118,7 +142,12 @@ const PlanCard: React.FC<PlanCardProps> = ({
                         ) : (
                             <CreditCard className="h-4 w-4 mr-2" />
                         )}
-                        {isCurrentPlan ? 'Cancel Plan' : 'Subscribe'}
+                        {isCurrentPlan
+                            ? 'Cancel Plan'
+                            : hasActiveSubscription
+                                ? 'Switch to Plan'
+                                : 'Subscribe'
+                        }
                     </Button>
                 </CardContent>
             </Card>
@@ -133,7 +162,7 @@ const PlanCard: React.FC<PlanCardProps> = ({
                 cancelText="Keep Subscription"
                 type="danger"
                 isLoading={isCancelling}
-                loadingText="Cancelling..."
+                loadingText="Cancelling"
             />
         </>
     )

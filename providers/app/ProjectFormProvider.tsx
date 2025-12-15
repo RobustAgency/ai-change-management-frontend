@@ -15,9 +15,11 @@ interface ProjectFormContextType {
     // State Management
     currentStep: number;
     setCurrentStep: (step: number) => void;
+    loading: boolean;
+    setLoading: (loading: boolean) => void;
 
     // Form Actions
-    handleInputChange: (field: keyof ProjectFormData, value: string) => void;
+    handleInputChange: (field: keyof ProjectFormData, value: string | number) => void;
     handleTypeChange: (value: string) => void;
     handleCustomTypeChange: (value: string) => void;
     handleLogoChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -46,7 +48,6 @@ interface ProjectFormContextType {
 
     // External Props
     project?: Project | null;
-    loading?: boolean;
 }
 
 const ProjectFormContext = createContext<ProjectFormContextType | undefined>(undefined);
@@ -60,13 +61,14 @@ interface ProjectFormProviderProps {
 export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
     children,
     project,
-    loading = false,
+    loading: externalLoading = false,
 }) => {
     const [currentStep, setCurrentStep] = useState(1);
     const [clientLogo, setClientLogo] = useState<File | null>(null);
     const [logoPreview, setLogoPreview] = useState<string | null>(null);
     const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
     const [customType, setCustomType] = useState('');
+    const [loading, setLoading] = useState(externalLoading);
 
     const [formData, setFormData] = useState<ProjectFormData>({
         name: '',
@@ -78,9 +80,13 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
         summary: '',
         expected_outcomes: '',
         client_organization: '',
+        template_id: 1,
         status: 'draft',
         stakeholders: [],
+        is_editable: true,
     });
+
+    console.log("formData", formData)
 
     const steps = [
         {
@@ -109,13 +115,18 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
         },
     ];
 
+    // Sync external loading state with internal state
+    useEffect(() => {
+        setLoading(externalLoading);
+    }, [externalLoading]);
+
     // Populate form when editing
     useEffect(() => {
         if (project) {
             setFormData({
                 name: project.name || '',
                 launch_date: project.launch_date ? project.launch_date.split('T')[0] : '',
-                type: project.type || '',
+                type: project.type?.toLowerCase() || '',
                 sponsor_name: project.sponsor_name || '',
                 sponsor_title: project.sponsor_title || '',
                 business_goals: project.business_goals || '',
@@ -124,18 +135,33 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
                 client_organization: project.client_organization || '',
                 status: project.status || 'draft',
                 stakeholders: project.stakeholders || [],
+                template_id: project.template_id || 1,
+                is_editable: project.is_editable ?? true,
             });
 
             // Check if type is a custom type (not in predefined options)
             const predefinedTypes = ['system', 'process', 'structure', 'strategy', 'culture', 'org design'];
-            if (project.type && !predefinedTypes.includes(project.type)) {
+            if (project.type && !predefinedTypes.includes(project.type.toLowerCase())) {
                 setCustomType(project.type);
                 setFormData(prev => ({ ...prev, type: 'other' }));
             }
 
-            // If there's an existing logo URL, set it as preview
-            if (typeof project.client_logo === 'string' && project.client_logo) {
-                setLogoPreview(project.client_logo);
+            // Handle logo preview from media array or client_logo field
+            let logoUrl: string | null = null;
+
+            if (project.media && project.media.length > 0) {
+                const firstMedia = project.media[0];
+                if (typeof firstMedia === 'string') {
+                    logoUrl = firstMedia;
+                } else {
+                    logoUrl = firstMedia.original_url || firstMedia.preview_url;
+                }
+            } else if (typeof project.client_logo === 'string' && project.client_logo) {
+                logoUrl = project.client_logo;
+            }
+
+            if (logoUrl) {
+                setLogoPreview(logoUrl);
             }
         }
     }, [project]);
@@ -162,7 +188,7 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
         return Object.keys(errors).length === 0;
     };
 
-    const handleInputChange = (field: keyof ProjectFormData, value: string) => {
+    const handleInputChange = (field: keyof ProjectFormData, value: string | number) => {
         setFormData(prev => ({
             ...prev,
             [field]: value,
@@ -266,6 +292,8 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
         // State Management
         currentStep,
         setCurrentStep,
+        loading,
+        setLoading,
 
         // Form Actions
         handleInputChange,
@@ -292,7 +320,6 @@ export const ProjectFormProvider: React.FC<ProjectFormProviderProps> = ({
 
         // External Props
         project,
-        loading,
     };
 
     return (

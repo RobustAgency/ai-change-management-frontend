@@ -1,6 +1,18 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: '404 - Page Not Found',
+  description: 'The page you are looking for could not be found. Return to the Innovative Dialogs platform homepage.',
+  robots: {
+    index: false,
+    follow: false,
+  },
+}
+
+export const dynamic = 'force-dynamic'
 
 export default function NotFound() {
     return (
@@ -16,5 +28,3 @@ export default function NotFound() {
         </section>
     );
 }
-
-

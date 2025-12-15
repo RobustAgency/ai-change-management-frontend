@@ -2,7 +2,8 @@ import Link from "next/link";
 import { LayoutGrid, Settings as SettingsIcon, LogOut, CreditCard } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
 import { Sparkles } from 'lucide-react'
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
 
 const adminRoutes = [
     { href: "/admin/dashboard", label: "Dashboard", icon: LayoutGrid },
@@ -24,33 +25,44 @@ export function Sidebar({
     collapsed?: boolean;
     onNavigate: () => void;
 }) {
-    const { user } = useAuth();
+    const { user, profile } = useAuth();
     const role = user?.user_metadata?.role ?? "user"
     const navigationRoutes = role === "admin" ? adminRoutes : userRoutes;
     const pathname = usePathname();
+    const router = useRouter();
     return (
         <div className="bg-gray-50 flex h-full flex-col overflow-hidden">
             <div
                 aria-details="logo"
-                className="flex items-center justify-between md:hidden">
+                className="p-2 flex items-center justify-between md:hidden">
                 <Link href="/">
-                    <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                            <Sparkles className="w-5 h-5 text-white" />
-                        </div>
-                        <span className="text-xl font-bold text-gray-900">ChangeAI</span>
-                    </div>
+                    <Image width={165} height={100} src="/logo.png" alt="Logo" />
                 </Link>
             </div>
 
             <nav className="flex flex-col gap-1 p-2 md:p-3 mt-6">
                 {navigationRoutes.map((item) => {
                     const isActive = pathname.includes(item.href);
+
+                    const handleClick = (e: React.MouseEvent) => {
+                        if (item.href === '/dashboard' && role === 'user' && profile?.plan_id == null) {
+                            e.preventDefault();
+                            try {
+                                router.push('/billing?tab=plans');
+                            } finally {
+                                onNavigate();
+                            }
+                            return;
+                        }
+
+                        onNavigate();
+                    };
+
                     return (
                         <Link
                             key={item.href}
                             href={item.href}
-                            onClick={onNavigate}
+                            onClick={handleClick}
                             className={"flex items-center rounded-md hover:bg-accent hover:text-accent-foreground gap-2 px-3 py-2 text-sm"}
                         >
                             {item.icon ? <item.icon className={`shrink-0 size-6 text-gray-500 ${isActive && "text-primary"}`} strokeWidth="2" /> : null}

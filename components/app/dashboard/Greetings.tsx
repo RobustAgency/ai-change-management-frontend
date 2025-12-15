@@ -11,7 +11,7 @@ const Greetings = () => {
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                 <div>
                     <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
-                        Welcome back, <span className="text-indigo-600">{profile?.full_name}</span>
+                        Welcome back, <span className="text-indigo-600">{profile?.name || profile?.full_name || "User"}</span>
                     </h1>
                     <p className="text-lg md:text-xl text-gray-600">Here&apos;s what&apos;s happening with your change communications</p>
                 </div>
