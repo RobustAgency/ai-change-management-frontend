@@ -146,11 +146,6 @@ const AboutUsPage = () => {
           </p>
         </div>
       </section>
-      <footer className="border-t bg-white py-6">
-        <p className="text-center text-sm text-gray-500">
-          © 2025 Life Vision, LLC. All rights reserved.
-        </p>
-      </footer>
     </div>
   );
 };
