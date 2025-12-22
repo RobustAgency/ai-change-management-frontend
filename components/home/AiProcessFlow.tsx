@@ -8,7 +8,7 @@ const AiProcessFlow = () => {
         <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-16 text-center sm:text-center">
           How Our AI Process Works
         </h2>
-        <div className="flex flex-col lg:flex-row items-center">
+        <div className="flex flex-col lg:flex-row items-center justify-center">
           <div className="lg:w-1/2 text-center lg:text-left">
             <p className="text-lg sm:text-xl text-gray-600 line-clamp-3 lg:line-clamp-none">
               Our AI-powered workflow streamlines and automates your daily
