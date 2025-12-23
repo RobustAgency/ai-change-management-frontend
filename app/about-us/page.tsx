@@ -15,14 +15,11 @@ const AboutUsPage = () => {
       {/* HERO SECTION */}
       <section className="relative overflow-hidden text-white">
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-800 via-blue-700 to-purple-800" />
-
         {/* Glow Blobs */}
         <div className="absolute -top-32 -left-32 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl" />
         <div className="absolute top-1/2 -right-32 w-96 h-96 bg-blue-400/30 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-indigo-400/30 rounded-full blur-3xl" />
-
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent" />
-
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
           <div className="flex justify-center mb-5">
             <div className="p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
@@ -33,7 +30,6 @@ const AboutUsPage = () => {
           <h1 className="text-4xl sm:text-5xl font-extrabold mb-5 tracking-tight">
             About Innovative Dialogs®
           </h1>
-
           <p className="max-w-3xl mx-auto text-base sm:text-lg text-blue-100 leading-relaxed">
             Empowering organizations to communicate change with clarity,
             confidence, and measurable impact.
@@ -76,7 +72,7 @@ const AboutUsPage = () => {
               </h3>
             </div>
             <p className="text-gray-700 leading-relaxed">
-              Innovative Dialogs® is designed specifically for communicators and
+              Innovative Dialogs® SaaS platform is designed specifically for communicators and
               OCM professionals, providing a centralized hub to deliver change
               communications with confidence.
             </p>
@@ -161,7 +157,7 @@ const AboutUsPage = () => {
             Leadership & Ownership
           </h3>
           <p className="text-gray-700 leading-relaxed text-center">
-            Innovative Dialogs® is owned by President and Founder{" "}
+            Innovative Dialogs® AI-Driven Change Management Platform is owned by President and Founder{" "}
             <span className="font-semibold">
               Mirinda K. Scott, BS, MS, PMP, SA, OCM
             </span>
