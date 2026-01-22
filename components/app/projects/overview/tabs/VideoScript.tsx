@@ -127,6 +127,13 @@ const VideoScript = ({ videoScript }: VideoScriptProps) => {
             <CardContent className="p-6">
                 <div className="bg-gray-50 p-6 rounded-lg border">
                     {formatFullScript()}
+                    
+                    {/* Copyright Footer */}
+                    <div className="pt-6 mt-6 border-t border-gray-300">
+                        <p className="text-xs text-gray-500 text-center">
+                            (c)2025 Life Vision, LLC - Innovative Dialogs(R)
+                        </p>
+                    </div>
                 </div>
             </CardContent>
         </Card>
