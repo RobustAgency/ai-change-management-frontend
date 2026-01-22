@@ -31,14 +31,35 @@ const getTemplate2Styles = () => ({
     }
 });
 
+// Type for PptxGenJS slide object - infer from instance
+const _tempPptx = new PptxGenJS();
+type Slide = ReturnType<typeof _tempPptx.addSlide>;
+
+// Type for template styles
+interface TemplateStyles {
+  titleColor: string;
+  subtitleColor: string;
+  textColor: string;
+  accentColor: string;
+  backgroundColor: string;
+  secondaryAccent: string;
+  tealColor: string;
+  fontSize: {
+    title: number;
+    subtitle: number;
+    heading: number;
+    body: number;
+    bullet: number;
+  };
+}
+
 // Function to add template-specific header styling for Template 3
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-const addTemplate2Header = (slide: any, styles: any) => {
+const addTemplate2Header = (slide: Slide, styles: TemplateStyles) => {
     // Template 3 doesn't use header bars - keep slides clean
 };
 
 // Helper function to add copyright footer to a slide
-const addCopyrightFooter = (slide: any) => {
+const addCopyrightFooter = (slide: Slide) => {
     // Position copyright just below content area, not at the very bottom
     // For 16:9 layout, position at 4.8 (just below main content)
     const copyrightY = 4.8;

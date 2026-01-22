@@ -63,8 +63,12 @@ const getTemplateStyles = (template: number) => {
   }
 };
 
+// Type for PptxGenJS slide object - infer from instance
+const _tempPptx = new PptxGenJS();
+type Slide = ReturnType<typeof _tempPptx.addSlide>;
+
 // Helper function to add copyright footer to a slide
-const addCopyrightFooter = (slide: any, template: number) => {
+const addCopyrightFooter = (slide: Slide, template: number) => {
   // Position copyright just below content area, not at the very bottom
   // For 16:9 layout (templates 2 and 3), position at 4.8 (just below main content)
   // For standard layout (template 1), position at 6.5 (just below main content)
