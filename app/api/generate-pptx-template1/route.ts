@@ -63,6 +63,25 @@ const getTemplateStyles = (template: number) => {
   }
 };
 
+// Helper function to add copyright footer to a slide
+const addCopyrightFooter = (slide: any, template: number) => {
+  // Position copyright just below content area, not at the very bottom
+  // For 16:9 layout (templates 2 and 3), position at 4.8 (just below main content)
+  // For standard layout (template 1), position at 6.5 (just below main content)
+  const copyrightY = (template === 2 || template === 3) ? 4.8 : 6.5;
+  
+  slide.addText('©2025 Life Vision, LLC - Innovative Dialogs(R)', {
+    x: 0,
+    y: copyrightY,
+    w: 10,
+    h: 0.25,
+    fontSize: 8,
+    color: '6B7280',
+    align: 'center',
+    bold: false
+  });
+};
+
 export async function POST(request: NextRequest) {
   try {
     const { project, template = 1 } = await request.json();
@@ -109,6 +128,9 @@ export async function POST(request: NextRequest) {
       color: '2D3748',
       lineSpacing: 52
     });
+
+    // Add copyright footer
+    addCopyrightFooter(slide1, template);
 
 
     // Slide 2: Agenda
@@ -162,6 +184,9 @@ export async function POST(request: NextRequest) {
         color: styles.textColor
       });
     });
+
+    // Add copyright footer
+    addCopyrightFooter(slide2, template);
 
     // Slide 3: Executive Summary
     const slide3 = pptx.addSlide()
@@ -266,6 +291,9 @@ export async function POST(request: NextRequest) {
       currentY += rowHeight;
     });
 
+    // Add copyright footer
+    addCopyrightFooter(slide3, template);
+
     // Slide 4: Benefits
     const slide4 = pptx.addSlide()
 
@@ -344,6 +372,9 @@ export async function POST(request: NextRequest) {
         });
       }
     });
+
+    // Add copyright footer
+    addCopyrightFooter(slide4, template);
 
     // Slide 5: Key Stakeholders
     const slide5 = pptx.addSlide()
@@ -454,6 +485,9 @@ export async function POST(request: NextRequest) {
       currentRowY += dynamicRowHeight;
     });
 
+    // Add copyright footer
+    addCopyrightFooter(slide5, template);
+
     // Slide 6: High-Level Change Management Strategy
     const slide6 = pptx.addSlide()
 
@@ -549,6 +583,9 @@ export async function POST(request: NextRequest) {
         lineSpacing: 14
       });
     });
+
+    // Add copyright footer
+    addCopyrightFooter(slide6, template);
 
     // Generate the PPTX data as a buffer
     const pptxData = await pptx.write({ outputType: 'nodebuffer' }) as ArrayBuffer;
