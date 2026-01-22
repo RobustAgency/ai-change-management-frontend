@@ -90,6 +90,13 @@ const SlideDecks = ({ project }: SlideDecksProps) => {
                                         <div className="flex-1">
                                             {template.renderSlideContent(slideIndex)}
                                         </div>
+                                        
+                                        {/* Copyright Footer */}
+                                        <div className="mt-auto pt-4 border-t border-gray-200">
+                                            <p className="text-xs text-gray-500 text-center">
+                                                (c)2025 Life Vision, LLC - Innovative Dialogs(R)
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

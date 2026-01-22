@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import JSZip from 'jszip';
+import { Document, Packer, Paragraph, HeadingLevel, AlignmentType, Footer } from 'docx';
 import { Project } from '@/interfaces/Project';
 
 // Type definitions for AI content
@@ -38,97 +39,329 @@ interface ProjectWithExtendedAI extends Omit<Project, 'ai_content'> {
   ai_content?: ExtendedAIContent;
 }
 
-// Function to format emails as text
-const formatEmails = (emails: EmailsData | null | undefined): string => {
+// Function to generate Word document for emails
+const generateEmailsDocx = async (emails: EmailsData | null | undefined): Promise<ArrayBuffer> => {
+  const children: Paragraph[] = [
+    new Paragraph({
+      text: 'CHANGE MANAGEMENT PROJECT EMAILS',
+      heading: HeadingLevel.HEADING_1,
+      alignment: AlignmentType.CENTER,
+      spacing: { after: 400 }
+    }),
+    new Paragraph({
+      text: '='.repeat(50),
+      alignment: AlignmentType.CENTER,
+      spacing: { after: 400 }
+    }),
+    new Paragraph({ text: '' })
+  ];
+
   if (!emails || typeof emails !== 'object') {
-    return 'No emails available for this project.';
+    children.push(
+      new Paragraph({
+        text: 'No emails available for this project.',
+        spacing: { after: 200 }
+      })
+    );
+  } else {
+    Object.entries(emails).forEach(([role, emailData]: [string, EmailData]) => {
+      children.push(
+        new Paragraph({
+          text: `ROLE: ${role}`,
+          heading: HeadingLevel.HEADING_2,
+          spacing: { before: 400, after: 200 }
+        }),
+        new Paragraph({
+          text: '-'.repeat(30),
+          spacing: { after: 200 }
+        }),
+        new Paragraph({
+          text: `SUBJECT: ${emailData.subject || 'No subject'}`,
+          spacing: { after: 200 }
+        }),
+        new Paragraph({ text: '' }),
+        new Paragraph({
+          text: 'BODY:',
+          spacing: { after: 200 }
+        }),
+        new Paragraph({
+          text: emailData.body || 'No email body available',
+          spacing: { after: 400 }
+        }),
+        new Paragraph({
+          text: '='.repeat(50),
+          spacing: { after: 400 }
+        }),
+        new Paragraph({ text: '' })
+      );
+    });
   }
 
-  let emailText = 'CHANGE MANAGEMENT PROJECT EMAILS\n';
-  emailText += '='.repeat(50) + '\n\n';
-
-  Object.entries(emails).forEach(([role, emailData]: [string, EmailData]) => {
-    emailText += `ROLE: ${role}\n`;
-    emailText += '-'.repeat(30) + '\n';
-    emailText += `SUBJECT: ${emailData.subject || 'No subject'}\n\n`;
-    emailText += `BODY:\n${emailData.body || 'No email body available'}\n\n`;
-    emailText += '='.repeat(50) + '\n\n';
+  const doc = new Document({
+    sections: [{
+      children,
+      footers: {
+        default: new Footer({
+          children: [
+            new Paragraph({
+              text: '(c)2025 Life Vision, LLC - Innovative Dialogs(R)',
+              alignment: AlignmentType.CENTER,
+              spacing: { before: 200 }
+            })
+          ]
+        })
+      }
+    }]
   });
 
-  return emailText;
+  const buffer = await Packer.toBuffer(doc);
+  return new Uint8Array(buffer).buffer;
 };
 
-// Function to format video script as text
-const formatVideoScript = (videoScript: VideoScript | string | null | undefined): string => {
+// Function to generate Word document for video script
+const generateVideoScriptDocx = async (videoScript: VideoScript | string | null | undefined): Promise<ArrayBuffer> => {
+  const children: Paragraph[] = [
+    new Paragraph({
+      text: 'CHANGE MANAGEMENT PROJECT VIDEO SCRIPT',
+      heading: HeadingLevel.HEADING_1,
+      alignment: AlignmentType.CENTER,
+      spacing: { after: 400 }
+    }),
+    new Paragraph({
+      text: '='.repeat(50),
+      alignment: AlignmentType.CENTER,
+      spacing: { after: 400 }
+    }),
+    new Paragraph({ text: '' })
+  ];
+
   if (!videoScript) {
-    return 'No video script available for this project.';
+    children.push(
+      new Paragraph({
+        text: 'No video script available for this project.',
+        spacing: { after: 200 }
+      })
+    );
+  } else {
+    try {
+      const script = typeof videoScript === 'string' ? JSON.parse(videoScript) : videoScript;
+
+      if (script.opening) {
+        children.push(
+          new Paragraph({
+            text: 'OPENING:',
+            heading: HeadingLevel.HEADING_2,
+            spacing: { before: 400, after: 200 }
+          }),
+          new Paragraph({
+            text: '-'.repeat(20),
+            spacing: { after: 200 }
+          }),
+          new Paragraph({
+            text: script.opening,
+            spacing: { after: 400 }
+          }),
+          new Paragraph({ text: '' })
+        );
+      }
+
+      if (script.supporting_visuals) {
+        children.push(
+          new Paragraph({
+            text: 'SUPPORTING VISUALS:',
+            heading: HeadingLevel.HEADING_2,
+            spacing: { before: 400, after: 200 }
+          }),
+          new Paragraph({
+            text: '-'.repeat(20),
+            spacing: { after: 200 }
+          }),
+          new Paragraph({
+            text: script.supporting_visuals,
+            spacing: { after: 400 }
+          }),
+          new Paragraph({ text: '' })
+        );
+      }
+
+      if (script.executive_return) {
+        children.push(
+          new Paragraph({
+            text: 'EXECUTIVE RETURN:',
+            heading: HeadingLevel.HEADING_2,
+            spacing: { before: 400, after: 200 }
+          }),
+          new Paragraph({
+            text: '-'.repeat(20),
+            spacing: { after: 200 }
+          }),
+          new Paragraph({
+            text: script.executive_return,
+            spacing: { after: 400 }
+          }),
+          new Paragraph({ text: '' })
+        );
+      }
+
+      if (script.supporting_visuals_two) {
+        children.push(
+          new Paragraph({
+            text: 'SUPPORTING VISUALS (2):',
+            heading: HeadingLevel.HEADING_2,
+            spacing: { before: 400, after: 200 }
+          }),
+          new Paragraph({
+            text: '-'.repeat(20),
+            spacing: { after: 200 }
+          }),
+          new Paragraph({
+            text: script.supporting_visuals_two,
+            spacing: { after: 400 }
+          }),
+          new Paragraph({ text: '' })
+        );
+      }
+
+      if (script.closing) {
+        children.push(
+          new Paragraph({
+            text: 'CLOSING:',
+            heading: HeadingLevel.HEADING_2,
+            spacing: { before: 400, after: 200 }
+          }),
+          new Paragraph({
+            text: '-'.repeat(20),
+            spacing: { after: 200 }
+          }),
+          new Paragraph({
+            text: script.closing,
+            spacing: { after: 400 }
+          }),
+          new Paragraph({ text: '' })
+        );
+      }
+
+      if (script.fade_out) {
+        children.push(
+          new Paragraph({
+            text: 'FADE OUT:',
+            heading: HeadingLevel.HEADING_2,
+            spacing: { before: 400, after: 200 }
+          }),
+          new Paragraph({
+            text: '-'.repeat(20),
+            spacing: { after: 200 }
+          }),
+          new Paragraph({
+            text: script.fade_out,
+            spacing: { after: 400 }
+          }),
+          new Paragraph({ text: '' })
+        );
+      }
+    } catch {
+      children.push(
+        new Paragraph({
+          text: 'Raw video script content:',
+          spacing: { after: 200 }
+        }),
+        new Paragraph({
+          text: String(videoScript),
+          spacing: { after: 200 }
+        })
+      );
+    }
   }
 
-  let scriptText = 'CHANGE MANAGEMENT PROJECT VIDEO SCRIPT\n';
-  scriptText += '='.repeat(50) + '\n\n';
-
-  try {
-    const script = typeof videoScript === 'string' ? JSON.parse(videoScript) : videoScript;
-
-    if (script.opening) {
-      scriptText += 'OPENING:\n';
-      scriptText += '-'.repeat(20) + '\n';
-      scriptText += `${script.opening}\n\n`;
-    }
-
-    if (script.supporting_visuals) {
-      scriptText += 'SUPPORTING VISUALS:\n';
-      scriptText += '-'.repeat(20) + '\n';
-      scriptText += `${script.supporting_visuals}\n\n`;
-    }
-
-    if (script.executive_return) {
-      scriptText += 'EXECUTIVE RETURN:\n';
-      scriptText += '-'.repeat(20) + '\n';
-      scriptText += `${script.executive_return}\n\n`;
-    }
-
-    if (script.supporting_visuals_two) {
-      scriptText += 'SUPPORTING VISUALS (2):\n';
-      scriptText += '-'.repeat(20) + '\n';
-      scriptText += `${script.supporting_visuals_two}\n\n`;
-    }
-
-    if (script.closing) {
-      scriptText += 'CLOSING:\n';
-      scriptText += '-'.repeat(20) + '\n';
-      scriptText += `${script.closing}\n\n`;
-    }
-
-    if (script.fade_out) {
-      scriptText += 'FADE OUT:\n';
-      scriptText += '-'.repeat(20) + '\n';
-      scriptText += `${script.fade_out}\n\n`;
-    }
-  } catch {
-    scriptText += `Raw video script content:\n${videoScript}\n`;
-  }
-
-  return scriptText;
-};
-
-// Function to format FAQs as text
-const formatFAQs = (faqs: FAQ[] | null | undefined): string => {
-  if (!faqs || !Array.isArray(faqs) || faqs.length === 0) {
-    return 'No FAQs available for this project.';
-  }
-
-  let faqText = 'CHANGE MANAGEMENT PROJECT FAQS\n';
-  faqText += '='.repeat(50) + '\n\n';
-
-  faqs.forEach((faq, index) => {
-    faqText += `Q${index + 1}: ${faq.question || 'No question available'}\n`;
-    faqText += '-'.repeat(40) + '\n';
-    faqText += `A${index + 1}: ${faq.answer || 'No answer available'}\n\n`;
-    faqText += '='.repeat(50) + '\n\n';
+  const doc = new Document({
+    sections: [{
+      children,
+      footers: {
+        default: new Footer({
+          children: [
+            new Paragraph({
+              text: '(c)2025 Life Vision, LLC - Innovative Dialogs(R)',
+              alignment: AlignmentType.CENTER,
+              spacing: { before: 200 }
+            })
+          ]
+        })
+      }
+    }]
   });
 
-  return faqText;
+  const buffer = await Packer.toBuffer(doc);
+  return new Uint8Array(buffer).buffer;
+};
+
+// Function to generate Word document for FAQs
+const generateFAQsDocx = async (faqs: FAQ[] | null | undefined): Promise<ArrayBuffer> => {
+  const children: Paragraph[] = [
+    new Paragraph({
+      text: 'CHANGE MANAGEMENT PROJECT FAQS',
+      heading: HeadingLevel.HEADING_1,
+      alignment: AlignmentType.CENTER,
+      spacing: { after: 400 }
+    }),
+    new Paragraph({
+      text: '='.repeat(50),
+      alignment: AlignmentType.CENTER,
+      spacing: { after: 400 }
+    }),
+    new Paragraph({ text: '' })
+  ];
+
+  if (!faqs || !Array.isArray(faqs) || faqs.length === 0) {
+    children.push(
+      new Paragraph({
+        text: 'No FAQs available for this project.',
+        spacing: { after: 200 }
+      })
+    );
+  } else {
+    faqs.forEach((faq, index) => {
+      children.push(
+        new Paragraph({
+          text: `Q${index + 1}: ${faq.question || 'No question available'}`,
+          heading: HeadingLevel.HEADING_2,
+          spacing: { before: 400, after: 200 }
+        }),
+        new Paragraph({
+          text: '-'.repeat(40),
+          spacing: { after: 200 }
+        }),
+        new Paragraph({
+          text: `A${index + 1}: ${faq.answer || 'No answer available'}`,
+          spacing: { after: 400 }
+        }),
+        new Paragraph({
+          text: '='.repeat(50),
+          spacing: { after: 400 }
+        }),
+        new Paragraph({ text: '' })
+      );
+    });
+  }
+
+  const doc = new Document({
+    sections: [{
+      children,
+      footers: {
+        default: new Footer({
+          children: [
+            new Paragraph({
+              text: '(c)2025 Life Vision, LLC - Innovative Dialogs(R)',
+              alignment: AlignmentType.CENTER,
+              spacing: { before: 200 }
+            })
+          ]
+        })
+      }
+    }]
+  });
+
+  const buffer = await Packer.toBuffer(doc);
+  return new Uint8Array(buffer).buffer;
 };
 
 // Function to generate PowerPoint using existing template routes
@@ -202,19 +435,19 @@ export async function POST(request: NextRequest) {
     // Add PowerPoint to ZIP
     zip.file(pptxFileName, pptxData);
 
-    // Generate and add text files
+    // Generate and add Word documents
     if (project.ai_content) {
-      // Add emails.txt
-      const emailsText = formatEmails(project.ai_content.emails);
-      zip.file('emails.txt', emailsText);
+      // Add emails.docx
+      const emailsDocx = await generateEmailsDocx(project.ai_content.emails);
+      zip.file('emails.docx', emailsDocx);
 
-      // Add video_script.txt
-      const videoScriptText = formatVideoScript(project.ai_content.video_script);
-      zip.file('video_script.txt', videoScriptText);
+      // Add video_script.docx
+      const videoScriptDocx = await generateVideoScriptDocx(project.ai_content.video_script);
+      zip.file('video_script.docx', videoScriptDocx);
 
-      // Add faqs.txt
-      const faqsText = formatFAQs(project.ai_content.faqs);
-      zip.file('faqs.txt', faqsText);
+      // Add faqs.docx
+      const faqsDocx = await generateFAQsDocx(project.ai_content.faqs);
+      zip.file('faqs.docx', faqsDocx);
     }
 
     // Generate the ZIP file

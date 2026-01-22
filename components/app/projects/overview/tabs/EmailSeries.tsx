@@ -113,6 +113,13 @@ const EmailSeries = ({ roleEmails }: EmailSeriesProps) => {
                                         </div>
                                     </div>
                                 </div>
+                                
+                                {/* Copyright Footer */}
+                                <div className="pt-4 border-t border-gray-200">
+                                    <p className="text-xs text-gray-500 text-center">
+                                        (c)2025 Life Vision, LLC - Innovative Dialogs(R)
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     )}
