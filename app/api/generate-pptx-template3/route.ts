@@ -60,9 +60,9 @@ const addTemplate2Header = (slide: Slide, styles: TemplateStyles) => {
 
 // Helper function to add copyright footer to a slide
 const addCopyrightFooter = (slide: Slide) => {
-    // Position copyright just below content area, not at the very bottom
-    // For 16:9 layout, position at 4.8 (just below main content)
-    const copyrightY = 4.8;
+    // Position copyright at the bottom of the slide
+    // For 16:9 layout, position at 5.2 (near bottom)
+    const copyrightY = 5.2;
     
     slide.addText('©2025 Life Vision, LLC - Innovative Dialogs(R)', {
         x: 0,
