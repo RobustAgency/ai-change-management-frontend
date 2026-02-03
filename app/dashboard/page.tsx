@@ -7,6 +7,7 @@ import ClientFooter from '@/components/app/dashboard/ClientFooter';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'edge'
 
 const DashboardPage = () => {
     useDocumentTitle(

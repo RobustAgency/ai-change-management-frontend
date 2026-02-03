@@ -5,6 +5,7 @@ import ProfilePhoto from '@/components/settings/ProfilePhoto'
 import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'edge'
 
 export const metadata: Metadata = {
   title: 'Settings',

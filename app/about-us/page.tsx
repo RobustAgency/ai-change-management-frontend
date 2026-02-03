@@ -9,6 +9,8 @@ import {
   BadgeCheck,
 } from "lucide-react";
 
+export const runtime = 'edge';
+
 const AboutUsPage = () => {
   return (
     <div className="bg-gray-50 min-h-screen">

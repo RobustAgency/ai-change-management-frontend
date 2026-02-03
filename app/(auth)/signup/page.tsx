@@ -3,6 +3,7 @@ import { SignUpForm } from '@/components/auth/SignupForm'
 import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'edge'
 
 export const metadata: Metadata = {
   title: 'Sign Up',

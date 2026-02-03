@@ -6,6 +6,7 @@ import UnApprovedAccount from '@/components/onboarding/UnApprovedAccount'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'edge'
 
 const COMPONENTS: Record<string, React.ReactNode> = {
     'unapproved-account': <UnApprovedAccount />,

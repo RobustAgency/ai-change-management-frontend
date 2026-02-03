@@ -4,6 +4,7 @@ import AdminDashboardClient from '@/components/admin/dashboard/AdminDashboardCli
 import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'edge'
 
 export const metadata: Metadata = {
   title: 'Admin Dashboard',

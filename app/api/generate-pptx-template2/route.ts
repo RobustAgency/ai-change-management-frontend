@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import PptxGenJS from 'pptxgenjs';
 
+export const runtime = 'edge';
+
 // Utility function to decode HTML entities
 const decodeHtmlEntities = (text: string): string => {
     if (!text) return text;

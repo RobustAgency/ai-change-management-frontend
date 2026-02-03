@@ -6,6 +6,7 @@ import { BugIcon } from "lucide-react";
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'edge'
 
 export default function ErrorPage() {
     useDocumentTitle(

@@ -3,6 +3,8 @@ import JSZip from 'jszip';
 import { Document, Packer, Paragraph, HeadingLevel, AlignmentType, Footer } from 'docx';
 import { Project } from '@/interfaces/Project';
 
+export const runtime = 'edge';
+
 // Type definitions for AI content
 interface EmailData {
   subject?: string;
