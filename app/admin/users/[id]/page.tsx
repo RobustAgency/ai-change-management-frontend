@@ -10,7 +10,7 @@ import UserDetails from '@/components/admin/userDetails/userDetails'
 import UserDetailsPageSkeleton from '@/components/admin/userDetails/UserDetailsPageSkeleton'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 
-export const runtime = 'edge'
+
 
 const UsersDetailsPage = () => {
     const params = useParams()

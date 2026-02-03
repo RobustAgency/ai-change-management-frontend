@@ -9,7 +9,7 @@ import {
   BadgeCheck,
 } from "lucide-react";
 
-export const runtime = 'edge';
+;
 
 const AboutUsPage = () => {
   return (

@@ -3,7 +3,7 @@ import Billing from '@/components/app/billing/Billing';
 import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
-export const runtime = 'edge'
+
 
 export const metadata: Metadata = {
   title: 'Billing',

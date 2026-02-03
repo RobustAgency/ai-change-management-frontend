@@ -9,7 +9,7 @@ import type { ProjectFormData } from '@/interfaces/Project';
 import { Button } from '@/components/ui/button';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 
-export const runtime = 'edge'
+
 
 const ProjectPage = () => {
     const params = useParams();

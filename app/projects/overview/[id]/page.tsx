@@ -2,7 +2,7 @@ import React from 'react'
 import ProjectOverview from '@/components/app/projects/overview/ProjectOverview'
 import type { Metadata } from 'next'
 
-export const runtime = 'edge';
+;
 
 export const metadata: Metadata = {
   title: 'Project Overview',

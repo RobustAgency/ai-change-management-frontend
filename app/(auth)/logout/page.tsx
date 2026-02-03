@@ -4,7 +4,7 @@ import { signout } from "@/lib/auth-actions";
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 
 export const dynamic = 'force-dynamic'
-export const runtime = 'edge'
+
 
 const LogoutPage = () => {
     useDocumentTitle('Logout', 'Signing you out of your Innovative Dialogs account...');

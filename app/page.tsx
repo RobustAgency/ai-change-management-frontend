@@ -8,7 +8,7 @@ import EnterpriseSection from '@/components/home/EnterpriseSection';
 import AiProcessFlow from '@/components/home/AiProcessFlow';
 
 export const dynamic = 'force-dynamic';
-export const runtime = 'edge';
+;
 
 export default function Home() {
   return (
