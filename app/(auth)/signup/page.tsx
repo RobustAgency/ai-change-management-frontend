@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
 
+
 export const metadata: Metadata = {
   title: 'Sign Up',
   description: 'Create your Innovative Dialogs account and start transforming your business processes today. Join thousands of organizations already using our platform.',

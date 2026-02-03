@@ -8,7 +8,6 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Mail, Phone, Building, User, MessageSquare, Send, CheckCircle } from 'lucide-react'
 import { toast } from 'react-toastify'
-import emailjs from '@emailjs/browser'
 
 interface ContactModalProps {
     isOpen: boolean
@@ -86,21 +85,25 @@ const ContactModal = ({ isOpen, onClose }: ContactModalProps) => {
                 timeZoneName: 'short'
             })
 
-            const templateParams = {
-                full_name: formData.full_name,
-                phone_number: formData.phone_number || 'Not provided',
-                email: formData.email,
-                business: formData.business,
-                message: formData.message,
-                time: timeFormatted
-            }
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    full_name: formData.full_name,
+                    phone_number: formData.phone_number || 'Not provided',
+                    email: formData.email,
+                    business: formData.business,
+                    message: formData.message,
+                    time: timeFormatted
+                }),
+            })
 
-            await emailjs.send(
-                process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-                process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-                templateParams,
-                process.env.NEXT_PUBLIC_EMAILJS_USER_ID!
-            )
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.error || 'Failed to send message')
+            }
 
             setIsSuccess(true)
             toast.success('Your message has been sent successfully!')

@@ -8,6 +8,7 @@ import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 
 export const dynamic = 'force-dynamic'
 
+
 const DashboardPage = () => {
     useDocumentTitle(
         'Dashboard',

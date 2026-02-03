@@ -8,6 +8,7 @@ import EnterpriseSection from '@/components/home/EnterpriseSection';
 import AiProcessFlow from '@/components/home/AiProcessFlow';
 
 export const dynamic = 'force-dynamic';
+;
 
 export default function Home() {
   return (
