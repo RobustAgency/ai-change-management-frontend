@@ -1,4 +1,4 @@
-name = "ai-change-management"
+name = "ai-management"
 main = ".open-next/worker.js"
 compatibility_date = "2025-09-15"
 compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
@@ -9,4 +9,4 @@ binding = "ASSETS"
 
 [[services]]
 binding = "WORKER_SELF_REFERENCE"
-service = "ai-change-management"
+service = "ai-management"
