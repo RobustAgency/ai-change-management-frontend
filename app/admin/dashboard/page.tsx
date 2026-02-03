@@ -1,19 +1,26 @@
 import React from 'react'
-import UsersTable from '@/components/admin/dashboard/UsersTable'
+import ContainerCard from '@/components/custom/ContainerCard';
+import AdminDashboardClient from '@/components/admin/dashboard/AdminDashboardClient';
+import type { Metadata } from 'next'
 
-export const runtime = "edge";
+export const dynamic = 'force-dynamic'
+
+
+export const metadata: Metadata = {
+  title: 'Admin Dashboard',
+  description: 'Innovative Dialogs admin dashboard. Manage users, monitor platform usage, oversee subscriptions, and access administrative tools.',
+  robots: {
+    index: false,
+    follow: false,
+  },
+}
 
 const AdminDashboardPage = () => {
     return (
         <React.Fragment>
-            <div className="mb-6">
-                <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-                <p className="text-gray-600 mt-2">Manage users and system settings</p>
-            </div>
-
-            <div className="bg-white rounded-lg shadow">
-                <UsersTable />
-            </div>
+            <ContainerCard title="Admin Dashboard" description="Manage users, monitor platform usage, and oversee subscriptions.">
+                <AdminDashboardClient />
+            </ContainerCard>
         </React.Fragment>
     )
 }

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { PlansService } from '@/service/app/plans'
 import { apiUtils } from '@/lib/api'
 import { toast } from 'react-toastify'
-import type { Plan, Invoice, UpcomingInvoice } from '@/interfaces/Plan'
+import type { Plan, Invoice, UpcomingInvoice, CurrentSubscription } from '@/interfaces/Plan'
 
 export const usePlans = () => {
     const [plans, setPlans] = useState<Plan[]>([])
@@ -94,6 +94,36 @@ export const useUpcomingInvoice = () => {
     return { upcomingInvoice, loading, error, refetch: fetchUpcomingInvoice }
 }
 
+export const useCurrentSubscription = () => {
+    const [currentSubscription, setCurrentSubscription] = useState<CurrentSubscription | null>(null)
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
+
+    const fetchCurrentSubscription = useCallback(async () => {
+        try {
+            setLoading(true)
+            setError(null)
+            const response = await PlansService.getCurrentSubscription()
+            if (!response.error) {
+                setCurrentSubscription(response.data)
+            } else {
+                setError(response.message)
+            }
+        } catch (err) {
+            const errorMessage = apiUtils.handleError(err, 'Failed to fetch current subscription')
+            setError(errorMessage)
+        } finally {
+            setLoading(false)
+        }
+    }, [])
+
+    useEffect(() => {
+        fetchCurrentSubscription()
+    }, [fetchCurrentSubscription])
+
+    return { currentSubscription, loading, error, refetch: fetchCurrentSubscription }
+}
+
 export const useSubscribeToPlan = () => {
     const [loading, setLoading] = useState(false)
 
@@ -102,18 +132,18 @@ export const useSubscribeToPlan = () => {
             setLoading(true)
             const response = await PlansService.subscribe(planId)
 
-            if (response.error) {
-                if (response.data?.redirect_url) {
-                    window.location.href = response.data.redirect_url
+            if (!response.error) {
+                if (response.data?.checkout_url) {
+                    // Redirect to Stripe checkout
+                    window.location.href = response.data.checkout_url
                 } else {
-                    toast.error(response.message || 'Failed to subscribe to plan')
+                    toast.success(response.message || 'Successfully subscribed to plan')
+                    if (onSuccess) {
+                        await onSuccess()
+                    }
                 }
             } else {
-                toast.success(response.message || 'Successfully subscribed to plan')
-
-                if (onSuccess) {
-                    await onSuccess()
-                }
+                toast.error(response.message || 'Failed to subscribe to plan')
             }
 
             return response
@@ -127,6 +157,36 @@ export const useSubscribeToPlan = () => {
     }, [])
 
     return { subscribe, loading }
+}
+
+export const useSwitchPlan = () => {
+    const [loading, setLoading] = useState(false)
+
+    const switchPlan = useCallback(async (planId: number, onSuccess?: () => Promise<void>) => {
+        try {
+            setLoading(true)
+            const response = await PlansService.switchPlan(planId)
+
+            if (!response.error) {
+                toast.success(response.message || 'Successfully switched plan')
+                if (onSuccess) {
+                    await onSuccess()
+                }
+            } else {
+                toast.error(response.message || 'Failed to switch plan')
+            }
+
+            return response
+        } catch (err) {
+            const errorMessage = apiUtils.handleError(err, 'Failed to switch plan')
+            toast.error(errorMessage)
+            throw err
+        } finally {
+            setLoading(false)
+        }
+    }, [])
+
+    return { switchPlan, loading }
 }
 
 export const useCancelSubscription = () => {

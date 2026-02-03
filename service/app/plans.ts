@@ -2,7 +2,8 @@ import { api } from '@/lib/api'
 import type {
     Plan,
     Invoice,
-    UpcomingInvoice
+    UpcomingInvoice,
+    CurrentSubscription
 } from '@/interfaces/Plan'
 
 export class PlansService {
@@ -14,10 +15,17 @@ export class PlansService {
     }
 
     /**
-     * Subscribe to a plan
+     * Subscribe to a plan (for new subscriptions)
      */
     static async subscribe(planId: number) {
-        return api.get<{ redirect_url?: string }>(`/plans/subscribe/${planId}`)
+        return api.get<{ checkout_url?: string }>(`/plans/subscribe/${planId}`)
+    }
+
+    /**
+     * Switch to a different plan (for existing subscriptions)
+     */
+    static async switchPlan(planId: number) {
+        return api.get(`/plans/switch/${planId}`)
     }
 
     /**
@@ -39,5 +47,12 @@ export class PlansService {
      */
     static async getUpcomingInvoice() {
         return api.get<UpcomingInvoice>('/plans/upcoming-invoice')
+    }
+
+    /**
+     * Get current subscription details
+     */
+    static async getCurrentSubscription() {
+        return api.get<CurrentSubscription>('/plans/current-subscription')
     }
 }

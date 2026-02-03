@@ -1,3 +1,12 @@
-name = "ai-change-management-frontend"
-compatibility_date = "2025-08-22"
-compatibility_flags = ["nodejs_compat"]
+name = "ai-management"
+main = ".open-next/worker.js"
+compatibility_date = "2025-09-15"
+compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+[[services]]
+binding = "WORKER_SELF_REFERENCE"
+service = "ai-management"

@@ -3,10 +3,17 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { BugIcon } from "lucide-react";
+import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 
-export const runtime = "edge";
+export const dynamic = 'force-dynamic'
+
 
 export default function ErrorPage() {
+    useDocumentTitle(
+        'Error',
+        'An unexpected error occurred. Please try again or contact support if the problem persists.'
+    );
+
     return (
         <div className="flex min-h-[80vh] items-center justify-center px-4">
             <Card className="w-full max-w-md">

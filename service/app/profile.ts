@@ -1,21 +1,38 @@
 import { api, type ApiResponse } from '@/lib/api';
 
 export interface Profile {
+    // Supabase fields
     id: string;
     full_name?: string | null;
-    email: string;
     avatar_url?: string | null;
+    
+    // API fields
+    name?: string | null;
+    email: string;
+    is_active?: boolean;
+    role?: string;
+    plan_id?: number | null;
+    email_verified_at?: string | null;
+    created_at?: string;
+    updated_at?: string;
+}
+
+export interface ApiProfile {
+    id: number;
+    name: string | null;
+    email: string;
+    is_active: boolean;
+    role: string;
     plan_id: number | null;
-    has_payment_method?: boolean | null;
+    email_verified_at: string | null;
+    created_at: string;
+    updated_at: string;
 }
 
 export interface ProfileResponse {
     error: boolean;
     message: string;
-    data: {
-        user: Profile;
-        has_payment_method: boolean | null;
-    };
+    data: ApiProfile;
 }
 
 export interface ProfileResult {
@@ -31,7 +48,7 @@ export class ProfileService {
 
     async getProfile(): Promise<ProfileResult> {
         try {
-            const response: ApiResponse<ProfileResponse['data']> = await api.get(this.baseUrl);
+            const response: ApiResponse<ApiProfile> = await api.get(this.baseUrl);
 
             if (response.error) {
                 return {
@@ -46,9 +63,15 @@ export class ProfileService {
             return {
                 success: true,
                 data: {
-                    ...response.data.user,
-                    has_payment_method: response.data.has_payment_method,
-                    plan_id: response.data.user.plan_id ?? null
+                    id: response.data.id.toString(), // Convert to string for consistency with Supabase
+                    name: response.data.name,
+                    email: response.data.email,
+                    is_active: response.data.is_active,
+                    role: response.data.role,
+                    plan_id: response.data.plan_id,
+                    email_verified_at: response.data.email_verified_at,
+                    created_at: response.data.created_at,
+                    updated_at: response.data.updated_at
                 },
                 error: false
             };

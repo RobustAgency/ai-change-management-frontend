@@ -49,11 +49,25 @@ export const useProfile = (user: User | null, initialProfile: Profile | null): U
                 if (profileResult.success && profileResult.data) {
                     setProfile({
                         ...supabaseData,
-                        has_payment_method: profileResult.data.has_payment_method ?? null,
-                        plan_id: profileResult.data.plan_id ?? null
+                        ...profileResult.data
                     });
-                    if (!profileResult.data.has_payment_method) {
-                        router.push('/onboarding?mode=add-payment-method');
+
+                    // Check if user account is not active and redirect to unapproved account page
+                    if (!profileResult.data.is_active) {
+                        router.push('/onboarding?mode=unapproved-account');
+                        return;
+                    }
+
+                    if (profileResult.data.plan_id == null) {
+                        try {
+                            const currentPath = window.location.pathname + window.location.search;
+                            if (!currentPath.startsWith('/billing')) {
+                                router.push('/billing?tab=plans');
+                                return;
+                            }
+                        } catch (e) {
+                            // window may not be available during SSR/hydration; ignore in that case
+                        }
                     }
                 } else if (profileResult.error) {
                     if (profileResult.errorCode === 403) {

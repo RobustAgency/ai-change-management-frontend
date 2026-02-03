@@ -12,12 +12,23 @@ export class UsersService {
         return response;
     }
 
-    async approveUser(userId: string): Promise<ApiResponse<User>> {
-        return await api.post<User>(`${this.baseUrl}/${userId}/approve`);
+    async searchUsers(term: string): Promise<ApiResponse<User[]>> {
+        const queryString = apiUtils.createQueryString({ term });
+        const url = `${this.baseUrl}/search?${queryString}`;
+        const response = await api.get<User[]>(url);
+        return response;
     }
 
-    async rejectUser(userId: string): Promise<ApiResponse<User>> {
-        return await api.post<User>(`${this.baseUrl}/${userId}/revoke-approval`);
+    async activateUser(userId: string): Promise<ApiResponse<User>> {
+        return await api.post<User>(`${this.baseUrl}/${userId}/activate`);
+    }
+
+    async deactivateUser(userId: string): Promise<ApiResponse<User>> {
+        return await api.post<User>(`${this.baseUrl}/${userId}/deactivate`);
+    }
+
+    async getUserById(userId: string): Promise<ApiResponse<User>> {
+        return await api.get<User>(`${this.baseUrl}/${userId}`);
     }
 
 }

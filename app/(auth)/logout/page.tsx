@@ -1,10 +1,14 @@
 'use client';
 import { useEffect } from "react";
 import { signout } from "@/lib/auth-actions";
+import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 
-export const runtime = "edge";
+export const dynamic = 'force-dynamic'
+
 
 const LogoutPage = () => {
+    useDocumentTitle('Logout', 'Signing you out of your Innovative Dialogs account...');
+
     const logout = async () => {
         const result = await signout();
         if (!result.success) {

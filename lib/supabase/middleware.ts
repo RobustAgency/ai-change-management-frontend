@@ -57,6 +57,8 @@ export async function updateSession(request: NextRequest) {
 
     const isAuthRoute = authRoutes.some((route) => pathname === route || pathname.startsWith(`${route}/`))
     const isLogoutRoute = pathname === '/logout'
+    const publicRoutes = ['/', '/terms', '/privacy-policy', '/about-us', '/api/contact']
+    const isPublicRoute = publicRoutes.some((route) => pathname === route || pathname.startsWith(`${route}/`))
 
     const redirectWithCookies = (toPath: string) => {
         const target = request.nextUrl.clone()
@@ -69,21 +71,13 @@ export async function updateSession(request: NextRequest) {
     }
 
     if (!user) {
-        if (!isAuthRoute) {
+        if (!isAuthRoute && !isPublicRoute) {
             return redirectWithCookies('/login')
         }
         return response
     }
 
     if (user && isAuthRoute && !isLogoutRoute) {
-        if (user.user_metadata.role === 'admin') {
-            return redirectWithCookies('/admin/dashboard')
-        } else {
-            return redirectWithCookies('/dashboard')
-        }
-    }
-
-    if (user && pathname === '/') {
         if (user.user_metadata.role === 'admin') {
             return redirectWithCookies('/admin/dashboard')
         } else {
