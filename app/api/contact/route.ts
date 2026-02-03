@@ -42,8 +42,9 @@ export async function POST(request: NextRequest) {
     // Initialize Resend inside the function after validation to prevent build-time errors
     const resend = new Resend(process.env.RESEND_API_KEY);
 
-    const recipientEmail = process.env.RESEND_FROM_EMAIL;
+    // Use a dedicated recipient email if provided, otherwise fall back to the from email
     const fromEmail = process.env.RESEND_FROM_EMAIL;
+    const recipientEmail = process.env.CONTACT_RECIPIENT_EMAIL || fromEmail;
 
     const emailHtml = `
       <!DOCTYPE html>
