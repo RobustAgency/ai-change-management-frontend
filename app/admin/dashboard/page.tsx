@@ -5,6 +5,7 @@ import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
 
+
 export const metadata: Metadata = {
   title: 'Admin Dashboard',
   description: 'Innovative Dialogs admin dashboard. Manage users, monitor platform usage, oversee subscriptions, and access administrative tools.',

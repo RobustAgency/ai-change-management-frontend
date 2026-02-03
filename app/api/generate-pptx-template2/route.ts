@@ -31,11 +31,50 @@ const getTemplate2Styles = () => ({
     }
 });
 
+// Type for PptxGenJS slide object - infer from instance
+const _tempPptx = new PptxGenJS();
+type Slide = ReturnType<typeof _tempPptx.addSlide>;
+
+// Type for template styles
+interface TemplateStyles {
+  titleColor: string;
+  subtitleColor: string;
+  textColor: string;
+  accentColor: string;
+  backgroundColor: string;
+  secondaryAccent: string;
+  tealColor: string;
+  fontSize: {
+    title: number;
+    subtitle: number;
+    heading: number;
+    body: number;
+    bullet: number;
+  };
+}
+
 // Function to add template-specific header styling for Template 2
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-const addTemplate2Header = (slide: any, styles: any) => {
+const addTemplate2Header = (slide: Slide, styles: TemplateStyles) => {
     // Template 2 doesn't use header bars like Template 1
     // Keep slides clean as shown in reference images
+};
+
+// Helper function to add copyright footer to a slide
+const addCopyrightFooter = (slide: Slide) => {
+    // Position copyright at the bottom of the slide
+    // For 16:9 layout, position at 5.2 (near bottom)
+    const copyrightY = 5.2;
+    
+    slide.addText('©2025 Life Vision, LLC - Innovative Dialogs(R)', {
+        x: 0,
+        y: copyrightY,
+        w: 10,
+        h: 0.25,
+        fontSize: 8,
+        color: '6B7280',
+        align: 'center',
+        bold: false
+    });
 };
 
 // This API route handles Template 2 PowerPoint generation
@@ -90,6 +129,9 @@ export async function POST(request: NextRequest) {
             });
         }
 
+        // Add copyright footer
+        addCopyrightFooter(slide1);
+
         // Slide 2: Agenda - Template 2 Design
         const slide2 = pptx.addSlide()
         addTemplate2Header(slide2, styles);
@@ -141,6 +183,9 @@ export async function POST(request: NextRequest) {
             });
         });
 
+        // Add copyright footer
+        addCopyrightFooter(slide2);
+
         // Slide 3: Executive Summary - Template 2 Design
         const slide3 = pptx.addSlide()
         addTemplate2Header(slide3, styles);
@@ -179,6 +224,9 @@ export async function POST(request: NextRequest) {
             align: 'left',
             valign: 'top'
         });
+
+        // Add copyright footer
+        addCopyrightFooter(slide3);
 
         // Slide 4: Benefits - Template 2 Design
         const slide4 = pptx.addSlide()
@@ -258,6 +306,9 @@ export async function POST(request: NextRequest) {
             }
         });
 
+        // Add copyright footer
+        addCopyrightFooter(slide4);
+
         // Slide 5: Stakeholders - Template 2 Design
         const slide5 = pptx.addSlide()
         addTemplate2Header(slide5, styles);
@@ -324,6 +375,9 @@ export async function POST(request: NextRequest) {
                 });
             }
         });
+
+        // Add copyright footer
+        addCopyrightFooter(slide5);
 
         // Slide 6: Change Management Strategy - Template 2 Design
         const slide6 = pptx.addSlide()
@@ -408,6 +462,9 @@ export async function POST(request: NextRequest) {
                 valign: 'middle'
             });
         });
+
+        // Add copyright footer
+        addCopyrightFooter(slide6);
 
         // Generate the PowerPoint
         const pptxData = await pptx.write({ outputType: 'arraybuffer' }) as ArrayBuffer;

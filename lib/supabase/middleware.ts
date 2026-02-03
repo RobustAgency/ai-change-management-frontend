@@ -57,7 +57,7 @@ export async function updateSession(request: NextRequest) {
 
     const isAuthRoute = authRoutes.some((route) => pathname === route || pathname.startsWith(`${route}/`))
     const isLogoutRoute = pathname === '/logout'
-    const publicRoutes = ['/', '/terms', '/privacy-policy', '/about-us']
+    const publicRoutes = ['/', '/terms', '/privacy-policy', '/about-us', '/api/contact']
     const isPublicRoute = publicRoutes.some((route) => pathname === route || pathname.startsWith(`${route}/`))
 
     const redirectWithCookies = (toPath: string) => {

@@ -10,6 +10,8 @@ import UserDetails from '@/components/admin/userDetails/userDetails'
 import UserDetailsPageSkeleton from '@/components/admin/userDetails/UserDetailsPageSkeleton'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 
+
+
 const UsersDetailsPage = () => {
     const params = useParams()
     const router = useRouter()

@@ -6,6 +6,7 @@ import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
 
+
 export const metadata: Metadata = {
   title: 'Settings',
   description: 'Manage your Innovative Dialogs account settings, update your profile information, change your password, and customize your preferences.',

@@ -104,7 +104,7 @@ const generateEmailsDocx = async (emails: EmailsData | null | undefined): Promis
         default: new Footer({
           children: [
             new Paragraph({
-              text: '(c)2025 Life Vision, LLC - Innovative Dialogs(R)',
+              text: '©2025 Life Vision, LLC - Innovative Dialogs(R)',
               alignment: AlignmentType.CENTER,
               spacing: { before: 200 }
             })
@@ -280,7 +280,7 @@ const generateVideoScriptDocx = async (videoScript: VideoScript | string | null 
         default: new Footer({
           children: [
             new Paragraph({
-              text: '(c)2025 Life Vision, LLC - Innovative Dialogs(R)',
+              text: '©2025 Life Vision, LLC - Innovative Dialogs(R)',
               alignment: AlignmentType.CENTER,
               spacing: { before: 200 }
             })
@@ -350,7 +350,7 @@ const generateFAQsDocx = async (faqs: FAQ[] | null | undefined): Promise<ArrayBu
         default: new Footer({
           children: [
             new Paragraph({
-              text: '(c)2025 Life Vision, LLC - Innovative Dialogs(R)',
+              text: '©2025 Life Vision, LLC - Innovative Dialogs(R)',
               alignment: AlignmentType.CENTER,
               spacing: { before: 200 }
             })

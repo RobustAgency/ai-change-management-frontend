@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic'
 
+
 export default function NotFound() {
     return (
         <section className="min-h-[85vh] flex flex-col justify-center text-center items-center relative z-10">

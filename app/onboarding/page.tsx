@@ -7,6 +7,7 @@ import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 
 export const dynamic = 'force-dynamic'
 
+
 const COMPONENTS: Record<string, React.ReactNode> = {
     'unapproved-account': <UnApprovedAccount />,
 }

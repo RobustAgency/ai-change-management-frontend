@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 
+;
+
 export const metadata: Metadata = {
     title: 'Terms of Service',
     description: 'Read the terms of service for Innovative Dialogs platform. Understand your rights and responsibilities when using our change management tools and services.',
