@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import PptxGenJS from 'pptxgenjs';
 
-export const runtime = 'edge';
-
 // Template 1: Professional Blue Theme (Clean, Corporate)
 const getTemplate1Styles = () => ({
   titleColor: '1F2937',
