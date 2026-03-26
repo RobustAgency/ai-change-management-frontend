@@ -1,10 +1,21 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-export function createSupabaseMiddlewareClient(request: NextRequest) {
-    let response = NextResponse.next({
+function createPassThroughResponse(request: NextRequest) {
+    return NextResponse.next({
         request: { headers: request.headers },
     })
+}
+
+function hasSupabaseConfig() {
+    return Boolean(
+        process.env.NEXT_PUBLIC_SUPABASE_URL &&
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    )
+}
+
+export function createSupabaseMiddlewareClient(request: NextRequest) {
+    let response = createPassThroughResponse(request)
 
     const supabase = createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -37,12 +48,6 @@ export function createSupabaseMiddlewareClient(request: NextRequest) {
 
 
 export async function updateSession(request: NextRequest) {
-    const { supabase, response } = createSupabaseMiddlewareClient(request)
-
-    const {
-        data: { user },
-    } = await supabase.auth.getUser()
-
     const url = request.nextUrl.clone()
     const pathname = url.pathname
 
@@ -57,33 +62,66 @@ export async function updateSession(request: NextRequest) {
 
     const isAuthRoute = authRoutes.some((route) => pathname === route || pathname.startsWith(`${route}/`))
     const isLogoutRoute = pathname === '/logout'
-    const publicRoutes = ['/', '/terms', '/privacy-policy', '/about-us', '/api/contact']
+    const publicRoutes = ['/', '/terms', '/privacy-policy', '/about-us', '/api/contact', '/error']
     const isPublicRoute = publicRoutes.some((route) => pathname === route || pathname.startsWith(`${route}/`))
+    const passThroughResponse = createPassThroughResponse(request)
 
-    const redirectWithCookies = (toPath: string) => {
+    const redirectWithoutCookies = (toPath: string) => {
         const target = request.nextUrl.clone()
         target.pathname = toPath
-        const redirectResponse = NextResponse.redirect(target)
-        response.cookies.getAll().forEach((cookie) => {
-            redirectResponse.cookies.set(cookie)
-        })
-        return redirectResponse
+        return NextResponse.redirect(target)
     }
 
-    if (!user) {
-        if (!isAuthRoute && !isPublicRoute) {
-            return redirectWithCookies('/login')
+    if (!hasSupabaseConfig()) {
+        console.warn('Supabase environment variables are missing; skipping auth middleware.')
+
+        if (!isAuthRoute && !isPublicRoute && !isLogoutRoute) {
+            return redirectWithoutCookies('/error')
         }
+
+        return passThroughResponse
+    }
+
+    try {
+        const { supabase, response } = createSupabaseMiddlewareClient(request)
+
+        const {
+            data: { user },
+        } = await supabase.auth.getUser()
+
+        const redirectWithCookies = (toPath: string) => {
+            const target = request.nextUrl.clone()
+            target.pathname = toPath
+            const redirectResponse = NextResponse.redirect(target)
+            response.cookies.getAll().forEach((cookie) => {
+                redirectResponse.cookies.set(cookie)
+            })
+            return redirectResponse
+        }
+
+        if (!user) {
+            if (!isAuthRoute && !isPublicRoute) {
+                return redirectWithCookies('/login')
+            }
+            return response
+        }
+
+        if (user && isAuthRoute && !isLogoutRoute) {
+            if (user.user_metadata.role === 'admin') {
+                return redirectWithCookies('/admin/dashboard')
+            } else {
+                return redirectWithCookies('/dashboard')
+            }
+        }
+
         return response
-    }
+    } catch (error) {
+        console.error('Failed to update session:', error)
 
-    if (user && isAuthRoute && !isLogoutRoute) {
-        if (user.user_metadata.role === 'admin') {
-            return redirectWithCookies('/admin/dashboard')
-        } else {
-            return redirectWithCookies('/dashboard')
+        if (!isAuthRoute && !isPublicRoute && !isLogoutRoute) {
+            return redirectWithoutCookies('/error')
         }
-    }
 
-    return response
+        return passThroughResponse
+    }
 }
