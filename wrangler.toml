@@ -19,4 +19,4 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOi
 
 [[env.staging.services]]
 binding = "WORKER_SELF_REFERENCE"
-service = "ai-management-staging"
+service = "ai-management"
