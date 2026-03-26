@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack --port 3002",
     "build:next": "next build",
-    "build:cloudflare": "opennextjs-cloudflare build",
+    "build:cloudflare": "node scripts/cloudflare-build.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
