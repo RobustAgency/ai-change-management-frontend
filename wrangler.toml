@@ -14,6 +14,8 @@ service = "ai-management"
 
 [env.staging.vars]
 NEXT_PUBLIC_API_URL = "https://change-mgmt.robustapps.net/api/"
+NEXT_PUBLIC_SUPABASE_URL = "https://agifgfredvksqgtvzqdn.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnaWZnZnJlZHZrc3FndHZ6cWRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1NjA2MjksImV4cCI6MjA5MDEzNjYyOX0.NJhgHAGa1PYIs3zS6aa-s3cZCGlUkKt8iNGvn9qKBTA"
 
 [[env.staging.services]]
 binding = "WORKER_SELF_REFERENCE"
