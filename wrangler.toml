@@ -13,7 +13,7 @@ binding = "WORKER_SELF_REFERENCE"
 service = "ai-management"
 
 [env.staging]
-name = "ai-management-staging"          
+name = "ai-management"          
 main = ".open-next/worker.js"           
 compatibility_date = "2025-09-15"       
 compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]  # ← ADD THIS
@@ -29,4 +29,4 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOi
 
 [[env.staging.services]]
 binding = "WORKER_SELF_REFERENCE"
-service = "ai-management-staging" 
+service = "ai-management" 
