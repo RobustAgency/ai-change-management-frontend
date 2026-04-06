@@ -12,6 +12,16 @@ binding = "ASSETS"
 binding = "WORKER_SELF_REFERENCE"
 service = "ai-management"
 
+[env.staging]
+name = "ai-management-staging"          
+main = ".open-next/worker.js"           
+compatibility_date = "2025-09-15"       
+compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]  # ← ADD THIS
+
+[env.staging.assets]                    
+directory = ".open-next/assets"
+binding = "ASSETS"
+
 [env.staging.vars]
 NEXT_PUBLIC_API_URL = "https://change-mgmt.robustapps.net/api/"
 NEXT_PUBLIC_SUPABASE_URL = "https://agifgfredvksqgtvzqdn.supabase.co"
@@ -19,4 +29,4 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOi
 
 [[env.staging.services]]
 binding = "WORKER_SELF_REFERENCE"
-service = "ai-management"
+service = "ai-management-staging" 
